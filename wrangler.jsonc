@@ -1,0 +1,16 @@
+{
+  // Cloudflare Worker: serves ./public and the /api used by homosapiens.ro/update
+  "name": "homosapiens",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash"
+  },
+  "durable_objects": {
+    "bindings": [{ "name": "STORE", "class_name": "HsStore" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["HsStore"] }],
+  "observability": { "enabled": true }
+}

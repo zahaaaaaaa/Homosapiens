@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
+Disallow: /update/
 Sitemap: https://homosapiens.ro/sitemap.xml

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Parolă nouă · Homosapiens</title>
+<link rel="icon" type="image/png" href="/assets/img/favicon.png">
+<style>
+:root{--bg:#F4F5F7;--surface:#fff;--ink:#111317;--muted:#5D626E;--line:#DCDFE5;--line-2:#C9CDD5;--blue:#2D4E8A;color-scheme:light}
+@media (prefers-color-scheme: dark){:root{--bg:#0E0F12;--surface:#16181D;--ink:#F1F2F4;--muted:#979BA6;--line:#282B33;--line-2:#363A44;--blue:#A3B4DC;color-scheme:dark}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,'Segoe UI',sans-serif;padding:32px 16px}
+main{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:28px}
+h1{margin:0;font-size:24px;letter-spacing:-.02em}p{margin:0;color:var(--muted)}
+label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700;color:var(--muted)}
+input,textarea{font:inherit;color:inherit;min-height:42px;padding:9px 12px;border-radius:12px;border:1px solid var(--line-2);background:var(--bg)}
+textarea{min-height:90px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;word-break:break-all}
+button{font:inherit;font-weight:800;min-height:42px;padding:0 18px;border-radius:999px;border:0;background:var(--ink);color:var(--bg);cursor:pointer;justify-self:start}
+ol{margin:0;padding-left:20px;color:var(--muted)}li{margin:4px 0}code{background:var(--bg);padding:1px 6px;border-radius:6px}
+.err{color:#B42318;font-weight:700}
+</style>
+</head>
+<body>
+<main>
+  <h1>Generează o parolă pentru admin</h1>
+  <p>Totul se calculează aici, în browser; parola nu pleacă nicăieri. Rezultatul e o linie pe care o adaugi în Cloudflare.</p>
+  <form id="f" style="display:grid;gap:12px">
+    <label>Utilizator<input id="u" autocomplete="off" autocapitalize="none" spellcheck="false" required pattern="[A-Za-z0-9._-]{2,40}"></label>
+    <label>Parolă nouă<input id="p1" type="password" autocomplete="new-password" required minlength="8"></label>
+    <label>Repetă parola<input id="p2" type="password" autocomplete="new-password" required minlength="8"></label>
+    <p id="e" class="err" hidden></p>
+    <button type="submit">Generează linia</button>
+  </form>
+  <label id="outw" hidden>Linia pentru Cloudflare<textarea id="out" readonly></textarea></label>
+  <ol>
+    <li>Cloudflare → Workers &amp; Pages → <b>homosapiens</b> → Settings → Variables and Secrets.</li>
+    <li>La secretul <code>ADMIN_USERS</code> apasă Edit și adaugă linia la final, despărțită de restul prin <code>;</code> (sau înlocuiește linia veche a aceluiași utilizator).</li>
+    <li>Salvează (Deploy). Parola nouă merge imediat.</li>
+  </ol>
+</main>
+<script>
+const b64 = (u8) => btoa(String.fromCharCode(...u8));
+document.getElementById('f').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const u = document.getElementById('u').value.trim(), p1 = document.getElementById('p1').value, p2 = document.getElementById('p2').value, e = document.getElementById('e');
+  e.hidden = true;
+  if (p1 !== p2) { e.textContent = 'Parolele nu coincid.'; e.hidden = false; return; }
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(p1), 'PBKDF2', false, ['deriveBits']);
+  const bits = new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt, iterations: 100000 }, key, 256));
+  document.getElementById('out').value = u + ':pbkdf2$100000$' + b64(salt) + '$' + b64(bits);
+  document.getElementById('outw').hidden = false;
+  document.getElementById('out').select();
+});
+</script>
+</body>
+</html>

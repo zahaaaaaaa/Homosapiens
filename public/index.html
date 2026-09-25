@@ -261,26 +261,16 @@ body{margin:0;background:#F4F5F7}
 .pm-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;transition:transform 1s var(--ease)}
 .pm:hover .pm-ph img{transform:scale(1.045)}
 .pm-cap{padding-inline:4px}
-.pm-ghost{position:absolute;inset:0;display:grid;place-items:center;background:var(--surface-2);isolation:isolate}
-.pm-ghost::before{content:"";position:absolute;inset:0;z-index:-1;background:repeating-linear-gradient(0deg,var(--line-2) 0 1px,transparent 1px 22px),repeating-linear-gradient(90deg,var(--line-2) 0 1px,transparent 1px 22px);-webkit-mask-image:radial-gradient(circle at 50% 46%,#000 0 22%,transparent 68%);mask-image:radial-gradient(circle at 50% 46%,#000 0 22%,transparent 68%);opacity:.9}
-.pm-ring{position:relative;display:grid;place-items:center;width:62%;aspect-ratio:1;border-radius:50%;border:1px solid var(--line-2);background:var(--surface);box-shadow:0 18px 40px -26px rgba(24,33,52,.35);transition:transform .8s var(--ease)}
-.pm-ring::before,.pm-ring::after{content:"";position:absolute;background:var(--line-2)}
-.pm-ring::before{left:50%;top:-14px;bottom:-14px;width:1px;transform:translateX(-.5px);-webkit-mask-image:linear-gradient(#000 0 12px,transparent 12px calc(100% - 12px),#000 calc(100% - 12px));mask-image:linear-gradient(#000 0 12px,transparent 12px calc(100% - 12px),#000 calc(100% - 12px))}
-.pm-ring::after{top:50%;left:-14px;right:-14px;height:1px;transform:translateY(-.5px);-webkit-mask-image:linear-gradient(90deg,#000 0 12px,transparent 12px calc(100% - 12px),#000 calc(100% - 12px));mask-image:linear-gradient(90deg,#000 0 12px,transparent 12px calc(100% - 12px),#000 calc(100% - 12px))}
-.pm:hover .pm-ring{transform:scale(1.05) rotate(-4deg)}
-.pm-ini{font:800 clamp(34px,4.4vw,60px)/1 var(--f-display);letter-spacing:-.05em;color:var(--ink)}
-.pm-cm{position:absolute;width:18px;height:18px;border:0 solid var(--blue);opacity:.8}
-.pm-cm.tl{top:16px;left:16px;border-top-width:2px;border-left-width:2px;border-top-left-radius:6px}
-.pm-cm.tr{top:16px;right:16px;border-top-width:2px;border-right-width:2px;border-top-right-radius:6px}
-.pm-cm.bl{bottom:16px;left:16px;border-bottom-width:2px;border-left-width:2px;border-bottom-left-radius:6px}
-.pm-cm.br{bottom:16px;right:16px;border-bottom-width:2px;border-right-width:2px;border-bottom-right-radius:6px}
-.pm-soon{position:absolute;left:0;right:0;bottom:20px;text-align:center;font:800 11px var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pm-ghost{position:absolute;inset:0;display:grid;place-items:center;background:var(--surface-2);transition:background-color .4s var(--ease)}
+.pm-ini{font:800 clamp(40px,5vw,72px)/1 var(--f-display);letter-spacing:-.05em;color:var(--muted);transition:color .4s var(--ease),transform .8s var(--ease)}
+.pm:hover .pm-ghost{background:var(--surface-3)}
+.pm:hover .pm-ini{color:var(--ink-2);transform:scale(1.04)}
 .pm-join{display:flex;flex-direction:column;justify-content:space-between;gap:18px;height:100%;padding:clamp(20px,2.4vw,28px);border-radius:22px;background:var(--blue-soft);aspect-ratio:4/5;max-width:100%}
 .pm-join .m-name{font-size:clamp(22px,2.2vw,28px);line-height:1.1}
 .pm-join .m-role{font-size:15px}
 .pm-join .link-btn{color:var(--blue)}
 @media(max-width:1080px){.pm-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:720px){.pm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pm-soon{font-size:10px;bottom:14px}.pm-cm{width:14px;height:14px}.pm-cm.tl,.pm-cm.tr{top:12px}.pm-cm.bl,.pm-cm.br{bottom:12px}.pm-cm.tl,.pm-cm.bl{left:12px}.pm-cm.tr,.pm-cm.br{right:12px}}
+@media(max-width:720px){.pm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:380px){.pm-grid{grid-template-columns:1fr}}
 .depts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,36px) clamp(24px,4vw,56px)}
 .dept{display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;align-items:start}
@@ -318,6 +308,7 @@ body{margin:0;background:#F4F5F7}
 .aw-meta{margin-top:3px;font-size:14px;color:var(--muted)}
 .aw-place{display:inline-flex;align-items:center;min-height:30px;padding:0 12px;border-radius:999px;background:var(--surface-2);color:var(--ink);font:800 12.5px var(--f-body);white-space:nowrap}
 .aw-place.gold{background:var(--ink);color:var(--bg)}
+.aw-empty{padding:18px 20px;border-radius:18px;border:1px dashed var(--line-2);color:var(--muted);font-weight:600}
 @media(max-width:760px){.season{grid-template-columns:1fr}.s-label{position:relative;top:auto;flex-direction:row;align-items:baseline;gap:12px}.aw{grid-template-columns:44px minmax(0,1fr)}.aw-place{grid-column:2;justify-self:start}}
 
 /* about */
@@ -370,6 +361,7 @@ body{margin:0;background:#F4F5F7}
 .lg-mark img.w{max-height:36px}
 .lg-mark img.m{max-height:50px}
 .lg-mark img.s{max-height:78px}
+.lg-mark img.orig{filter:none;opacity:1}
 .lg-word{font:800 clamp(26px,2.6vw,34px)/1 var(--f-display);letter-spacing:-.04em;color:var(--ink);opacity:var(--logo-o)}
 .lg figcaption{width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;font:700 12.5px var(--f-body);color:var(--muted)}
 @media(max-width:1080px){.logos{grid-template-columns:repeat(4,minmax(0,1fr))}}
@@ -428,6 +420,19 @@ textarea.input{min-height:150px;padding:14px 16px;line-height:1.6;resize:vertica
 .flink{display:inline-flex;align-items:center;gap:10px;min-height:40px;padding:0;border:0;background:none;color:var(--ink);font:600 15px var(--f-body);text-align:left;text-decoration:none;cursor:pointer;transition:color .2s,transform .3s var(--ease)}
 .flink:hover{color:var(--blue);transform:translateX(3px)}
 .flink svg{color:var(--muted)}
+.foot-partners{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:22px 36px;padding-block:26px 28px;border-top:1px solid var(--line)}
+.fp-group{display:flex;align-items:center;gap:clamp(16px,2.4vw,30px)}
+.fp-div{align-self:stretch;width:1px;min-height:44px;background:var(--line-2)}
+.fp-logo{display:block;width:auto;max-width:100%;filter:var(--logo-f);opacity:var(--logo-o)}
+.fp-ftc{height:54px}.fp-bio{height:46px}.fp-natie{height:40px}.fp-brd{height:38px}
+.fp-item{display:flex;flex-direction:column;align-items:center;gap:6px}
+.fp-k{font:800 9.5px/1 var(--f-body);letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+.fp-season{display:grid;grid-template-columns:auto;justify-items:center;line-height:1;color:var(--ink-2)}
+.fp-season i{font:italic 800 17px/1 var(--f-display);letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1px var(--muted)}
+.fp-season i:first-child{justify-self:start}.fp-season i:last-child{justify-self:end}
+.fp-season b{font:800 15px/1.15 var(--f-body);letter-spacing:.14em;margin-block:2px}
+@media(max-width:960px){.foot-partners{justify-content:center}}
+@media(max-width:560px){.fp-group{flex-wrap:wrap;justify-content:center}.fp-div{display:none}.fp-ftc{height:42px}.fp-bio{height:34px}}
 .foot-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-block:18px 26px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
 @media(max-width:820px){.foot-top{grid-template-columns:1fr}}
 
@@ -637,11 +642,7 @@ textarea.input{min-height:150px;padding:14px 16px;line-height:1.6;resize:vertica
                 <img src="{{mb.photo}}" alt="{{mb.alt}}" loading="lazy">
               </sc-if>
               <sc-if value="{{mb.noPhoto}}" hint-placeholder-val="{{false}}">
-                <div class="pm-ghost" aria-hidden="true">
-                  <span class="pm-cm tl"></span><span class="pm-cm tr"></span><span class="pm-cm bl"></span><span class="pm-cm br"></span>
-                  <span class="pm-ring"><span class="pm-ini">{{mb.ini}}</span></span>
-                  <span class="pm-soon">{{t.team.soon}}</span>
-                </div>
+                <div class="pm-ghost" aria-hidden="true"><span class="pm-ini">{{mb.ini}}</span></div>
               </sc-if>
             </div>
             <div class="pm-cap">
@@ -699,6 +700,7 @@ textarea.input{min-height:150px;padding:14px 16px;line-height:1.6;resize:vertica
                   <sc-if value="{{aw.hasPlace}}" hint-placeholder-val="{{true}}"><span class="{{aw.placeCls}}">{{aw.place}}</span></sc-if>
                 </div>
               </sc-for>
+              <sc-if value="{{se.isEmpty}}" hint-placeholder-val="{{false}}"><p class="aw-empty">{{t.awards.emptySeason}}</p></sc-if>
             </div>
           </div>
         </sc-for>
@@ -927,6 +929,19 @@ textarea.input{min-height:150px;padding:14px 16px;line-height:1.6;resize:vertica
           </div>
         </div>
       </div>
+      <div class="foot-partners" role="group" aria-label="{{t.footer.partnersAria}}">
+        <div class="fp-group">
+          <img class="fp-logo fp-ftc" src="/assets/parteneri/ftc-romania.png" alt="FIRST Tech Challenge România" loading="lazy">
+          <span class="fp-div" aria-hidden="true"></span>
+          <img class="fp-logo fp-bio" src="/assets/parteneri/biobuzz.png" alt="BIOBUZZ presented by RTX" loading="lazy">
+        </div>
+        <p class="fp-season" aria-label="Season 11, 2026-2027"><i>2026</i><b>SEASON #11</b><i>2027</i></p>
+        <div class="fp-group">
+          <div class="fp-item"><span class="fp-k">{{t.footer.organizer}}</span><img class="fp-logo fp-natie" src="/assets/parteneri/natie-prin-educatie.png" alt="Nație prin Educație" loading="lazy"></div>
+          <span class="fp-div" aria-hidden="true"></span>
+          <div class="fp-item"><span class="fp-k">{{t.footer.founding}}</span><img class="fp-logo fp-brd" src="/assets/parteneri/brd.png" alt="BRD Groupe Société Générale" loading="lazy"></div>
+        </div>
+      </div>
       <div class="foot-bottom">
         <span>{{t.footer.rights}}</span>
         <span>{{t.footer.data}}</span>
@@ -953,6 +968,7 @@ class Component extends DCLogic {
     } catch (e) {}
     this.hsReduce = reduce;
     this.hsT = this.hsDict();
+    this.hsDefault = this.hsDefaultContent();
     /* The match clip (32:30-35:15), once uploaded to this site, goes here. */
     this.hsClip = '';
     this.hsYt = 'https://www.youtube.com/watch?v=VCwzggKkRRc&t=1950s';
@@ -966,7 +982,8 @@ class Component extends DCLogic {
       tab: tab0, lang: lang, theme: theme, langOpen: false, p: reduce ? 1 : 0, teamF: 'all',
       topic: 'sponsor', cName: '', cEmail: '', cSubject: '', cMsg: '',
       cCompany: '', cCui: '', cRole: '', cPhone: '', cSupport: [], cAmount: '',
-      cTried: false, cSent: false, copyState: 'idle', emailCopied: false
+      cTried: false, cSent: false, copyState: 'idle', emailCopied: false,
+      cms: null
     };
   }
 
@@ -975,7 +992,92 @@ class Component extends DCLogic {
     if (this.hsStandalone) {
       this.hsPop = () => { this.setState({ tab: this.hsTabFromHash(), langOpen: false }); this.hsTop(); };
       try { window.addEventListener('popstate', this.hsPop); } catch (e) {}
+      /* Awards, team and sponsors edited on /update replace the built-in lists below. */
+      try {
+        fetch('/api/content', { cache: 'no-store', credentials: 'same-origin' })
+          .then((r) => (r.status === 200 ? r.json() : null))
+          .then((j) => { if (j && j.v === 1) this.setState({ cms: j }); })
+          .catch(() => {});
+      } catch (e) {}
     }
+  }
+  hsDefaultContent() {
+    const D = this.hsT;
+    const ML = (f) => ({ ro: f(D.ro), en: f(D.en), fr: f(D.fr), zh: f(D.zh) });
+    const ev = (k) => ML((d) => d.awards.events[k]);
+    const aw = (id, name, place, evk, c) => ({ id: id, active: true, kind: 'award', name: { ro: name }, place: place, event: ev(evk), country: c, note: {} });
+    const P = (id, name, role, photo, more) => Object.assign({ id: id, active: true, name: name, role: role, roleText: '', alumni: false, grad: '', photo: photo }, more || {});
+    const AL = { alumni: true, grad: '2026' };
+    const S = (id, name, logo, size) => ({ id: id, active: true, name: name, logo: logo, ar: 0, size: size, mono: true });
+    return {
+      v: 1,
+      seasons: [
+        { id: 's2627', active: true, season: '2026-27', game: 'BIOBUZZ', awards: [] },
+        { id: 's2526', active: true, season: '2025-26', game: 'DECODE', awards: [
+          aw('a2526-1', 'Inspire Award', 2, 'western', 'us'),
+          aw('a2526-2', 'Reach Award', 1, 'regional', 'ro'),
+          aw('a2526-3', 'Reach Award', 3, 'rochamp', 'ro'),
+          { id: 'a2526-4', active: true, kind: 'result', name: ML((d) => d.awards.finalists), place: 0, event: ev('twin'), country: 'ro', note: ML((d) => d.awards.twinExtra) }
+        ] },
+        { id: 's2425', active: true, season: '2024-25', game: 'Into The Deep', awards: [
+          aw('a2425-1', 'Control Award', 1, 'italy', 'it'),
+          aw('a2425-2', 'Motivate Award', 1, 'michiana', 'us')
+        ] },
+        { id: 's2324', active: true, season: '2023-24', game: 'CenterStage', awards: [aw('a2324-1', 'Connect Award', 3, 'iasi', 'ro')] },
+        { id: 's2223', active: true, season: '2022-23', game: 'Power Play', awards: [aw('a2223-1', 'Motivate Award', 2, 'buc', 'ro')] }
+      ],
+      team: [
+        P('m-dorcu', 'Dorcu Rareș Florentin', 'prog', '/assets/echipa/dorcu.jpg'),
+        P('m-aldea', 'Aldea Rareș', 'drive', '/assets/echipa/aldea.jpg'),
+        P('m-luca-grigore', 'Luca Grigore', 'hwcad', '/assets/echipa/luca-grigore.jpg'),
+        P('m-stanciu', 'Sebastian Stanciu', 'eng', '/assets/echipa/stanciu.jpg'),
+        P('m-zaharescu', 'Zaharescu Mihai Gabriel', 'prog', '/assets/echipa/zaharescu.jpg'),
+        P('m-luca-vasilica', 'Luca Vasilica', 'cad', '/assets/echipa/luca-vasilica.jpg'),
+        P('m-cernea', 'Albert Cernea', 'pr', '/assets/echipa/cernea.jpg'),
+        P('m-frincu', 'Miruna Frincu', 'pr', '/assets/echipa/frincu.jpg'),
+        P('m-beldimanescu', 'Ioana Beldimănescu', 'pr', '/assets/echipa/beldimanescu.jpg'),
+        P('m-cimpeanu', 'Bogdan Cimpeanu', 'pr', '/assets/echipa/cimpeanu.jpg'),
+        P('m-iancu', 'Iancu', 'pr', '/assets/echipa/iancu.jpg'),
+        P('m-miu', 'Miu Vlad', 'driveEng', ''),
+        P('m-andrei', 'Andrei Vasile Robert', 'eng', ''),
+        P('m-fratila', 'Matei Fratila', 'eng', ''),
+        P('m-spoiala', 'Florentina Spoială', 'pr', ''),
+        P('m-grama', 'Mihaela Valentina Grama', 'pr', '/assets/echipa/grama.jpg', AL),
+        P('m-vizitiu', 'Adela Vizitiu', 'pr', '/assets/echipa/vizitiu.jpg', AL),
+        P('m-ifrim', 'Bianca Ifrim', 'peer', '/assets/echipa/ifrim.jpg', AL)
+      ],
+      sponsors: [
+        S('sp-acl', 'ACL', '', ''),
+        S('sp-brd', 'BRD Groupe Société Générale', '/assets/sponsori/brd.png', 'w'),
+        S('sp-dee', 'Distribuție Energie Electrică România', '/assets/sponsori/dee.png', 'w'),
+        S('sp-nepi', 'NEPI Rockcastle', '/assets/sponsori/nepi.png', 'x'),
+        S('sp-hoeganaes', 'Hoeganaes', '/assets/sponsori/hoeganaes.png', 'm'),
+        S('sp-forja', 'Forja Rotec', '/assets/sponsori/forja.png', 'w'),
+        S('sp-inel', 'INEL SA', '/assets/sponsori/inel.png', 's'),
+        S('sp-nextlevel', 'Next Level Business', '/assets/sponsori/nextlevel.png', 'w'),
+        S('sp-electriclight', 'Electric Light', '/assets/sponsori/electriclight.png', 'x'),
+        S('sp-quattro', 'Quattro Intersped', '/assets/sponsori/quattro.png', 'w'),
+        S('sp-competitiv', 'Competitiv Brandis', '/assets/sponsori/competitiv.png', 's'),
+        S('sp-dcreal', 'DC Real Solutions', '/assets/sponsori/dcreal.png', 'x'),
+        S('sp-constam', 'Constam', '/assets/sponsori/constam.png', 'w'),
+        S('sp-dinamio', 'Dinamio', '/assets/sponsori/dinamio.png', 'w'),
+        S('sp-electrototal', 'Electro-Total', '/assets/sponsori/electrototal.png', 'w'),
+        S('sp-multiprod', 'Multiprod Energo', '/assets/sponsori/multiprod.png', 'w'),
+        S('sp-alphanet', 'Alphanet Service', '/assets/sponsori/alphanet.png', 's'),
+        S('sp-smartid', 'Smart ID', '/assets/sponsori/smartid.png', 'w'),
+        S('sp-convenience', 'Convenience Prod', '/assets/sponsori/convenience.png', 'x'),
+        S('sp-lex', 'Lex Protect', '/assets/sponsori/lex.png', 's'),
+        S('sp-agrocom', 'General Agrocom', '/assets/sponsori/agrocom.png', 's'),
+        S('sp-kalra', 'Kalra Pro', '/assets/sponsori/kalra.png', 'm'),
+        S('sp-trs', 'TRS', '/assets/sponsori/trs.png', 's'),
+        S('sp-dentas', 'Dentaș', '/assets/sponsori/dentas.png', 's'),
+        S('sp-centromedica', 'Centromedica', '/assets/sponsori/centromedica.png', 'x'),
+        S('sp-concas', 'Concas', '/assets/sponsori/concas.png', 'x'),
+        S('sp-corina', 'Corina Caffe', '/assets/sponsori/corina.png', 's'),
+        S('sp-cofetaria', 'Cofetăria No 379', '/assets/sponsori/cofetaria.png', 's'),
+        S('sp-dima', 'Dima Carmangerie', '/assets/sponsori/dima.png', 's')
+      ]
+    };
   }
   componentDidUpdate() {
     const tab = this.state && this.state.tab;
@@ -1148,12 +1250,12 @@ class Component extends DCLogic {
           { title: 'Cu tricolorul, în Indiana', text: 'Michiana Premier Event, South Bend, 2025.', alt: 'Membrii echipei țin steagul României' },
           { title: 'Robotul Into The Deep', text: 'Sezonul 2024-25, cu bannerul echipei.', alt: 'Membrii echipei lângă robot și bannerul Homosapiens' }
         ],
-        team: { title: 'Oamenii din spatele robotului.', lead: 'Elevi de la Hasdeu care proiectează, construiesc, programează și prezintă robotul, sezon după sezon.', photoAlt: 'Echipa Homosapiens cu steagul României și bannerul echipei, la Michiana', mentorK: 'Coordonare', mentorName: 'Prof. Amalia Voicu', mentorRole: 'Coordonatoarea echipei, profesoară de informatică', membersTitle: 'Echipa.', member: { sebastian: 'Inginerie, proiectare și asamblare', florentina: 'Media și PR', ioana: 'Membră a echipei' }, joinTitle: 'Vrei în echipă?', joinText: 'Scrie-ne și îți spunem cum te poți alătura.', joinCta: 'Scrie-ne', deptTitle: 'Departamente.', d1t: 'Inginerie', d1d: 'Proiectează și construiește robotul, de la șasiu la mecanisme.', d2t: 'Programare', d2d: 'Scrie codul pentru perioada autonomă și pentru teleop.', d3t: 'Proiectare 3D', d3d: 'Modelează și printează piesele robotului.', d4t: 'Media și PR', d4d: 'Fotografii, povești și relația cu sponsorii.', alumniTitle: 'Absolvenți 2026', alumniText: 'Mulțumim pentru sezoanele petrecute cu noi.', al: { bianca: 'Absolventă 2026', mihaela: 'Media și PR', adela: 'Proiectare 3D' } , soon: 'Poză în curând', filterAria: 'Filtrează după departament', alumna: 'Absolventă 2026', photoOf: 'Fotografie cu', countTpl: '{a} membri și {b} absolvente', f: { all: 'Toți', prog: 'Programare', eng: 'Inginerie', cad: 'CAD', pr: 'PR', drive: 'Driveri', alumni: 'Absolvenți' }, fd: { all: 'Elevii care construiesc Homosapiens în sezonul DECODE, plus absolventele din 2026.', prog: 'Scriu codul pentru perioada autonomă și pentru teleop.', eng: 'Proiectează și construiesc robotul, de la șasiu la mecanisme.', cad: 'Modelează robotul în CAD și printează piesele.', pr: 'Fotografii, povești, activități în comunitate și relația cu sponsorii.', drive: 'Conduc robotul pe teren în timpul meciurilor.', alumni: 'Mulțumim pentru sezoanele petrecute cu noi.' }, roles: { prog: 'Programare', eng: 'Inginerie', cad: 'CAD', pr: 'PR', drive: 'Driver', hwcad: 'Hardware și CAD', driveEng: 'Driver și inginerie', peer: 'Peer mentor' } },
-        awards: { title: 'Premiile noastre.', lead: 'Distincții FIRST Tech Challenge câștigate în România, Italia și Statele Unite.', featK: 'Cel mai important premiu', featEvent: 'Western Edge Premier Event, Long Beach, California, mai 2026', featText: 'Cel mai prestigios premiu FTC. Răsplătește echipa completă: robotul, outreach-ul și impactul în comunitate.', fTeams: 'echipe din toată lumea', fWins: 'meciuri de calificare câștigate', fDiv: 'Division', place1: 'Locul 1', place2: 'Locul 2', place3: 'Locul 3', finalists: 'Finaliști', twinExtra: '577 de puncte fără penalizări', events: { western: 'Western Edge Premier Event, Long Beach', rochamp: 'Campionatul Național, București', regional: 'Turneul regional, Piatra Neamț', twin: 'Bucharest Twin Cup', italy: 'Italy Championship', michiana: 'Michiana Premier Event, South Bend', iasi: 'Turneu regional, Iași', buc: 'Calificări, București' }, countries: { ro: 'România', us: 'SUA', it: 'Italia' }, source: 'Surse: FIRST (ftc-events.firstinspires.org), pagina echipei și Agerpres.' },
+        team: { title: 'Oamenii din spatele robotului.', lead: 'Elevi de la Hasdeu care proiectează, construiesc, programează și prezintă robotul, sezon după sezon.', photoAlt: 'Echipa Homosapiens cu steagul României și bannerul echipei, la Michiana', mentorK: 'Coordonare', mentorName: 'Prof. Amalia Voicu', mentorRole: 'Coordonatoarea echipei, profesoară de informatică', membersTitle: 'Echipa.', member: { sebastian: 'Inginerie, proiectare și asamblare', florentina: 'Media și PR', ioana: 'Membră a echipei' }, joinTitle: 'Vrei în echipă?', joinText: 'Scrie-ne și îți spunem cum te poți alătura.', joinCta: 'Scrie-ne', deptTitle: 'Departamente.', d1t: 'Inginerie', d1d: 'Proiectează și construiește robotul, de la șasiu la mecanisme.', d2t: 'Programare', d2d: 'Scrie codul pentru perioada autonomă și pentru teleop.', d3t: 'Proiectare 3D', d3d: 'Modelează și printează piesele robotului.', d4t: 'Media și PR', d4d: 'Fotografii, povești și relația cu sponsorii.', alumniTitle: 'Absolvenți 2026', alumniText: 'Mulțumim pentru sezoanele petrecute cu noi.', al: { bianca: 'Absolventă 2026', mihaela: 'Media și PR', adela: 'Proiectare 3D' } , soon: 'Poză în curând', filterAria: 'Filtrează după departament', alumna: 'Absolventă 2026', photoOf: 'Fotografie cu', countTpl: '{a} membri și {b} absolvenți', f: { all: 'Toți', prog: 'Programare', eng: 'Inginerie', cad: 'CAD', pr: 'PR', drive: 'Driveri', alumni: 'Absolvenți' }, fd: { all: 'Elevii care construiesc Homosapiens în sezonul BIOBUZZ, plus absolvenții noștri.', prog: 'Scriu codul pentru perioada autonomă și pentru teleop.', eng: 'Proiectează și construiesc robotul, de la șasiu la mecanisme.', cad: 'Modelează robotul în CAD și printează piesele.', pr: 'Fotografii, povești, activități în comunitate și relația cu sponsorii.', drive: 'Conduc robotul pe teren în timpul meciurilor.', alumni: 'Mulțumim pentru sezoanele petrecute cu noi.' }, roles: { prog: 'Programare', eng: 'Inginerie', cad: 'CAD', pr: 'PR', drive: 'Driver', hwcad: 'Hardware și CAD', driveEng: 'Driver și inginerie', peer: 'Peer mentor', member: 'Membru al echipei' }, classOf: 'Promoția {y}' },
+        awards: { title: 'Premiile noastre.', lead: 'Distincții FIRST Tech Challenge câștigate în România, Italia și Statele Unite.', featK: 'Cel mai important premiu', featEvent: 'Western Edge Premier Event, Long Beach, California, mai 2026', featText: 'Cel mai prestigios premiu FTC. Răsplătește echipa completă: robotul, outreach-ul și impactul în comunitate.', fTeams: 'echipe din toată lumea', fWins: 'meciuri de calificare câștigate', fDiv: 'Division', place1: 'Locul 1', place2: 'Locul 2', place3: 'Locul 3', finalists: 'Finaliști', twinExtra: '577 de puncte fără penalizări', events: { western: 'Western Edge Premier Event, Long Beach', rochamp: 'Campionatul Național, București', regional: 'Turneul regional, Piatra Neamț', twin: 'Bucharest Twin Cup', italy: 'Italy Championship', michiana: 'Michiana Premier Event, South Bend', iasi: 'Turneu regional, Iași', buc: 'Calificări, București' }, countries: { ro: 'România', us: 'SUA', it: 'Italia', de: 'Germania', fr: 'Franța', es: 'Spania', gb: 'Marea Britanie', gr: 'Grecia', hu: 'Ungaria', pl: 'Polonia', tr: 'Turcia', md: 'Republica Moldova', bg: 'Bulgaria', nl: 'Țările de Jos' }, emptySeason: 'Sezonul abia a început. Premiile din acest sezon vor apărea aici.', source: 'Surse: FIRST (ftc-events.firstinspires.org), pagina echipei și Agerpres.' },
         about: { title: 'De la Buzău, spre lume.', lead: 'Prima echipă de robotică din județul Buzău, pornită în 2018 la Colegiul Național „B. P. Hasdeu”.', p1: 'Din 2020 concurăm în FIRST Tech Challenge ca echipa #19053. Am ajuns la 35 de evenimente oficiale în România, Italia și Statele Unite, iar în sezonul DECODE am terminat pe locul 7 mondial la OPR total.', p2: 'Motto-ul nostru e „We keep evolving”. În fiecare sezon construim un robot nou, învățăm unii de la alții și ducem robotica mai departe, în școli și în comunitate.', alt1: 'Membrii echipei țin steagul României, la Michiana', alt2: 'Echipa lângă robot și bannerul Homosapiens', alt3: 'Membrii echipei la pit, cu robotul', fFounded: 'Anul în care a pornit echipa', fFtc: 'În FIRST Tech Challenge, ca #19053', fEvents: 'Evenimente oficiale', fCountries: 'Țări: România, Italia, SUA', outTitle: 'Dincolo de teren.', o1t: 'Tabere de vară gratuite', o1d: 'Robotică pentru copii din Buzău, cu roboții și mentorii echipei.', o2t: 'Școli din mediul rural și orfelinate', o2d: 'Ducem robotul și atelierele acolo unde tehnologia ajunge rar.', o3t: 'Hop into Spring, 2023', o3d: 'Simulare FTC găzduită la Buzău, cu 9 echipe din 7 orașe.', o4t: 'Success under pressure, 2026', o4d: 'Conferință organizată de echipă pe 27 septembrie, la Hotel Pietroasa.' },
-        sponsors: { title: 'Mulțumim celor care cred în noi.', quote: '„Susținerea voastră nu înseamnă doar sponsorizare; înseamnă investiție în educație, inovație și viitor.”', quoteBy: 'Homosapiens, mesajul pentru sponsorii sezonului DECODE', alt1: 'Echipa și logo-urile sponsorilor, prima parte', alt2: 'Echipa Homosapiens cu mesajul Huge thanks to our sponsors', alt3: 'Echipa și logo-urile sponsorilor, a doua parte', listTitle: 'Sponsorii sezonului DECODE.', partnersTitle: 'Ne-au mai susținut', benTitle: 'Ce primești ca sponsor.', benText: 'Completezi formularul, iar noi revenim cu o propunere de parteneriat.', cta: 'Devino sponsor', b1: 'Logo pe robot și pe echipamentul echipei', b2: 'Mențiuni pe site și pe rețelele noastre', b3: 'Raport de activitate la finalul sezonului', countTpl: '{n} companii' },
+        sponsors: { title: 'Mulțumim celor care cred în noi.', quote: '„Susținerea voastră nu înseamnă doar sponsorizare; înseamnă investiție în educație, inovație și viitor.”', quoteBy: 'Homosapiens, mesajul pentru sponsorii sezonului DECODE', alt1: 'Echipa și logo-urile sponsorilor, prima parte', alt2: 'Echipa Homosapiens cu mesajul Huge thanks to our sponsors', alt3: 'Echipa și logo-urile sponsorilor, a doua parte', listTitle: 'Sponsorii noștri.', partnersTitle: 'Ne-au mai susținut', benTitle: 'Ce primești ca sponsor.', benText: 'Completezi formularul, iar noi revenim cu o propunere de parteneriat.', cta: 'Devino sponsor', b1: 'Logo pe robot și pe echipamentul echipei', b2: 'Mențiuni pe site și pe rețelele noastre', b3: 'Raport de activitate la finalul sezonului', countTpl: '{n} companii' },
         contact: { title: 'Hai să vorbim.', lead: 'Pentru sponsorizări, colaborări sau presă, scrie-ne aici sau direct pe email.', emailK: 'Email', addrK: 'Adresă', addrV: 'Colegiul Național „B. P. Hasdeu”, Bulevardul Gării 1, Buzău', topicsLabel: 'Despre ce ne scrii?', topics: { sponsor: 'Sponsorizare', collab: 'Colaborare', press: 'Presă', other: 'Altceva' }, spTitle: 'Detalii despre firmă', company: 'Numele firmei', companyPh: 'Numele companiei', cui: 'CUI', cuiPh: 'RO12345678', role: 'Funcția ta', rolePh: 'De exemplu, director de marketing', phone: 'Telefon', phonePh: '07xx xxx xxx', optional: '(opțional)', supportLabel: 'Ce fel de sprijin?', support: { money: 'Financiar', goods: 'Produse sau materiale', services: 'Servicii', mentoring: 'Mentorat sau vizite' }, amountLabel: 'Suma estimativă', amounts: { a1: 'Sub 1.000 lei', a2: '1.000-5.000 lei', a3: '5.000-10.000 lei', a4: 'Peste 10.000 lei' }, name: 'Nume', namePh: 'Numele tău', emailPh: 'nume@firma.ro', subject: 'Subiect', subjectPh: 'Despre ce e vorba', msg: 'Mesaj', msgPh: 'Scrie mesajul aici', send: 'Trimite pe email', copyMsg: 'Copiază mesajul', err: 'Completează numele, un email valid și mesajul.', errCompany: 'Completează numele firmei, numele tău, un email valid și mesajul.', ok: 'Se deschide aplicația ta de email cu mesajul completat. Dacă nu se deschide, folosește Copiază mesajul și trimite-l la thehomosapiens123@gmail.com.', copied: 'Mesajul e copiat. Lipește-l într-un email către thehomosapiens123@gmail.com.', copyFail: 'Nu am putut copia automat. Selectează textul de mai jos și copiază-l.', defaultSubject: 'Mesaj de pe site', b: { topic: 'Tip', name: 'Nume', email: 'Email', company: 'Firma', cui: 'CUI', role: 'Funcție', phone: 'Telefon', support: 'Sprijin', amount: 'Sumă estimativă', msg: 'Mesaj' } },
-        footer: { tagline: 'Echipa FIRST Tech Challenge #19053 a Colegiului Național „B. P. Hasdeu” din Buzău.', cta: 'Scrie-ne', pagesH: 'Pagini', socialH: 'Urmărește-ne', rights: '© 2026 Homosapiens, FTC #19053, RO109', data: 'Date: FIRST, FTCScout, Agerpres', top: 'Sus' }
+        footer: { tagline: 'Echipa FIRST Tech Challenge #19053 a Colegiului Național „B. P. Hasdeu” din Buzău.', cta: 'Scrie-ne', pagesH: 'Pagini', socialH: 'Urmărește-ne', rights: '© 2026 Homosapiens, FTC #19053, RO109', data: 'Date: FIRST, FTCScout, Agerpres', top: 'Sus', organizer: 'Organizator', founding: 'Partener fondator', partnersAria: 'FIRST Tech Challenge România, sezonul 11, 2026-2027' }
       },
       en: {
         ui: { home: 'Homosapiens home page', pages: 'Pages', language: 'Choose language', theme: 'Switch between light and dark theme', close: 'Close menu', prev: 'Previous photo', next: 'Next photo', copy: 'Copy', copied: 'Copied' },
@@ -1168,12 +1270,12 @@ class Component extends DCLogic {
           { title: 'With the Romanian flag in Indiana', text: 'Michiana Premier Event, South Bend, 2025.', alt: 'Team members holding the Romanian flag' },
           { title: 'Our Into The Deep robot', text: 'The 2024-25 season, with the team banner.', alt: 'Team members next to the robot and the Homosapiens banner' }
         ],
-        team: { title: 'The people behind the robot.', lead: 'Hasdeu students who design, build, program and present the robot, season after season.', photoAlt: 'The Homosapiens team with the Romanian flag and the team banner at Michiana', mentorK: 'Mentor', mentorName: 'Amalia Voicu', mentorRole: 'Team coordinator and computer science teacher', membersTitle: 'The team.', member: { sebastian: 'Engineering, design and assembly', florentina: 'Media and PR', ioana: 'Team member' }, joinTitle: 'Want to join?', joinText: 'Write to us and we will tell you how.', joinCta: 'Write to us', deptTitle: 'Departments.', d1t: 'Engineering', d1d: 'Designs and builds the robot, from the chassis to the mechanisms.', d2t: 'Programming', d2d: 'Writes the code for the autonomous period and teleop.', d3t: '3D design', d3d: 'Models and prints the robot parts.', d4t: 'Media and PR', d4d: 'Photos, stories and our relationship with sponsors.', alumniTitle: 'Class of 2026', alumniText: 'Thank you for the seasons you spent with us.', al: { bianca: 'Graduate, 2026', mihaela: 'Media and PR', adela: '3D design' } , soon: 'Photo coming soon', filterAria: 'Filter by department', alumna: 'Class of 2026', photoOf: 'Photo of', countTpl: '{a} members and {b} alumni', f: { all: 'All', prog: 'Programming', eng: 'Engineering', cad: 'CAD', pr: 'PR', drive: 'Drivers', alumni: 'Alumni' }, fd: { all: 'The students building Homosapiens in the DECODE season, plus our class of 2026.', prog: 'They write the code for the autonomous period and teleop.', eng: 'They design and build the robot, from the chassis to the mechanisms.', cad: 'They model the robot in CAD and print its parts.', pr: 'Photos, stories, community work and our relationship with sponsors.', drive: 'They drive the robot on the field during matches.', alumni: 'Thank you for the seasons you spent with us.' }, roles: { prog: 'Programming', eng: 'Engineering', cad: 'CAD', pr: 'PR', drive: 'Driver', hwcad: 'Hardware and CAD', driveEng: 'Driver and engineering', peer: 'Peer mentor' } },
-        awards: { title: 'Our awards.', lead: 'FIRST Tech Challenge awards won in Romania, Italy and the United States.', featK: 'Our biggest award', featEvent: 'Western Edge Premier Event, Long Beach, California, May 2026', featText: "FTC's most prestigious award. It recognises the whole team: the robot, the outreach and the impact on the community.", fTeams: 'teams from around the world', fWins: 'qualification matches won', fDiv: 'Division', place1: '1st place', place2: '2nd place', place3: '3rd place', finalists: 'Finalists', twinExtra: '577 points without penalties', events: { western: 'Western Edge Premier Event, Long Beach', rochamp: 'Romania Championship, Bucharest', regional: 'Regional tournament, Piatra Neamț', twin: 'Bucharest Twin Cup', italy: 'Italy Championship', michiana: 'Michiana Premier Event, South Bend', iasi: 'Regional tournament, Iași', buc: 'Qualifier, Bucharest' }, countries: { ro: 'Romania', us: 'USA', it: 'Italy' }, source: 'Sources: FIRST (ftc-events.firstinspires.org), the team page and Agerpres.' },
+        team: { title: 'The people behind the robot.', lead: 'Hasdeu students who design, build, program and present the robot, season after season.', photoAlt: 'The Homosapiens team with the Romanian flag and the team banner at Michiana', mentorK: 'Mentor', mentorName: 'Amalia Voicu', mentorRole: 'Team coordinator and computer science teacher', membersTitle: 'The team.', member: { sebastian: 'Engineering, design and assembly', florentina: 'Media and PR', ioana: 'Team member' }, joinTitle: 'Want to join?', joinText: 'Write to us and we will tell you how.', joinCta: 'Write to us', deptTitle: 'Departments.', d1t: 'Engineering', d1d: 'Designs and builds the robot, from the chassis to the mechanisms.', d2t: 'Programming', d2d: 'Writes the code for the autonomous period and teleop.', d3t: '3D design', d3d: 'Models and prints the robot parts.', d4t: 'Media and PR', d4d: 'Photos, stories and our relationship with sponsors.', alumniTitle: 'Class of 2026', alumniText: 'Thank you for the seasons you spent with us.', al: { bianca: 'Graduate, 2026', mihaela: 'Media and PR', adela: '3D design' } , soon: 'Photo coming soon', filterAria: 'Filter by department', alumna: 'Class of 2026', photoOf: 'Photo of', countTpl: '{a} members and {b} alumni', f: { all: 'All', prog: 'Programming', eng: 'Engineering', cad: 'CAD', pr: 'PR', drive: 'Drivers', alumni: 'Alumni' }, fd: { all: 'The students building Homosapiens in the BIOBUZZ season, plus our alumni.', prog: 'They write the code for the autonomous period and teleop.', eng: 'They design and build the robot, from the chassis to the mechanisms.', cad: 'They model the robot in CAD and print its parts.', pr: 'Photos, stories, community work and our relationship with sponsors.', drive: 'They drive the robot on the field during matches.', alumni: 'Thank you for the seasons you spent with us.' }, roles: { prog: 'Programming', eng: 'Engineering', cad: 'CAD', pr: 'PR', drive: 'Driver', hwcad: 'Hardware and CAD', driveEng: 'Driver and engineering', peer: 'Peer mentor', member: 'Team member' }, classOf: 'Class of {y}' },
+        awards: { title: 'Our awards.', lead: 'FIRST Tech Challenge awards won in Romania, Italy and the United States.', featK: 'Our biggest award', featEvent: 'Western Edge Premier Event, Long Beach, California, May 2026', featText: "FTC's most prestigious award. It recognises the whole team: the robot, the outreach and the impact on the community.", fTeams: 'teams from around the world', fWins: 'qualification matches won', fDiv: 'Division', place1: '1st place', place2: '2nd place', place3: '3rd place', finalists: 'Finalists', twinExtra: '577 points without penalties', events: { western: 'Western Edge Premier Event, Long Beach', rochamp: 'Romania Championship, Bucharest', regional: 'Regional tournament, Piatra Neamț', twin: 'Bucharest Twin Cup', italy: 'Italy Championship', michiana: 'Michiana Premier Event, South Bend', iasi: 'Regional tournament, Iași', buc: 'Qualifier, Bucharest' }, countries: { ro: 'Romania', us: 'USA', it: 'Italy', de: 'Germany', fr: 'France', es: 'Spain', gb: 'United Kingdom', gr: 'Greece', hu: 'Hungary', pl: 'Poland', tr: 'Türkiye', md: 'Moldova', bg: 'Bulgaria', nl: 'Netherlands' }, emptySeason: "The season has just started. This season's awards will appear here.", source: 'Sources: FIRST (ftc-events.firstinspires.org), the team page and Agerpres.' },
         about: { title: 'From Buzău, to the world.', lead: 'The first robotics team in Buzău County, started in 2018 at Bogdan Petriceicu Hasdeu National College.', p1: 'Since 2020 we have competed in FIRST Tech Challenge as team #19053. We have been to 35 official events in Romania, Italy and the United States, and finished the DECODE season 7th worldwide in total OPR.', p2: 'Our motto is “We keep evolving”. Every season we build a new robot, learn from each other and take robotics further, into schools and our community.', alt1: 'Team members holding the Romanian flag at Michiana', alt2: 'The team next to the robot and the Homosapiens banner', alt3: 'Team members in the pit with the robot', fFounded: 'The year the team started', fFtc: 'In FIRST Tech Challenge as #19053', fEvents: 'Official events', fCountries: 'Countries: Romania, Italy, USA', outTitle: 'Beyond the field.', o1t: 'Free summer camps', o1d: 'Robotics for children in Buzău, with the team robots and mentors.', o2t: 'Rural schools and orphanages', o2d: 'We bring the robot and workshops where technology rarely reaches.', o3t: 'Hop into Spring, 2023', o3d: 'An FTC scrimmage hosted in Buzău, with 9 teams from 7 cities.', o4t: 'Success under pressure, 2026', o4d: 'A conference the team organised on 27 September at Hotel Pietroasa.' },
-        sponsors: { title: 'Thank you for believing in us.', quote: '“Your support is not just sponsorship; it is an investment in education, innovation and the future.”', quoteBy: 'Homosapiens, our message to the DECODE season sponsors', alt1: 'The team and our sponsor logos, part one', alt2: 'The Homosapiens team with the message Huge thanks to our sponsors', alt3: 'The team and our sponsor logos, part two', listTitle: 'DECODE season sponsors.', partnersTitle: 'Also supported by', benTitle: 'What you get as a sponsor.', benText: 'Fill in the form and we will come back with a partnership proposal.', cta: 'Become a sponsor', b1: 'Your logo on the robot and team gear', b2: 'Mentions on our website and social media', b3: 'An activity report at the end of the season', countTpl: '{n} companies' },
+        sponsors: { title: 'Thank you for believing in us.', quote: '“Your support is not just sponsorship; it is an investment in education, innovation and the future.”', quoteBy: 'Homosapiens, our message to the DECODE season sponsors', alt1: 'The team and our sponsor logos, part one', alt2: 'The Homosapiens team with the message Huge thanks to our sponsors', alt3: 'The team and our sponsor logos, part two', listTitle: 'Our sponsors.', partnersTitle: 'Also supported by', benTitle: 'What you get as a sponsor.', benText: 'Fill in the form and we will come back with a partnership proposal.', cta: 'Become a sponsor', b1: 'Your logo on the robot and team gear', b2: 'Mentions on our website and social media', b3: 'An activity report at the end of the season', countTpl: '{n} companies' },
         contact: { title: "Let's talk.", lead: 'For sponsorships, partnerships or press, write to us here or directly by email.', emailK: 'Email', addrK: 'Address', addrV: 'Bogdan Petriceicu Hasdeu National College, 1 Gării Boulevard, Buzău', topicsLabel: 'What is it about?', topics: { sponsor: 'Sponsorship', collab: 'Partnership', press: 'Press', other: 'Something else' }, spTitle: 'Company details', company: 'Company name', companyPh: 'Your company', cui: 'Tax ID (CUI)', cuiPh: 'RO12345678', role: 'Your role', rolePh: 'For example, marketing director', phone: 'Phone', phonePh: '+40 7xx xxx xxx', optional: '(optional)', supportLabel: 'What kind of support?', support: { money: 'Financial', goods: 'Products or materials', services: 'Services', mentoring: 'Mentoring or visits' }, amountLabel: 'Estimated amount', amounts: { a1: 'Under 1,000 lei', a2: '1,000-5,000 lei', a3: '5,000-10,000 lei', a4: 'Over 10,000 lei' }, name: 'Name', namePh: 'Your name', emailPh: 'name@company.com', subject: 'Subject', subjectPh: "What it's about", msg: 'Message', msgPh: 'Write your message here', send: 'Send by email', copyMsg: 'Copy message', err: 'Add your name, a valid email and a message.', errCompany: 'Add the company name, your name, a valid email and a message.', ok: 'Your email app opens with the message filled in. If it does not open, use Copy message and send it to thehomosapiens123@gmail.com.', copied: 'Message copied. Paste it into an email to thehomosapiens123@gmail.com.', copyFail: 'Automatic copy did not work. Select the text below and copy it.', defaultSubject: 'Message from the website', b: { topic: 'Type', name: 'Name', email: 'Email', company: 'Company', cui: 'Tax ID', role: 'Role', phone: 'Phone', support: 'Support', amount: 'Estimated amount', msg: 'Message' } },
-        footer: { tagline: 'FIRST Tech Challenge team #19053 of Bogdan Petriceicu Hasdeu National College, Buzău.', cta: 'Write to us', pagesH: 'Pages', socialH: 'Follow us', rights: '© 2026 Homosapiens, FTC #19053, RO109', data: 'Data: FIRST, FTCScout, Agerpres', top: 'Back to top' }
+        footer: { tagline: 'FIRST Tech Challenge team #19053 of Bogdan Petriceicu Hasdeu National College, Buzău.', cta: 'Write to us', pagesH: 'Pages', socialH: 'Follow us', rights: '© 2026 Homosapiens, FTC #19053, RO109', data: 'Data: FIRST, FTCScout, Agerpres', top: 'Back to top', organizer: 'Organizer', founding: 'Founding partner', partnersAria: 'FIRST Tech Challenge Romania, season 11, 2026-2027' }
       },
       fr: {
         ui: { home: "Homosapiens, page d'accueil", pages: 'Pages', language: 'Choisir la langue', theme: 'Passer du thème clair au thème sombre', close: 'Fermer le menu', prev: 'Photo précédente', next: 'Photo suivante', copy: 'Copier', copied: 'Copié' },
@@ -1188,12 +1290,12 @@ class Component extends DCLogic {
           { title: 'Avec le drapeau roumain, en Indiana', text: 'Michiana Premier Event, South Bend, 2025.', alt: "Membres de l'équipe tenant le drapeau roumain" },
           { title: 'Notre robot Into The Deep', text: "La saison 2024-25, avec la bannière de l'équipe.", alt: "Membres de l'équipe à côté du robot et de la bannière Homosapiens" }
         ],
-        team: { title: 'Les personnes derrière le robot.', lead: 'Des élèves du lycée Hasdeu qui conçoivent, construisent, programment et présentent le robot, saison après saison.', photoAlt: "L'équipe Homosapiens avec le drapeau roumain et la bannière, à Michiana", mentorK: 'Encadrement', mentorName: 'Amalia Voicu', mentorRole: "Coordinatrice de l'équipe, professeure d'informatique", membersTitle: "L'équipe.", member: { sebastian: 'Ingénierie, conception et assemblage', florentina: 'Médias et relations publiques', ioana: "Membre de l'équipe" }, joinTitle: 'Nous rejoindre ?', joinText: 'Écrivez-nous et nous vous expliquerons comment.', joinCta: 'Nous écrire', deptTitle: 'Départements.', d1t: 'Ingénierie', d1d: 'Conçoit et construit le robot, du châssis aux mécanismes.', d2t: 'Programmation', d2d: 'Écrit le code de la période autonome et du téléopéré.', d3t: 'Conception 3D', d3d: 'Modélise et imprime les pièces du robot.', d4t: 'Médias et relations publiques', d4d: 'Photos, récits et relations avec les sponsors.', alumniTitle: 'Promotion 2026', alumniText: 'Merci pour les saisons passées avec nous.', al: { bianca: 'Diplômée 2026', mihaela: 'Médias et relations publiques', adela: 'Conception 3D' } , soon: 'Photo bientôt', filterAria: 'Filtrer par département', alumna: 'Diplômée 2026', photoOf: 'Photo de', countTpl: '{a} membres et {b} diplômées', f: { all: 'Tous', prog: 'Programmation', eng: 'Ingénierie', cad: 'CAO', pr: 'RP', drive: 'Pilotes', alumni: 'Anciens' }, fd: { all: 'Les élèves qui construisent Homosapiens pendant la saison DECODE, et la promotion 2026.', prog: 'Ils écrivent le code de la période autonome et du téléopéré.', eng: 'Ils conçoivent et construisent le robot, du châssis aux mécanismes.', cad: 'Ils modélisent le robot en CAO et impriment ses pièces.', pr: 'Photos, récits, actions locales et relations avec les sponsors.', drive: 'Ils pilotent le robot sur le terrain pendant les matchs.', alumni: 'Merci pour les saisons passées avec nous.' }, roles: { prog: 'Programmation', eng: 'Ingénierie', cad: 'CAO', pr: 'Relations publiques', drive: 'Pilote', hwcad: 'Matériel et CAO', driveEng: 'Pilote et ingénierie', peer: 'Mentore pair' } },
-        awards: { title: 'Nos prix.', lead: 'Prix FIRST Tech Challenge remportés en Roumanie, en Italie et aux États-Unis.', featK: 'Notre plus grand prix', featEvent: 'Western Edge Premier Event, Long Beach, Californie, mai 2026', featText: "Le prix le plus prestigieux de la FTC. Il récompense toute l'équipe : le robot, les actions de sensibilisation et l'impact sur la communauté.", fTeams: 'équipes du monde entier', fWins: 'matchs de qualification gagnés', fDiv: 'Division', place1: '1re place', place2: '2e place', place3: '3e place', finalists: 'Finalistes', twinExtra: '577 points sans pénalités', events: { western: 'Western Edge Premier Event, Long Beach', rochamp: 'Championnat de Roumanie, Bucarest', regional: 'Tournoi régional, Piatra Neamț', twin: 'Bucharest Twin Cup', italy: 'Italy Championship', michiana: 'Michiana Premier Event, South Bend', iasi: 'Tournoi régional, Iași', buc: 'Qualifications, Bucarest' }, countries: { ro: 'Roumanie', us: 'États-Unis', it: 'Italie' }, source: "Sources : FIRST (ftc-events.firstinspires.org), la page de l'équipe et Agerpres." },
+        team: { title: 'Les personnes derrière le robot.', lead: 'Des élèves du lycée Hasdeu qui conçoivent, construisent, programment et présentent le robot, saison après saison.', photoAlt: "L'équipe Homosapiens avec le drapeau roumain et la bannière, à Michiana", mentorK: 'Encadrement', mentorName: 'Amalia Voicu', mentorRole: "Coordinatrice de l'équipe, professeure d'informatique", membersTitle: "L'équipe.", member: { sebastian: 'Ingénierie, conception et assemblage', florentina: 'Médias et relations publiques', ioana: "Membre de l'équipe" }, joinTitle: 'Nous rejoindre ?', joinText: 'Écrivez-nous et nous vous expliquerons comment.', joinCta: 'Nous écrire', deptTitle: 'Départements.', d1t: 'Ingénierie', d1d: 'Conçoit et construit le robot, du châssis aux mécanismes.', d2t: 'Programmation', d2d: 'Écrit le code de la période autonome et du téléopéré.', d3t: 'Conception 3D', d3d: 'Modélise et imprime les pièces du robot.', d4t: 'Médias et relations publiques', d4d: 'Photos, récits et relations avec les sponsors.', alumniTitle: 'Promotion 2026', alumniText: 'Merci pour les saisons passées avec nous.', al: { bianca: 'Diplômée 2026', mihaela: 'Médias et relations publiques', adela: 'Conception 3D' } , soon: 'Photo bientôt', filterAria: 'Filtrer par département', alumna: 'Diplômée 2026', photoOf: 'Photo de', countTpl: '{a} membres et {b} anciens', f: { all: 'Tous', prog: 'Programmation', eng: 'Ingénierie', cad: 'CAO', pr: 'RP', drive: 'Pilotes', alumni: 'Anciens' }, fd: { all: 'Les élèves qui construisent Homosapiens pendant la saison BIOBUZZ, et nos anciens.', prog: 'Ils écrivent le code de la période autonome et du téléopéré.', eng: 'Ils conçoivent et construisent le robot, du châssis aux mécanismes.', cad: 'Ils modélisent le robot en CAO et impriment ses pièces.', pr: 'Photos, récits, actions locales et relations avec les sponsors.', drive: 'Ils pilotent le robot sur le terrain pendant les matchs.', alumni: 'Merci pour les saisons passées avec nous.' }, roles: { prog: 'Programmation', eng: 'Ingénierie', cad: 'CAO', pr: 'Relations publiques', drive: 'Pilote', hwcad: 'Matériel et CAO', driveEng: 'Pilote et ingénierie', peer: 'Mentore pair', member: "Membre de l'équipe" }, classOf: 'Promotion {y}' },
+        awards: { title: 'Nos prix.', lead: 'Prix FIRST Tech Challenge remportés en Roumanie, en Italie et aux États-Unis.', featK: 'Notre plus grand prix', featEvent: 'Western Edge Premier Event, Long Beach, Californie, mai 2026', featText: "Le prix le plus prestigieux de la FTC. Il récompense toute l'équipe : le robot, les actions de sensibilisation et l'impact sur la communauté.", fTeams: 'équipes du monde entier', fWins: 'matchs de qualification gagnés', fDiv: 'Division', place1: '1re place', place2: '2e place', place3: '3e place', finalists: 'Finalistes', twinExtra: '577 points sans pénalités', events: { western: 'Western Edge Premier Event, Long Beach', rochamp: 'Championnat de Roumanie, Bucarest', regional: 'Tournoi régional, Piatra Neamț', twin: 'Bucharest Twin Cup', italy: 'Italy Championship', michiana: 'Michiana Premier Event, South Bend', iasi: 'Tournoi régional, Iași', buc: 'Qualifications, Bucarest' }, countries: { ro: 'Roumanie', us: 'États-Unis', it: 'Italie', de: 'Allemagne', fr: 'France', es: 'Espagne', gb: 'Royaume-Uni', gr: 'Grèce', hu: 'Hongrie', pl: 'Pologne', tr: 'Turquie', md: 'Moldavie', bg: 'Bulgarie', nl: 'Pays-Bas' }, emptySeason: 'La saison vient de commencer. Les prix de cette saison apparaîtront ici.', source: "Sources : FIRST (ftc-events.firstinspires.org), la page de l'équipe et Agerpres." },
         about: { title: 'De Buzău, vers le monde.', lead: 'La première équipe de robotique du département de Buzău, créée en 2018 au Collège national Bogdan Petriceicu Hasdeu.', p1: "Depuis 2020, nous participons à la FIRST Tech Challenge sous le numéro #19053. Nous avons pris part à 35 événements officiels en Roumanie, en Italie et aux États-Unis, et terminé la saison DECODE au 7e rang mondial en OPR total.", p2: "Notre devise est « We keep evolving ». Chaque saison, nous construisons un nouveau robot, apprenons les uns des autres et portons la robotique plus loin, dans les écoles et la communauté.", alt1: "Membres de l'équipe tenant le drapeau roumain à Michiana", alt2: "L'équipe à côté du robot et de la bannière Homosapiens", alt3: "Membres de l'équipe au stand avec le robot", fFounded: "L'année de création de l'équipe", fFtc: 'Dans la FIRST Tech Challenge, #19053', fEvents: 'Événements officiels', fCountries: 'Pays : Roumanie, Italie, États-Unis', outTitle: 'Au-delà du terrain.', o1t: "Camps d'été gratuits", o1d: "De la robotique pour les enfants de Buzău, avec les robots et les mentors de l'équipe.", o2t: 'Écoles rurales et orphelinats', o2d: 'Nous apportons le robot et des ateliers là où la technologie arrive rarement.', o3t: 'Hop into Spring, 2023', o3d: 'Une simulation FTC accueillie à Buzău, avec 9 équipes de 7 villes.', o4t: 'Success under pressure, 2026', o4d: "Une conférence organisée par l'équipe le 27 septembre, à l'hôtel Pietroasa." },
-        sponsors: { title: 'Merci de croire en nous.', quote: '« Votre soutien n’est pas seulement du sponsoring ; c’est un investissement dans l’éducation, l’innovation et l’avenir. »', quoteBy: 'Homosapiens, notre message aux sponsors de la saison DECODE', alt1: "L'équipe et les logos de nos sponsors, première partie", alt2: "L'équipe Homosapiens avec le message Huge thanks to our sponsors", alt3: "L'équipe et les logos de nos sponsors, deuxième partie", listTitle: 'Les sponsors de la saison DECODE.', partnersTitle: 'Ils nous ont aussi soutenus', benTitle: 'Ce que vous recevez.', benText: 'Remplissez le formulaire et nous reviendrons vers vous avec une proposition de partenariat.', cta: 'Devenir sponsor', b1: "Votre logo sur le robot et l'équipement de l'équipe", b2: 'Des mentions sur notre site et nos réseaux sociaux', b3: "Un rapport d'activité à la fin de la saison", countTpl: '{n} entreprises' },
+        sponsors: { title: 'Merci de croire en nous.', quote: '« Votre soutien n’est pas seulement du sponsoring ; c’est un investissement dans l’éducation, l’innovation et l’avenir. »', quoteBy: 'Homosapiens, notre message aux sponsors de la saison DECODE', alt1: "L'équipe et les logos de nos sponsors, première partie", alt2: "L'équipe Homosapiens avec le message Huge thanks to our sponsors", alt3: "L'équipe et les logos de nos sponsors, deuxième partie", listTitle: 'Nos sponsors.', partnersTitle: 'Ils nous ont aussi soutenus', benTitle: 'Ce que vous recevez.', benText: 'Remplissez le formulaire et nous reviendrons vers vous avec une proposition de partenariat.', cta: 'Devenir sponsor', b1: "Votre logo sur le robot et l'équipement de l'équipe", b2: 'Des mentions sur notre site et nos réseaux sociaux', b3: "Un rapport d'activité à la fin de la saison", countTpl: '{n} entreprises' },
         contact: { title: 'Parlons-en.', lead: 'Pour un sponsoring, un partenariat ou la presse, écrivez-nous ici ou directement par e-mail.', emailK: 'E-mail', addrK: 'Adresse', addrV: 'Collège national Bogdan Petriceicu Hasdeu, 1 boulevard Gării, Buzău', topicsLabel: 'À quel sujet ?', topics: { sponsor: 'Sponsoring', collab: 'Partenariat', press: 'Presse', other: 'Autre' }, spTitle: "Détails sur l'entreprise", company: "Nom de l'entreprise", companyPh: 'Votre entreprise', cui: 'Numéro fiscal (CUI)', cuiPh: 'RO12345678', role: 'Votre fonction', rolePh: 'Par exemple, directeur marketing', phone: 'Téléphone', phonePh: '+40 7xx xxx xxx', optional: '(facultatif)', supportLabel: 'Quel type de soutien ?', support: { money: 'Financier', goods: 'Produits ou matériel', services: 'Services', mentoring: 'Mentorat ou visites' }, amountLabel: 'Montant estimé', amounts: { a1: 'Moins de 1 000 lei', a2: '1 000-5 000 lei', a3: '5 000-10 000 lei', a4: 'Plus de 10 000 lei' }, name: 'Nom', namePh: 'Votre nom', emailPh: 'nom@entreprise.fr', subject: 'Sujet', subjectPh: "De quoi s'agit-il", msg: 'Message', msgPh: 'Écrivez votre message ici', send: 'Envoyer par e-mail', copyMsg: 'Copier le message', err: 'Indiquez votre nom, un e-mail valide et un message.', errCompany: "Indiquez le nom de l'entreprise, votre nom, un e-mail valide et un message.", ok: "Votre application e-mail s'ouvre avec le message rempli. Si elle ne s'ouvre pas, utilisez Copier le message et envoyez-le à thehomosapiens123@gmail.com.", copied: 'Message copié. Collez-le dans un e-mail à thehomosapiens123@gmail.com.', copyFail: "La copie automatique n'a pas fonctionné. Sélectionnez le texte ci-dessous et copiez-le.", defaultSubject: 'Message depuis le site', b: { topic: 'Type', name: 'Nom', email: 'E-mail', company: 'Entreprise', cui: 'CUI', role: 'Fonction', phone: 'Téléphone', support: 'Soutien', amount: 'Montant estimé', msg: 'Message' } },
-        footer: { tagline: "L'équipe FIRST Tech Challenge #19053 du Collège national Bogdan Petriceicu Hasdeu, Buzău.", cta: 'Nous écrire', pagesH: 'Pages', socialH: 'Suivez-nous', rights: '© 2026 Homosapiens, FTC #19053, RO109', data: 'Données : FIRST, FTCScout, Agerpres', top: 'Haut de page' }
+        footer: { tagline: "L'équipe FIRST Tech Challenge #19053 du Collège national Bogdan Petriceicu Hasdeu, Buzău.", cta: 'Nous écrire', pagesH: 'Pages', socialH: 'Suivez-nous', rights: '© 2026 Homosapiens, FTC #19053, RO109', data: 'Données : FIRST, FTCScout, Agerpres', top: 'Haut de page', organizer: 'Organisateur', founding: 'Partenaire fondateur', partnersAria: 'FIRST Tech Challenge Roumanie, saison 11, 2026-2027' }
       },
       zh: {
         ui: { home: 'Homosapiens 首页', pages: '页面', language: '选择语言', theme: '切换浅色或深色主题', close: '关闭菜单', prev: '上一张照片', next: '下一张照片', copy: '复制', copied: '已复制' },
@@ -1208,12 +1310,12 @@ class Component extends DCLogic {
           { title: '在印第安纳州举起国旗', text: 'Michiana Premier Event，南本德，2025 年。', alt: '队员们手持罗马尼亚国旗' },
           { title: 'Into The Deep 赛季的机器人', text: '2024-25 赛季，与战队横幅合影。', alt: '队员们在机器人和 Homosapiens 横幅旁' }
         ],
-        team: { title: '机器人背后的人。', lead: '来自 Hasdeu 学院的学生们，一个赛季又一个赛季地设计、制造、编程并展示机器人。', photoAlt: 'Homosapiens 战队在 Michiana 手持罗马尼亚国旗和战队横幅', mentorK: '指导', mentorName: 'Amalia Voicu 老师', mentorRole: '战队负责人，信息技术教师', membersTitle: '团队。', member: { sebastian: '工程：设计与组装', florentina: '媒体与公关', ioana: '战队成员' }, joinTitle: '想加入我们吗？', joinText: '给我们写信，我们会告诉你如何加入。', joinCta: '联系我们', deptTitle: '部门。', d1t: '工程', d1d: '从底盘到机构，设计并制造机器人。', d2t: '编程', d2d: '为自动阶段和手动阶段编写代码。', d3t: '3D 设计', d3d: '建模并打印机器人零件。', d4t: '媒体与公关', d4d: '照片、故事以及与赞助商的联系。', alumniTitle: '2026 届毕业生', alumniText: '感谢你们与我们共度的赛季。', al: { bianca: '2026 届毕业生', mihaela: '媒体与公关', adela: '3D 设计' } , soon: '照片即将上传', filterAria: '按部门筛选', alumna: '2026 届毕业生', photoOf: '', countTpl: '{a} 名成员，{b} 名毕业生', f: { all: '全部', prog: '编程', eng: '工程', cad: 'CAD', pr: '公关', drive: '操作手', alumni: '毕业生' }, fd: { all: 'DECODE 赛季建设 Homosapiens 的学生们，以及 2026 届毕业生。', prog: '为自动阶段和手动阶段编写代码。', eng: '从底盘到机构，设计并制造机器人。', cad: '用 CAD 建模并打印机器人零件。', pr: '照片、故事、社区活动以及与赞助商的联系。', drive: '在比赛中操控机器人。', alumni: '感谢你们与我们共度的赛季。' }, roles: { prog: '编程', eng: '工程', cad: 'CAD', pr: '公关', drive: '操作手', hwcad: '硬件与 CAD', driveEng: '操作手与工程', peer: '朋辈导师' } },
-        awards: { title: '我们的荣誉。', lead: '在罗马尼亚、意大利和美国获得的 FIRST Tech Challenge 奖项。', featK: '最重要的荣誉', featEvent: 'Western Edge Premier Event，加州长滩，2026 年 5 月', featText: 'FTC 最具声望的奖项，表彰整个团队：机器人、科普推广以及对社区的影响。', fTeams: '支来自世界各地的战队', fWins: '场资格赛胜利', fDiv: 'Division', place1: '第一名', place2: '第二名', place3: '第三名', finalists: '决赛入围', twinExtra: '577 分（不含罚分）', events: { western: 'Western Edge Premier Event，长滩', rochamp: '罗马尼亚全国锦标赛，布加勒斯特', regional: '地区赛，皮亚特拉尼亚姆茨', twin: 'Bucharest Twin Cup', italy: '意大利锦标赛', michiana: 'Michiana Premier Event，南本德', iasi: '地区赛，雅西', buc: '资格赛，布加勒斯特' }, countries: { ro: '罗马尼亚', us: '美国', it: '意大利' }, source: '来源：FIRST（ftc-events.firstinspires.org）、战队主页与 Agerpres。' },
+        team: { title: '机器人背后的人。', lead: '来自 Hasdeu 学院的学生们，一个赛季又一个赛季地设计、制造、编程并展示机器人。', photoAlt: 'Homosapiens 战队在 Michiana 手持罗马尼亚国旗和战队横幅', mentorK: '指导', mentorName: 'Amalia Voicu 老师', mentorRole: '战队负责人，信息技术教师', membersTitle: '团队。', member: { sebastian: '工程：设计与组装', florentina: '媒体与公关', ioana: '战队成员' }, joinTitle: '想加入我们吗？', joinText: '给我们写信，我们会告诉你如何加入。', joinCta: '联系我们', deptTitle: '部门。', d1t: '工程', d1d: '从底盘到机构，设计并制造机器人。', d2t: '编程', d2d: '为自动阶段和手动阶段编写代码。', d3t: '3D 设计', d3d: '建模并打印机器人零件。', d4t: '媒体与公关', d4d: '照片、故事以及与赞助商的联系。', alumniTitle: '2026 届毕业生', alumniText: '感谢你们与我们共度的赛季。', al: { bianca: '2026 届毕业生', mihaela: '媒体与公关', adela: '3D 设计' } , soon: '照片即将上传', filterAria: '按部门筛选', alumna: '2026 届毕业生', photoOf: '', countTpl: '{a} 名成员，{b} 名毕业生', f: { all: '全部', prog: '编程', eng: '工程', cad: 'CAD', pr: '公关', drive: '操作手', alumni: '毕业生' }, fd: { all: 'BIOBUZZ 赛季建设 Homosapiens 的学生们，以及我们的毕业生。', prog: '为自动阶段和手动阶段编写代码。', eng: '从底盘到机构，设计并制造机器人。', cad: '用 CAD 建模并打印机器人零件。', pr: '照片、故事、社区活动以及与赞助商的联系。', drive: '在比赛中操控机器人。', alumni: '感谢你们与我们共度的赛季。' }, roles: { prog: '编程', eng: '工程', cad: 'CAD', pr: '公关', drive: '操作手', hwcad: '硬件与 CAD', driveEng: '操作手与工程', peer: '朋辈导师', member: '战队成员' }, classOf: '{y} 届毕业生' },
+        awards: { title: '我们的荣誉。', lead: '在罗马尼亚、意大利和美国获得的 FIRST Tech Challenge 奖项。', featK: '最重要的荣誉', featEvent: 'Western Edge Premier Event，加州长滩，2026 年 5 月', featText: 'FTC 最具声望的奖项，表彰整个团队：机器人、科普推广以及对社区的影响。', fTeams: '支来自世界各地的战队', fWins: '场资格赛胜利', fDiv: 'Division', place1: '第一名', place2: '第二名', place3: '第三名', finalists: '决赛入围', twinExtra: '577 分（不含罚分）', events: { western: 'Western Edge Premier Event，长滩', rochamp: '罗马尼亚全国锦标赛，布加勒斯特', regional: '地区赛，皮亚特拉尼亚姆茨', twin: 'Bucharest Twin Cup', italy: '意大利锦标赛', michiana: 'Michiana Premier Event，南本德', iasi: '地区赛，雅西', buc: '资格赛，布加勒斯特' }, countries: { ro: '罗马尼亚', us: '美国', it: '意大利', de: '德国', fr: '法国', es: '西班牙', gb: '英国', gr: '希腊', hu: '匈牙利', pl: '波兰', tr: '土耳其', md: '摩尔多瓦', bg: '保加利亚', nl: '荷兰' }, emptySeason: '赛季刚刚开始，本赛季的奖项将显示在这里。', source: '来源：FIRST（ftc-events.firstinspires.org）、战队主页与 Agerpres。' },
         about: { title: '从布泽乌，走向世界。', lead: '布泽乌县第一支机器人战队，2018 年在 Bogdan Petriceicu Hasdeu 国家学院成立。', p1: '自 2020 年起，我们以 #19053 号战队的身份参加 FIRST Tech Challenge，已参加罗马尼亚、意大利和美国的 35 场正式赛事，并在 DECODE 赛季以 OPR 总分全球第 7 的成绩结束。', p2: '我们的口号是“We keep evolving”。每个赛季我们都会制造新的机器人，互相学习，并把机器人技术带进学校和社区。', alt1: '队员们在 Michiana 手持罗马尼亚国旗', alt2: '战队在机器人和 Homosapiens 横幅旁', alt3: '队员们在维修区与机器人一起', fFounded: '战队成立年份', fFtc: '以 #19053 号参加 FIRST Tech Challenge', fEvents: '正式赛事', fCountries: '国家：罗马尼亚、意大利、美国', outTitle: '赛场之外。', o1t: '免费夏令营', o1d: '由战队的机器人和导师为布泽乌的孩子们带来机器人课程。', o2t: '乡村学校和孤儿院', o2d: '我们把机器人和工作坊带到技术很少触及的地方。', o3t: 'Hop into Spring，2023', o3d: '在布泽乌举办的 FTC 模拟赛，来自 7 个城市的 9 支战队参加。', o4t: 'Success under pressure，2026', o4d: '战队于 9 月 27 日在 Pietroasa 酒店举办的会议。' },
-        sponsors: { title: '感谢所有相信我们的人。', quote: '“你们的支持不仅是赞助，更是对教育、创新和未来的投资。”', quoteBy: 'Homosapiens 致 DECODE 赛季赞助商', alt1: '战队与赞助商标志，第一部分', alt2: 'Homosapiens 战队与 Huge thanks to our sponsors 字样', alt3: '战队与赞助商标志，第二部分', listTitle: 'DECODE 赛季赞助商。', partnersTitle: '其他支持者', benTitle: '成为赞助商，您将获得。', benText: '填写表格后，我们会向您提供合作方案。', cta: '成为赞助商', b1: '在机器人和团队装备上展示您的标志', b2: '在我们的网站和社交媒体上鸣谢', b3: '赛季结束后的活动报告', countTpl: '{n} 家企业' },
+        sponsors: { title: '感谢所有相信我们的人。', quote: '“你们的支持不仅是赞助，更是对教育、创新和未来的投资。”', quoteBy: 'Homosapiens 致 DECODE 赛季赞助商', alt1: '战队与赞助商标志，第一部分', alt2: 'Homosapiens 战队与 Huge thanks to our sponsors 字样', alt3: '战队与赞助商标志，第二部分', listTitle: '我们的赞助商。', partnersTitle: '其他支持者', benTitle: '成为赞助商，您将获得。', benText: '填写表格后，我们会向您提供合作方案。', cta: '成为赞助商', b1: '在机器人和团队装备上展示您的标志', b2: '在我们的网站和社交媒体上鸣谢', b3: '赛季结束后的活动报告', countTpl: '{n} 家企业' },
         contact: { title: '与我们联系。', lead: '如需赞助、合作或媒体采访，请在此或直接通过邮件联系我们。', emailK: '邮箱', addrK: '地址', addrV: '布泽乌 Gării 大道 1 号，Bogdan Petriceicu Hasdeu 国家学院', topicsLabel: '关于什么？', topics: { sponsor: '赞助', collab: '合作', press: '媒体', other: '其他' }, spTitle: '公司信息', company: '公司名称', companyPh: '您的公司', cui: '税号（CUI）', cuiPh: 'RO12345678', role: '您的职位', rolePh: '例如：市场总监', phone: '电话', phonePh: '+40 7xx xxx xxx', optional: '（选填）', supportLabel: '支持类型', support: { money: '资金', goods: '产品或材料', services: '服务', mentoring: '指导或参观' }, amountLabel: '预计金额', amounts: { a1: '1,000 列伊以下', a2: '1,000-5,000 列伊', a3: '5,000-10,000 列伊', a4: '10,000 列伊以上' }, name: '姓名', namePh: '您的姓名', emailPh: 'name@company.com', subject: '主题', subjectPh: '主题内容', msg: '留言', msgPh: '在此输入您的留言', send: '通过邮件发送', copyMsg: '复制留言', err: '请填写姓名、有效邮箱和留言。', errCompany: '请填写公司名称、您的姓名、有效邮箱和留言。', ok: '您的邮件应用将打开并填好留言。如果没有打开，请使用“复制留言”，然后发送到 thehomosapiens123@gmail.com。', copied: '留言已复制。请粘贴到发往 thehomosapiens123@gmail.com 的邮件中。', copyFail: '无法自动复制。请选中下面的文字并复制。', defaultSubject: '来自网站的留言', b: { topic: '类型', name: '姓名', email: '邮箱', company: '公司', cui: '税号', role: '职位', phone: '电话', support: '支持类型', amount: '预计金额', msg: '留言' } },
-        footer: { tagline: '布泽乌 Bogdan Petriceicu Hasdeu 国家学院的 FIRST Tech Challenge #19053 战队。', cta: '联系我们', pagesH: '页面', socialH: '关注我们', rights: '© 2026 Homosapiens，FTC #19053，RO109', data: '数据来源：FIRST、FTCScout、Agerpres', top: '返回顶部' }
+        footer: { tagline: '布泽乌 Bogdan Petriceicu Hasdeu 国家学院的 FIRST Tech Challenge #19053 战队。', cta: '联系我们', pagesH: '页面', socialH: '关注我们', rights: '© 2026 Homosapiens，FTC #19053，RO109', data: '数据来源：FIRST、FTCScout、Agerpres', top: '返回顶部', organizer: '主办方', founding: '创始合作伙伴', partnersAria: 'FIRST Tech Challenge 罗马尼亚，第 11 赛季，2026-2027' }
       }
     };
   }
@@ -1248,26 +1350,24 @@ class Component extends DCLogic {
     ];
     const gallery = t.gallery.map((g, i) => ({ title: g.title, text: g.text, alt: g.alt, src: galImgs[i].src, cls: galImgs[i].cls + ' sr' }));
 
-    const PEOPLE = [
-      { name: 'Dorcu Rareș Florentin', ini: 'DR', r: 'prog', deps: ['prog'], photo: '/assets/echipa/dorcu.jpg' },
-      { name: 'Aldea Rareș', ini: 'AR', r: 'drive', deps: ['drive'], photo: '/assets/echipa/aldea.jpg' },
-      { name: 'Luca Grigore', ini: 'LG', r: 'hwcad', deps: ['eng', 'cad'], photo: '/assets/echipa/luca-grigore.jpg' },
-      { name: 'Sebastian Stanciu', ini: 'SS', r: 'eng', deps: ['eng'], photo: '/assets/echipa/stanciu.jpg' },
-      { name: 'Zaharescu Mihai Gabriel', ini: 'ZM', r: 'prog', deps: ['prog'], photo: '/assets/echipa/zaharescu.jpg' },
-      { name: 'Luca Vasilica', ini: 'LV', r: 'cad', deps: ['cad'], photo: '/assets/echipa/luca-vasilica.jpg' },
-      { name: 'Albert Cernea', ini: 'AC', r: 'pr', deps: ['pr'], photo: '/assets/echipa/cernea.jpg' },
-      { name: 'Miruna Frincu', ini: 'MF', r: 'pr', deps: ['pr'], photo: '/assets/echipa/frincu.jpg' },
-      { name: 'Ioana Beldimănescu', ini: 'IB', r: 'pr', deps: ['pr'], photo: '/assets/echipa/beldimanescu.jpg' },
-      { name: 'Bogdan Cimpeanu', ini: 'BC', r: 'pr', deps: ['pr'], photo: '/assets/echipa/cimpeanu.jpg' },
-      { name: 'Iancu', ini: 'I', r: 'pr', deps: ['pr'], photo: '/assets/echipa/iancu.jpg' },
-      { name: 'Miu Vlad', ini: 'MV', r: 'driveEng', deps: ['drive', 'eng'], photo: '' },
-      { name: 'Andrei Vasile Robert', ini: 'AR', r: 'eng', deps: ['eng'], photo: '' },
-      { name: 'Matei Fratila', ini: 'MF', r: 'eng', deps: ['eng'], photo: '' },
-      { name: 'Florentina Spoială', ini: 'FS', r: 'pr', deps: ['pr'], photo: '' },
-      { name: 'Mihaela Valentina Grama', ini: 'MG', r: 'pr', deps: ['pr', 'alumni'], al: true, photo: '/assets/echipa/grama.jpg' },
-      { name: 'Adela Vizitiu', ini: 'AV', r: 'pr', deps: ['pr', 'alumni'], al: true, photo: '/assets/echipa/vizitiu.jpg' },
-      { name: 'Bianca Ifrim', ini: 'BI', r: 'peer', deps: ['alumni'], al: true, photo: '/assets/echipa/ifrim.jpg' }
-    ];
+    const C = (s.cms && s.cms.v === 1) ? s.cms : this.hsDefault;
+    const tx = (o) => (typeof o === 'string' ? o : (o ? (o[L] || o.ro || o.en || o.fr || o.zh || '') : ''));
+    const ROLE_DEPS = { prog: ['prog'], eng: ['eng'], cad: ['cad'], pr: ['pr'], drive: ['drive'], hwcad: ['eng', 'cad'], driveEng: ['drive', 'eng'], peer: [], member: [] };
+    const initials = (n) => {
+      const w = String(n || '').trim().split(/\s+/).filter(Boolean);
+      if (!w.length) return '?';
+      return (w.length === 1 ? w[0].slice(0, 2) : w[0][0] + w[w.length - 1][0]).toUpperCase();
+    };
+
+    const PEOPLE = (C.team || []).filter((m) => m && m.active !== false && m.name).map((m) => {
+      const deps = (ROLE_DEPS[m.role] || []).slice();
+      if (m.alumni) deps.push('alumni');
+      const roleLabel = m.roleText || t.team.roles[m.role] || t.team.roles.member;
+      return {
+        name: m.name, ini: initials(m.name), deps: deps, al: !!m.alumni, photo: m.photo || '',
+        role: m.alumni ? t.team.classOf.replace('{y}', m.grad || '') + ', ' + roleLabel : roleLabel
+      };
+    });
     const TF = t.team.f;
     const fIds = ['all', 'prog', 'eng', 'cad', 'pr', 'drive', 'alumni'];
     const curF = fIds.indexOf(s.teamF) >= 0 ? s.teamF : 'all';
@@ -1278,8 +1378,7 @@ class Component extends DCLogic {
       pick: () => this.setState({ teamF: id })
     }));
     const people = PEOPLE.filter((pp) => inF(pp, curF)).map((pp) => ({
-      name: pp.name, ini: pp.ini,
-      role: pp.al ? t.team.alumna + ', ' + t.team.roles[pp.r] : t.team.roles[pp.r],
+      name: pp.name, ini: pp.ini, role: pp.role,
       photo: pp.photo, hasPhoto: !!pp.photo, noPhoto: !pp.photo,
       alt: L === 'zh' ? pp.name + ' 的照片' : t.team.photoOf + ' ' + pp.name
     }));
@@ -1288,72 +1387,32 @@ class Component extends DCLogic {
     const teamCount = t.team.countTpl.replace('{a}', String(nCur)).replace('{b}', String(nAl));
     const teamDesc = t.team.fd[curF];
 
-    const A = [
-      { season: '2025-26', game: 'DECODE', items: [
-        { n: 'Inspire Award', p: 2, ev: 'western', c: 'us' },
-        { n: 'Reach Award', p: 1, ev: 'regional', c: 'ro' },
-        { n: 'Reach Award', p: 3, ev: 'rochamp', c: 'ro' },
-        { nk: 'finalists', p: 0, ev: 'twin', ex: 'twinExtra', c: 'ro', res: true }
-      ] },
-      { season: '2024-25', game: 'Into The Deep', items: [
-        { n: 'Control Award', p: 1, ev: 'italy', c: 'it' },
-        { n: 'Motivate Award', p: 1, ev: 'michiana', c: 'us' }
-      ] },
-      { season: '2023-24', game: 'CenterStage', items: [
-        { n: 'Connect Award', p: 3, ev: 'iasi', c: 'ro' }
-      ] },
-      { season: '2022-23', game: 'Power Play', items: [
-        { n: 'Motivate Award', p: 2, ev: 'buc', c: 'ro' }
-      ] }
-    ];
     const placeLabel = (p) => (p === 1 ? t.awards.place1 : (p === 2 ? t.awards.place2 : (p === 3 ? t.awards.place3 : '')));
-    const seasons = A.map((se) => ({
-      season: se.season,
-      game: se.game,
-      awards: se.items.map((it) => ({
-        name: it.nk ? t.awards[it.nk] : it.n,
-        meta: t.awards.events[it.ev] + ', ' + t.awards.countries[it.c] + (it.ex ? '. ' + t.awards[it.ex] : ''),
-        hasPlace: it.p > 0,
-        place: placeLabel(it.p),
-        placeCls: it.p === 1 ? 'aw-place gold' : 'aw-place',
-        isMedal: !it.res,
-        isResult: !!it.res
-      }))
-    }));
+    const seasons = (C.seasons || []).filter((se) => se && se.active !== false && se.season).map((se) => {
+      const aws = (se.awards || []).filter((a) => a && a.active !== false && tx(a.name)).map((a) => {
+        const where = [tx(a.event), a.country ? (t.awards.countries[a.country] || a.country) : ''].filter(Boolean).join(', ');
+        const note = tx(a.note);
+        return {
+          name: tx(a.name),
+          meta: where + (note ? (where ? '. ' : '') + note : ''),
+          hasPlace: a.place > 0,
+          place: placeLabel(a.place),
+          placeCls: a.place === 1 ? 'aw-place gold' : 'aw-place',
+          isMedal: a.kind !== 'result',
+          isResult: a.kind === 'result'
+        };
+      });
+      return { season: se.season, game: se.game || '', awards: aws, isEmpty: aws.length === 0 };
+    });
 
-    const SP = [
-      ['ACL', '', ''],
-      ['BRD Groupe Société Générale', 'sponsori/brd.png', 'w'],
-      ['Distribuție Energie Electrică România', 'sponsori/dee.png', 'w'],
-      ['NEPI Rockcastle', 'sponsori/nepi.png', 'x'],
-      ['Hoeganaes', 'sponsori/hoeganaes.png', 'm'],
-      ['Forja Rotec', 'sponsori/forja.png', 'w'],
-      ['INEL SA', 'sponsori/inel.png', 's'],
-      ['Next Level Business', 'sponsori/nextlevel.png', 'w'],
-      ['Electric Light', 'sponsori/electriclight.png', 'x'],
-      ['Quattro Intersped', 'sponsori/quattro.png', 'w'],
-      ['Competitiv Brandis', 'sponsori/competitiv.png', 's'],
-      ['DC Real Solutions', 'sponsori/dcreal.png', 'x'],
-      ['Constam', 'sponsori/constam.png', 'w'],
-      ['Dinamio', 'sponsori/dinamio.png', 'w'],
-      ['Electro-Total', 'sponsori/electrototal.png', 'w'],
-      ['Multiprod Energo', 'sponsori/multiprod.png', 'w'],
-      ['Alphanet Service', 'sponsori/alphanet.png', 's'],
-      ['Smart ID', 'sponsori/smartid.png', 'w'],
-      ['Convenience Prod', 'sponsori/convenience.png', 'x'],
-      ['Lex Protect', 'sponsori/lex.png', 's'],
-      ['General Agrocom', 'sponsori/agrocom.png', 's'],
-      ['Kalra Pro', 'sponsori/kalra.png', 'm'],
-      ['TRS', 'sponsori/trs.png', 's'],
-      ['Dentaș', 'sponsori/dentas.png', 's'],
-      ['Centromedica', 'sponsori/centromedica.png', 'x'],
-      ['Concas', 'sponsori/concas.png', 'x'],
-      ['Corina Caffe', 'sponsori/corina.png', 's'],
-      ['Cofetăria No 379', 'sponsori/cofetaria.png', 's'],
-      ['Dima Carmangerie', 'sponsori/dima.png', 's']
-    ];
-    const sponsorLogos = SP.map((x) => ({ n: x[0], src: x[1] ? '/assets/' + x[1] : '', cls: x[2], hasLogo: !!x[1], noLogo: !x[1] }));
-    const sponsorCount = t.sponsors.countTpl.replace('{n}', String(SP.length));
+    const sizeOf = (sp) => {
+      if (sp.size) return sp.size;
+      const ar = Number(sp.ar) || 0;
+      return !ar ? 'w' : (ar > 6 ? 'x' : (ar > 3.2 ? 'w' : (ar > 1.7 ? 'm' : 's')));
+    };
+    const SPN = (C.sponsors || []).filter((sp) => sp && sp.active !== false && sp.name);
+    const sponsorLogos = SPN.map((sp) => ({ n: sp.name, src: sp.logo || '', cls: sizeOf(sp) + (sp.mono === false ? ' orig' : ''), hasLogo: !!sp.logo, noLogo: !sp.logo }));
+    const sponsorCount = t.sponsors.countTpl.replace('{n}', String(SPN.length));
     const partnerNames = [{ n: 'Consiliul Județean Buzău' }, { n: 'Asociația de Părinți CN „B. P. Hasdeu”' }];
 
     const topicIds = ['sponsor', 'collab', 'press', 'other'];

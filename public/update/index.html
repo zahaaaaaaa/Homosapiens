@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Administrare · Homosapiens</title>
+<link rel="icon" type="image/png" href="/assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#F4F5F7;--surface:#FFFFFF;--surface-2:#EAECF0;--surface-3:#E1E4EA;--ink:#111317;--ink-2:#353943;--muted:#5D626E;--line:#DCDFE5;--line-2:#C9CDD5;
+  --blue:#2D4E8A;--blue-soft:#DCE2EE;--ok:#1F7A4D;--ok-soft:#DDF1E6;--danger:#B42318;--danger-soft:#FBE4E1;--warn:#8A5A00;--warn-soft:#FBEFD5;
+  --logo-f:brightness(0);--logo-o:.8;
+  --f-display:'Bricolage Grotesque','Manrope',system-ui,sans-serif;--f-body:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);--r:16px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#0E0F12;--surface:#16181D;--surface-2:#1D2026;--surface-3:#252932;--ink:#F1F2F4;--ink-2:#C8CBD2;--muted:#979BA6;--line:#282B33;--line-2:#363A44;
+  --blue:#A3B4DC;--blue-soft:#1D2333;--ok:#6FD3A0;--ok-soft:#15281F;--danger:#FDA29B;--danger-soft:#2A1614;--warn:#F4C66B;--warn-soft:#2A2213;
+  color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body);-webkit-font-smoothing:antialiased;padding-inline:16px}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3,p{margin:0}
+.wrap{max-width:1180px;margin:0 auto}
+.hidden{display:none!important}
+
+/* login */
+.login{min-height:100dvh;display:grid;place-items:center;padding-block:32px}
+.login-card{width:100%;max-width:400px;display:flex;flex-direction:column;gap:18px;padding:32px 28px;border-radius:24px;background:var(--surface);border:1px solid var(--line);box-shadow:0 30px 60px -34px rgba(24,33,52,.3)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:40px;height:40px}
+.brand b{display:block;font:800 18px/1.1 var(--f-display);letter-spacing:-.02em}
+.brand span{font-size:12.5px;color:var(--muted);font-weight:700}
+.login h1{font:800 26px/1.1 var(--f-display);letter-spacing:-.03em}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label,.lbl{font-size:12.5px;font-weight:800;color:var(--muted)}
+.in,.sel{width:100%;min-height:42px;padding:9px 12px;border-radius:12px;border:1px solid var(--line-2);background:var(--bg);outline:none;transition:border-color .2s,box-shadow .2s}
+.in:focus,.sel:focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 22%,transparent)}
+.in.empty{border-color:color-mix(in srgb,var(--danger) 55%,var(--line-2))}
+.msg{padding:10px 12px;border-radius:12px;font-size:14px;font-weight:600}
+.msg.err{background:var(--danger-soft);color:var(--danger)}
+.msg.info{background:var(--surface-2);color:var(--ink-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 18px;border-radius:999px;border:1px solid transparent;font-weight:800;font-size:14px;cursor:pointer;white-space:nowrap;transition:transform .2s var(--ease),background-color .2s,opacity .2s}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn-primary{background:var(--ink);color:var(--bg)}
+.btn-ghost{background:transparent;border-color:var(--line-2);color:var(--ink)}
+a.btn{text-decoration:none}
+.btn-soft{background:var(--surface-2)}
+.btn-danger{background:transparent;color:var(--danger);border-color:color-mix(in srgb,var(--danger) 35%,transparent)}
+.btn-sm{min-height:34px;padding:0 12px;font-size:13px}
+.ib{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:pointer;color:var(--ink-2)}
+.ib:hover{border-color:var(--line-2)}
+.ib.del:hover{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 40%,transparent)}
+.ib:disabled{opacity:.35;cursor:default}
+
+/* app */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px}
+.top-in{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:66px}
+.top-r{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.who{font-size:13px;color:var(--muted);font-weight:700}
+.who b{color:var(--ink)}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-block:14px 4px;scrollbar-width:none}
+.tab{min-height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:800;font-size:14px;cursor:pointer;white-space:nowrap}
+.tab.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:22px 0 18px}
+.head h2{font:800 clamp(24px,3vw,32px)/1.1 var(--f-display);letter-spacing:-.03em}
+.head p{color:var(--muted);max-width:64ch;margin-top:6px}
+main{padding-bottom:120px}
+
+/* cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px}
+.season{display:flex;flex-direction:column;gap:14px;margin-bottom:18px}
+.season.off{opacity:.62}
+.srow{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.srow .field{flex:1 1 160px}
+.acts{display:flex;gap:6px;align-items:center}
+.chk{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font-weight:800;font-size:13.5px;cursor:pointer;user-select:none;white-space:nowrap}
+.chk input{width:18px;height:18px;accent-color:var(--ink);margin:0}
+.chk.on{background:var(--ok-soft);border-color:transparent;color:var(--ok)}
+.awards{display:flex;flex-direction:column;gap:10px}
+.aw{display:grid;gap:10px;padding:14px;border-radius:16px;background:var(--bg);border:1px solid var(--line)}
+.aw.off{opacity:.6}
+.g4{display:grid;grid-template-columns:auto minmax(0,1.6fr) minmax(0,.7fr) minmax(0,.8fr) auto;gap:10px;align-items:end}
+.g2{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,.9fr);gap:10px}
+details.tr{border-top:1px dashed var(--line-2);padding-top:8px}
+details.tr summary{cursor:pointer;font-size:13px;font-weight:800;color:var(--muted);list-style:none}
+details.tr summary::-webkit-details-marker{display:none}
+details.tr summary::before{content:"+ "}
+details.tr[open] summary::before{content:"− "}
+.trg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}
+.hint{font-size:13px;color:var(--muted)}
+.empty-note{padding:14px;border-radius:14px;border:1px dashed var(--line-2);color:var(--muted);font-size:14px}
+@media(max-width:820px){.g4{grid-template-columns:1fr 1fr}.g4 .chk{grid-column:1/-1;justify-self:start}.g4 .nm{grid-column:1/-1}.g4 .acts{grid-column:1/-1}.g2,.trg{grid-template-columns:1fr}}
+
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:460px){.grid{grid-template-columns:1fr}}
+.person,.spon{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:20px;background:var(--surface);border:1px solid var(--line)}
+.person.off,.spon.off{opacity:.62}
+.ph{position:relative;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:var(--surface-2);display:grid;place-items:center}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.ph .ini{font:800 44px/1 var(--f-display);letter-spacing:-.04em;color:var(--ink-2)}
+.ph-acts{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:6px;justify-content:center}
+.ph-acts .btn{background:color-mix(in srgb,var(--surface) 92%,transparent);border-color:var(--line);backdrop-filter:blur(6px)}
+.busy::after{content:"Se încarcă…";position:absolute;inset:0;display:grid;place-items:center;background:color-mix(in srgb,var(--surface) 80%,transparent);font-weight:800}
+.row2{display:flex;gap:6px;flex-wrap:wrap}
+.lg{display:grid;grid-template-columns:1fr 1fr;border-radius:14px;overflow:hidden;border:1px solid var(--line);position:relative}
+.lg .half{display:grid;place-items:center;height:96px;padding:12px}
+.lg .lt{background:#F4F5F7}.lg .dk{background:#16181D}
+.lg img{max-width:100%;max-height:56px;height:auto;width:auto}
+.lg .lt img.mono{filter:brightness(0);opacity:.8}
+.lg .word{font:800 18px/1 var(--f-display);letter-spacing:-.03em;text-align:center}
+.lg .lt .word{color:#111317}.lg .dk .word{color:#F1F2F4}
+.spon .row2 .btn{flex:1}
+
+/* history */
+.hist{display:flex;flex-direction:column;gap:8px}
+.hrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
+.hrow b{font-weight:800}
+.hrow span{color:var(--muted);font-size:13.5px}
+
+/* save bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line)}
+.bar-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.state{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--ok);flex:none}
+.dirty .dot{background:var(--warn)}
+.bar-acts{display:flex;gap:8px}
+.toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);z-index:40;max-width:min(92vw,520px);padding:12px 16px;border-radius:14px;font-weight:700;font-size:14px;box-shadow:0 20px 40px -20px rgba(0,0,0,.4);animation:tIn .35s var(--ease)}
+.toast.ok{background:var(--ok);color:#fff}.toast.err{background:var(--danger);color:#fff}
+@keyframes tIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+.overlay{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(6px);padding:16px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+(() => {
+  'use strict';
+  const ROLES = [
+    ['prog', 'Programare'], ['eng', 'Inginerie'], ['cad', 'CAD'], ['pr', 'PR'], ['drive', 'Driver'],
+    ['hwcad', 'Hardware și CAD'], ['driveEng', 'Driver și inginerie'], ['peer', 'Peer mentor'], ['member', 'Membru']
+  ];
+  const COUNTRIES = [
+    ['ro', 'România'], ['us', 'SUA'], ['it', 'Italia'], ['de', 'Germania'], ['fr', 'Franța'], ['es', 'Spania'], ['gb', 'Marea Britanie'],
+    ['gr', 'Grecia'], ['hu', 'Ungaria'], ['pl', 'Polonia'], ['tr', 'Turcia'], ['md', 'Republica Moldova'], ['bg', 'Bulgaria'], ['nl', 'Țările de Jos'], ['', 'Fără țară']
+  ];
+  const PLACES = [[0, 'Fără loc'], [1, 'Locul 1'], [2, 'Locul 2'], [3, 'Locul 3']];
+  const TABS = [['premii', 'Premii'], ['echipa', 'Echipa'], ['sponsori', 'Sponsori'], ['istoric', 'Istoric']];
+  const LANGS = [['en', 'English'], ['fr', 'Français'], ['zh', '中文']];
+
+  const S = { user: null, data: null, saved: '', meta: null, tab: 'premii', fromDefault: false, originals: {}, busy: {} };
+  const app = document.getElementById('app');
+
+  /* ---------- tiny DOM helper ---------- */
+  function h(tag, attrs, ...kids) {
+    const el = document.createElement(tag);
+    if (attrs) for (const [k, v] of Object.entries(attrs)) {
+      if (v === undefined || v === null || v === false) continue;
+      if (k === 'class') el.className = v;
+      else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2), v);
+      else if (k === 'value') el.value = v;
+      else if (k === 'checked') el.checked = !!v;
+      else if (k === 'text') el.textContent = v;
+      else el.setAttribute(k, v === true ? '' : v);
+    }
+    for (const kid of kids.flat()) if (kid !== null && kid !== undefined && kid !== false) el.append(kid instanceof Node ? kid : document.createTextNode(String(kid)));
+    return el;
+  }
+  const icon = (d) => { const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('width', '16'); s.setAttribute('height', '16'); s.setAttribute('fill', 'none'); s.setAttribute('stroke', 'currentColor'); s.setAttribute('stroke-width', '2'); s.setAttribute('stroke-linecap', 'round'); s.setAttribute('stroke-linejoin', 'round'); const p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', d); s.append(p); return s; };
+  const I = { up: 'M12 19V5M6 11l6-6 6 6', down: 'M12 5v14M6 13l6 6 6-6', left: 'M19 12H5M11 6l-6 6 6 6', right: 'M5 12h14M13 6l6 6-6 6', del: 'M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3', plus: 'M12 5v14M5 12h14' };
+  const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+  const initials = (n) => { const w = String(n || '').trim().split(/\s+/).filter(Boolean); if (!w.length) return '?'; return (w.length === 1 ? w[0].slice(0, 2) : w[0][0] + w[w.length - 1][0]).toUpperCase(); };
+
+  /* ---------- API ---------- */
+  async function api(path, opts = {}) {
+    const res = await fetch(path, Object.assign({ credentials: 'same-origin', cache: 'no-store' }, opts));
+    if (res.status === 401 && path !== '/api/login' && path !== '/api/me') { showRelogin(); throw new Error('auth'); }
+    return res;
+  }
+  async function readErr(res) { try { const j = await res.json(); return j.message || 'Eroare.'; } catch { return 'Eroare (' + res.status + ').'; } }
+
+  /* ---------- toast ---------- */
+  let toastTimer = null;
+  function toast(text, kind = 'ok') {
+    document.querySelectorAll('.toast').forEach((t) => t.remove());
+    const t = h('div', { class: 'toast ' + kind, role: 'status' }, text);
+    document.body.append(t);
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.remove(), kind === 'err' ? 6000 : 3200);
+  }
+
+  /* ---------- login ---------- */
+  function loginCard(onDone, note) {
+    const msg = h('p', { class: 'msg err hidden', role: 'alert' });
+    const u = h('input', { class: 'in', id: 'u', name: 'username', autocomplete: 'username', autocapitalize: 'none', spellcheck: 'false', required: true });
+    const p = h('input', { class: 'in', id: 'p', name: 'password', type: 'password', autocomplete: 'current-password', required: true });
+    const go = h('button', { class: 'btn btn-primary', type: 'submit' }, 'Intră');
+    const form = h('form', { class: 'login-card', onsubmit: async (e) => {
+      e.preventDefault();
+      msg.classList.add('hidden'); go.disabled = true;
+      try {
+        const res = await fetch('/api/login', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ user: u.value, pass: p.value }) });
+        if (!res.ok) { msg.textContent = await readErr(res); msg.classList.remove('hidden'); go.disabled = false; p.select(); return; }
+        const j = await res.json(); S.user = j.user; onDone();
+      } catch { msg.textContent = 'Nu mă pot conecta la server.'; msg.classList.remove('hidden'); go.disabled = false; }
+    } },
+      h('div', { class: 'brand' }, h('img', { src: '/assets/img/logo.png', alt: '' }), h('div', null, h('b', null, 'Homosapiens'), h('span', null, 'Administrare site'))),
+      h('h1', null, 'Conectare'),
+      note ? h('p', { class: 'msg info' }, note) : null,
+      h('div', { class: 'field' }, h('label', { for: 'u' }, 'Utilizator'), u),
+      h('div', { class: 'field' }, h('label', { for: 'p' }, 'Parolă'), p),
+      msg, go,
+      h('a', { href: '/', class: 'hint', style: 'text-align:center' }, 'Înapoi la site')
+    );
+    setTimeout(() => u.focus(), 30);
+    return form;
+  }
+  function showLogin() {
+    app.replaceChildren(h('div', { class: 'login' }, loginCard(() => boot())));
+  }
+  function showRelogin() {
+    if (document.querySelector('.overlay')) return;
+    const ov = h('div', { class: 'overlay' }, loginCard(() => { ov.remove(); renderTop(); toast('Te-ai conectat din nou. Modificările tale sunt încă aici.'); }, 'Sesiunea a expirat. Conectează-te din nou; modificările nesalvate rămân.'));
+    document.body.append(ov);
+  }
+
+  /* ---------- load ---------- */
+  async function boot() {
+    let me;
+    try { me = await fetch('/api/me', { credentials: 'same-origin', cache: 'no-store' }); } catch { app.replaceChildren(h('div', { class: 'login' }, h('p', { class: 'msg err' }, 'Nu mă pot conecta la server.'))); return; }
+    if (me.status !== 200) { showLogin(); return; }
+    const mj = await me.json(); S.user = mj.user; S.meta = mj.meta;
+    const res = await fetch('/api/content', { cache: 'no-store' });
+    if (res.status === 200) { S.data = await res.json(); S.fromDefault = false; }
+    else { S.data = await (await fetch('/content-default.json', { cache: 'no-store' })).json(); S.fromDefault = true; }
+    normalize(S.data);
+    S.saved = S.fromDefault ? '' : JSON.stringify(S.data);
+    render();
+  }
+  function normalize(d) {
+    d.v = 1; d.seasons = d.seasons || []; d.team = d.team || []; d.sponsors = d.sponsors || [];
+    for (const s of d.seasons) { s.awards = s.awards || []; for (const a of s.awards) { a.name = a.name || {}; a.event = a.event || {}; a.note = a.note || {}; } }
+  }
+
+  /* ---------- state ---------- */
+  const isDirty = () => JSON.stringify(S.data) !== S.saved;
+  function updateBar() {
+    const bar = document.getElementById('bar'); if (!bar) return;
+    const d = isDirty();
+    bar.classList.toggle('dirty', d);
+    document.getElementById('bar-text').textContent = d ? (S.fromDefault && !S.saved ? 'Conținutul de pe site nu a fost salvat încă din admin. Salvează ca să-l poți edita de aici.' : 'Ai modificări nesalvate.') : 'Totul e salvat. Site-ul arată versiunea de aici.';
+    document.getElementById('save').disabled = !d;
+    document.getElementById('undo').disabled = !d || !S.saved;
+  }
+  const changed = () => updateBar();
+  window.addEventListener('beforeunload', (e) => { if (S.data && isDirty()) { e.preventDefault(); e.returnValue = ''; } });
+
+  async function save() {
+    const btn = document.getElementById('save'); btn.disabled = true; btn.textContent = 'Se salvează…';
+    try {
+      const res = await api('/api/admin/content', { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify(S.data) });
+      if (!res.ok) { toast(await readErr(res), 'err'); return; }
+      const j = await res.json();
+      S.data = j.content; normalize(S.data); S.saved = JSON.stringify(S.data); S.meta = j.meta; S.fromDefault = false;
+      render(); toast('Salvat. Site-ul e actualizat.');
+    } catch (e) { if (e.message !== 'auth') toast('Nu s-a putut salva. Verifică internetul și încearcă din nou.', 'err'); }
+    finally { btn.textContent = 'Salvează pe site'; updateBar(); }
+  }
+  function undo() {
+    if (!S.saved) return;
+    if (!confirm('Renunți la toate modificările nesalvate?')) return;
+    S.data = JSON.parse(S.saved); render();
+  }
+
+  /* ---------- generic field helpers ---------- */
+  function text(label, obj, key, opts = {}) {
+    const inp = h('input', { class: 'in' + (opts.required && !obj[key] ? ' empty' : ''), value: obj[key] || '', placeholder: opts.ph || '', maxlength: opts.max || 160, 'aria-label': label,
+      oninput: (e) => { obj[key] = e.target.value; if (opts.required) e.target.classList.toggle('empty', !e.target.value.trim()); if (opts.onChange) opts.onChange(); changed(); } });
+    return h('div', { class: 'field ' + (opts.cls || '') }, h('span', { class: 'lbl' }, label), inp);
+  }
+  function mlText(label, obj, key, opts = {}) {
+    obj[key] = obj[key] || {};
+    const m = obj[key];
+    const inp = h('input', { class: 'in' + (opts.required && !m.ro ? ' empty' : ''), value: m.ro || '', placeholder: opts.ph || '', maxlength: opts.max || 160, 'aria-label': label,
+      oninput: (e) => { const v = e.target.value; if (v) m.ro = v; else delete m.ro; if (opts.required) e.target.classList.toggle('empty', !v.trim()); changed(); } });
+    return h('div', { class: 'field ' + (opts.cls || '') }, h('span', { class: 'lbl' }, label), inp);
+  }
+  function trInputs(label, obj, key) {
+    obj[key] = obj[key] || {};
+    const m = obj[key];
+    return LANGS.map(([l, ln]) => h('div', { class: 'field' }, h('span', { class: 'lbl' }, label + ' · ' + ln),
+      h('input', { class: 'in', value: m[l] || '', placeholder: m.ro ? 'gol = ca în română' : '', 'aria-label': label + ' ' + ln,
+        oninput: (e) => { const v = e.target.value; if (v) m[l] = v; else delete m[l]; changed(); } })));
+  }
+  function select(label, options, value, onChange, cls) {
+    const sel = h('select', { class: 'sel', 'aria-label': label, onchange: (e) => { onChange(e.target.value); changed(); } },
+      options.map(([v, t]) => h('option', { value: String(v), selected: String(v) === String(value) ? true : null }, t)));
+    return h('div', { class: 'field ' + (cls || '') }, h('span', { class: 'lbl' }, label), sel);
+  }
+  function check(label, obj, key, onToggle) {
+    const lab = h('label', { class: 'chk' + (obj[key] ? ' on' : '') });
+    const cb = h('input', { type: 'checkbox', checked: !!obj[key], onchange: (e) => { obj[key] = e.target.checked; lab.classList.toggle('on', e.target.checked); if (onToggle) onToggle(e.target.checked); changed(); } });
+    lab.append(cb, label);
+    return lab;
+  }
+  function moveBtns(list, i, horizontal) {
+    const a = h('button', { class: 'ib', type: 'button', 'aria-label': horizontal ? 'Mută mai în față' : 'Mută mai sus', title: horizontal ? 'Mută în față' : 'Mută mai sus', disabled: i === 0 ? true : null, onclick: () => { [list[i - 1], list[i]] = [list[i], list[i - 1]]; render(); } }, icon(horizontal ? I.left : I.up));
+    const b = h('button', { class: 'ib', type: 'button', 'aria-label': horizontal ? 'Mută mai în spate' : 'Mută mai jos', title: horizontal ? 'Mută în spate' : 'Mută mai jos', disabled: i === list.length - 1 ? true : null, onclick: () => { [list[i + 1], list[i]] = [list[i], list[i + 1]]; render(); } }, icon(horizontal ? I.right : I.down));
+    return [a, b];
+  }
+  function delBtn(what, onDel) {
+    return h('button', { class: 'ib del', type: 'button', 'aria-label': 'Șterge ' + what, title: 'Șterge', onclick: () => { if (confirm('Ștergi ' + what + '? Poți renunța apoi cu „Anulează” dacă nu ai salvat.')) { onDel(); render(); } } }, icon(I.del));
+  }
+
+  /* ---------- images ---------- */
+  async function decode(file) {
+    try { return await createImageBitmap(file, { imageOrientation: 'from-image' }); }
+    catch {
+      return await new Promise((res, rej) => { const url = URL.createObjectURL(file); const im = new Image(); im.onload = () => res(im); im.onerror = () => rej(new Error('decode')); im.src = url; });
+    }
+  }
+  const toBlob = (c, type, q) => new Promise((res) => c.toBlob(res, type, q));
+  async function makePhoto(file) {
+    const img = await decode(file);
+    const W = 800, H = 1000, sw = img.width, sh = img.height;
+    const sc = Math.max(W / sw, H / sh), cw = W / sc, ch = H / sc;
+    const sx = (sw - cw) / 2, sy = Math.max(0, Math.min(sh - ch, (sh - ch) * 0.3));
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H);
+    x.drawImage(img, sx, sy, cw, ch, 0, 0, W, H);
+    return { blob: await toBlob(c, 'image/jpeg', 0.86) };
+  }
+  async function makeLogo(file, mono) {
+    const img = await decode(file);
+    const sc = Math.min(1, 900 / img.width, 450 / img.height);
+    const w = Math.max(1, Math.round(img.width * sc)), hh = Math.max(1, Math.round(img.height * sc));
+    const c = document.createElement('canvas'); c.width = w; c.height = hh;
+    const x = c.getContext('2d'); x.drawImage(img, 0, 0, w, hh);
+    const id = x.getImageData(0, 0, w, hh), d = id.data;
+    const lum = (i) => (0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2]) / 255;
+    // background: average of the border pixels
+    let n = 0, aSum = 0, lSum = 0;
+    const edge = (px, py) => { const i = (py * w + px) * 4; aSum += d[i + 3]; if (d[i + 3] > 200) { lSum += lum(i); n++; } };
+    for (let px = 0; px < w; px++) { edge(px, 0); edge(px, hh - 1); }
+    for (let py = 0; py < hh; py++) { edge(0, py); edge(w - 1, py); }
+    const transparentBg = aSum / (2 * (w + hh)) < 120;
+    const bgL = n ? lSum / n : 1;
+    if (mono) {
+      for (let i = 0; i < d.length; i += 4) {
+        const a0 = d[i + 3] / 255, L = lum(i);
+        const mx = Math.max(d[i], d[i + 1], d[i + 2]), mn = Math.min(d[i], d[i + 1], d[i + 2]);
+        const sat = (mx - mn) / 255;
+        let a;
+        if (transparentBg) a = a0;
+        else if (bgL > 0.5) a = Math.max((bgL - L - 0.06) / (bgL * 0.55), (sat - 0.12) / 0.25);
+        else a = Math.max((L - bgL - 0.06) / ((1 - bgL) * 0.55 + 0.01), (sat - 0.12) / 0.25);
+        a = Math.max(0, Math.min(1, a)) * (transparentBg ? 1 : a0);
+        d[i] = d[i + 1] = d[i + 2] = 255; d[i + 3] = Math.round(a * 255);
+      }
+      x.putImageData(id, 0, 0);
+    }
+    // trim to content
+    let x0 = w, y0 = hh, x1 = -1, y1 = -1;
+    const on = (px, py) => { const i = (py * w + px) * 4; if (mono || transparentBg) return d[i + 3] > 12; return Math.abs(lum(i) - bgL) > 0.08 || d[i + 3] < 200; };
+    for (let py = 0; py < hh; py++) for (let px = 0; px < w; px++) if (on(px, py)) { if (px < x0) x0 = px; if (px > x1) x1 = px; if (py < y0) y0 = py; if (py > y1) y1 = py; }
+    if (x1 < 0) throw new Error('empty');
+    const pad = 2; x0 = Math.max(0, x0 - pad); y0 = Math.max(0, y0 - pad); x1 = Math.min(w - 1, x1 + pad); y1 = Math.min(hh - 1, y1 + pad);
+    const out = document.createElement('canvas'); out.width = x1 - x0 + 1; out.height = y1 - y0 + 1;
+    out.getContext('2d').drawImage(c, x0, y0, out.width, out.height, 0, 0, out.width, out.height);
+    return { blob: await toBlob(out, 'image/png'), ar: out.width / out.height };
+  }
+  async function upload(blob) {
+    const res = await api('/api/admin/upload', { method: 'POST', headers: { 'content-type': blob.type }, body: blob });
+    if (!res.ok) throw new Error(await readErr(res));
+    return (await res.json()).url;
+  }
+  function pickFile(onFile) {
+    const inp = h('input', { type: 'file', accept: 'image/jpeg,image/png,image/webp', class: 'hidden', onchange: () => { if (inp.files && inp.files[0]) onFile(inp.files[0]); inp.remove(); } });
+    document.body.append(inp); inp.click();
+  }
+  const sizeFromAr = (ar) => (!ar ? 'w' : ar > 6 ? 'x' : ar > 3.2 ? 'w' : ar > 1.7 ? 'm' : 's');
+
+  /* ---------- views ---------- */
+  function viewAwards() {
+    const d = S.data;
+    const box = h('div');
+    box.append(h('div', { class: 'head' },
+      h('div', null, h('h2', null, 'Premii'), h('p', null, 'Sezoanele apar pe pagina Premii în ordinea de aici. Debifează „Activ” ca să ascunzi un sezon sau un premiu fără să-l ștergi. Un sezon activ fără premii apare cu mesajul „Sezonul abia a început”.')),
+      h('button', { class: 'btn btn-primary', type: 'button', onclick: () => { d.seasons.unshift({ id: uid(), active: true, season: '', game: '', awards: [] }); render(); focusFirst('.season input'); } }, icon(I.plus), 'Sezon nou')));
+    d.seasons.forEach((s, si) => {
+      const card = h('section', { class: 'card season' + (s.active ? '' : ' off') });
+      card.append(h('div', { class: 'srow' },
+        check('Activ', s, 'active', (v) => card.classList.toggle('off', !v)),
+        text('Sezon', s, 'season', { ph: '2026-27', max: 24, required: true }),
+        text('Joc', s, 'game', { ph: 'BIOBUZZ', max: 60 }),
+        h('div', { class: 'acts' }, moveBtns(d.seasons, si), delBtn('sezonul ' + (s.season || ''), () => d.seasons.splice(si, 1)))));
+      const list = h('div', { class: 'awards' });
+      if (!s.awards.length) list.append(h('p', { class: 'empty-note' }, 'Niciun premiu încă. Apasă „Adaugă premiu” când îl câștigați.'));
+      s.awards.forEach((a, ai) => {
+        const row = h('div', { class: 'aw' + (a.active ? '' : ' off') });
+        row.append(
+          h('div', { class: 'g4' },
+            check('Activ', a, 'active', (v) => row.classList.toggle('off', !v)),
+            mlText('Nume premiu', a, 'name', { ph: 'Inspire Award', required: true, cls: 'nm' }),
+            select('Loc', PLACES, a.place || 0, (v) => { a.place = Number(v); }),
+            select('Tip', [['award', 'Premiu'], ['result', 'Rezultat (ex. finaliști)']], a.kind || 'award', (v) => { a.kind = v; }),
+            h('div', { class: 'acts' }, moveBtns(s.awards, ai), delBtn('premiul', () => s.awards.splice(ai, 1)))),
+          h('div', { class: 'g2' },
+            mlText('Eveniment', a, 'event', { ph: 'Campionatul Național, București' }),
+            select('Țara', COUNTRIES, a.country || '', (v) => { a.country = v; })),
+          mlText('Detalii (opțional)', a, 'note', { ph: 'ex. 577 de puncte fără penalizări', max: 200 }),
+          h('details', { class: 'tr' }, h('summary', null, 'Traduceri (opțional)'),
+            h('p', { class: 'hint', style: 'margin-top:8px' }, 'Dacă lași un câmp gol, pe site apare textul în română.'),
+            h('div', { class: 'trg' }, trInputs('Nume', a, 'name')),
+            h('div', { class: 'trg' }, trInputs('Eveniment', a, 'event')),
+            h('div', { class: 'trg' }, trInputs('Detalii', a, 'note'))));
+        list.append(row);
+      });
+      card.append(list, h('div', null, h('button', { class: 'btn btn-soft btn-sm', type: 'button', onclick: () => { s.awards.push({ id: uid(), active: true, kind: 'award', name: {}, place: 0, event: {}, country: 'ro', note: {} }); render(); focusLast('.season:nth-of-type(' + (si + 1) + ') .aw .nm input'); } }, icon(I.plus), 'Adaugă premiu')));
+      box.append(card);
+    });
+    return box;
+  }
+
+  function viewTeam() {
+    const d = S.data;
+    const box = h('div');
+    box.append(h('div', { class: 'head' },
+      h('div', null, h('h2', null, 'Echipa'), h('p', null, 'Ordinea de aici e ordinea de pe site. Poza se decupează automat la 4:5; fără poză, pe site apar inițialele. Rolul decide și filtrul (ex. „Hardware și CAD” apare la Inginerie și la CAD).')),
+      h('button', { class: 'btn btn-primary', type: 'button', onclick: () => { d.team.push({ id: uid(), active: true, name: '', role: 'member', roleText: '', alumni: false, grad: '', photo: '' }); render(); focusLast('.person .nm input'); } }, icon(I.plus), 'Membru nou')));
+    const grid = h('div', { class: 'grid' });
+    d.team.forEach((m, i) => {
+      const ph = h('div', { class: 'ph' + (S.busy[m.id] ? ' busy' : '') },
+        m.photo ? h('img', { src: m.photo, alt: m.name || '' }) : h('span', { class: 'ini' }, initials(m.name)),
+        h('div', { class: 'ph-acts' },
+          h('button', { class: 'btn btn-sm', type: 'button', onclick: () => pickFile(async (f) => {
+            S.busy[m.id] = true; render();
+            try { const { blob } = await makePhoto(f); m.photo = await upload(blob); toast('Poza e încărcată. Nu uita să salvezi.'); }
+            catch (e) { if (e.message !== 'auth') toast(e.message === 'decode' ? 'Nu pot citi imaginea. Folosește JPG sau PNG.' : (e.message || 'Încărcarea a eșuat.'), 'err'); }
+            finally { delete S.busy[m.id]; render(); }
+          }) }, m.photo ? 'Schimbă poza' : 'Încarcă poză'),
+          m.photo ? h('button', { class: 'btn btn-sm', type: 'button', onclick: () => { m.photo = ''; render(); } }, 'Scoate') : null));
+      const card = h('article', { class: 'person' + (m.active ? '' : ' off') }, ph,
+        text('Nume', m, 'name', { ph: 'Prenume Nume', max: 80, required: true, cls: 'nm', onChange: () => { const ini = ph.querySelector('.ini'); if (ini) ini.textContent = initials(m.name); } }),
+        select('Rol', ROLES, m.role || 'member', (v) => { m.role = v; }),
+        text('Text rol (opțional)', m, 'roleText', { ph: 'în loc de rolul de mai sus', max: 80 }),
+        h('div', { class: 'row2' },
+          check('Activ', m, 'active', (v) => card.classList.toggle('off', !v)),
+          check('Absolvent', m, 'alumni', (v) => { if (v && !m.grad) m.grad = String(new Date().getFullYear()); render(); })),
+        m.alumni ? text('Promoția', m, 'grad', { ph: '2026', max: 12 }) : null,
+        h('div', { class: 'acts' }, moveBtns(d.team, i, true), delBtn(m.name || 'membrul', () => d.team.splice(i, 1))));
+      grid.append(card);
+    });
+    box.append(grid);
+    return box;
+  }
+
+  function viewSponsors() {
+    const d = S.data;
+    const box = h('div');
+    box.append(h('div', { class: 'head' },
+      h('div', null, h('h2', null, 'Sponsori'), h('p', null, 'Logo-ul devine automat monocrom, ca să arate unitar pe site (negru pe fundal deschis, alb pe fundal închis). Dacă nu arată bine, bifează „Culori originale” și încarcă-l din nou.')),
+      h('button', { class: 'btn btn-primary', type: 'button', onclick: () => { d.sponsors.push({ id: uid(), active: true, name: '', logo: '', ar: 0, size: '', mono: true }); render(); focusLast('.spon .nm input'); } }, icon(I.plus), 'Sponsor nou')));
+    const grid = h('div', { class: 'grid' });
+    d.sponsors.forEach((sp, i) => {
+      const mono = sp.mono !== false;
+      const imgEl = (cls) => h('img', { src: sp.logo, alt: sp.name || '', class: mono ? 'mono' : '' });
+      const lg = h('div', { class: 'lg' + (S.busy[sp.id] ? ' busy' : '') },
+        h('div', { class: 'half lt' }, sp.logo ? imgEl() : h('span', { class: 'word' }, sp.name || 'Logo')),
+        h('div', { class: 'half dk' }, sp.logo ? imgEl() : h('span', { class: 'word' }, sp.name || 'Logo')));
+      const doUpload = (f) => {
+        S.originals[sp.id] = f;
+        (async () => {
+          S.busy[sp.id] = true; render();
+          try { const r = await makeLogo(f, sp.mono !== false); sp.logo = await upload(r.blob); sp.ar = Math.round(r.ar * 100) / 100; sp.size = sizeFromAr(r.ar); toast('Logo-ul e încărcat. Nu uita să salvezi.'); }
+          catch (e) { if (e.message !== 'auth') toast(e.message === 'decode' ? 'Nu pot citi imaginea. Folosește JPG sau PNG.' : e.message === 'empty' ? 'Imaginea pare goală.' : (e.message || 'Încărcarea a eșuat.'), 'err'); }
+          finally { delete S.busy[sp.id]; render(); }
+        })();
+      };
+      const origChk = h('label', { class: 'chk' + (!mono ? ' on' : '') },
+        h('input', { type: 'checkbox', checked: !mono, onchange: (e) => { sp.mono = !e.target.checked; if (S.originals[sp.id]) doUpload(S.originals[sp.id]); else render(); changed(); } }), 'Culori originale');
+      const card = h('article', { class: 'spon' + (sp.active ? '' : ' off') }, lg,
+        h('div', { class: 'row2' }, h('button', { class: 'btn btn-soft btn-sm', type: 'button', onclick: () => pickFile(doUpload) }, sp.logo ? 'Schimbă logo-ul' : 'Încarcă logo'),
+          sp.logo ? h('button', { class: 'btn btn-ghost btn-sm', type: 'button', onclick: () => { sp.logo = ''; sp.ar = 0; sp.size = ''; render(); } }, 'Scoate') : null),
+        text('Nume', sp, 'name', { ph: 'Numele firmei', max: 100, required: true, cls: 'nm' }),
+        h('div', { class: 'row2' }, check('Activ', sp, 'active', (v) => card.classList.toggle('off', !v)), origChk),
+        h('div', { class: 'acts' }, moveBtns(d.sponsors, i, true), delBtn(sp.name || 'sponsorul', () => d.sponsors.splice(i, 1))));
+      grid.append(card);
+    });
+    box.append(grid);
+    return box;
+  }
+
+  function viewHistory() {
+    const box = h('div');
+    const list = h('div', { class: 'hist' }, h('p', { class: 'hint' }, 'Se încarcă…'));
+    box.append(h('div', { class: 'head' }, h('div', null, h('h2', null, 'Istoric'), h('p', null, 'Ultimele 40 de salvări. „Restaurează” pune pe site versiunea aleasă (și o adaugă în istoric, deci poți reveni oricând).'))), list);
+    (async () => {
+      try {
+        const res = await api('/api/admin/history');
+        const j = await res.json();
+        list.replaceChildren();
+        if (!j.items.length) { list.append(h('p', { class: 'empty-note' }, 'Nicio salvare încă.')); return; }
+        const fmt = new Intl.DateTimeFormat('ro-RO', { dateStyle: 'medium', timeStyle: 'short' });
+        j.items.forEach((it, idx) => list.append(h('div', { class: 'hrow' },
+          h('div', null, h('b', null, fmt.format(new Date(it.ts))), ' ', h('span', null, '· ' + it.who + (it.note ? ' · ' + it.note : '') + (idx === 0 ? ' · versiunea de acum' : ''))),
+          idx === 0 ? h('span', null, '') : h('button', { class: 'btn btn-ghost btn-sm', type: 'button', onclick: async () => {
+            if (isDirty() && !confirm('Ai modificări nesalvate care se vor pierde. Continui?')) return;
+            if (!confirm('Pui pe site versiunea din ' + fmt.format(new Date(it.ts)) + '?')) return;
+            const r = await api('/api/admin/restore/' + it.id, { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' });
+            if (!r.ok) { toast(await readErr(r), 'err'); return; }
+            const rj = await r.json(); S.data = rj.content; normalize(S.data); S.saved = JSON.stringify(S.data); S.meta = rj.meta; S.fromDefault = false;
+            render(); toast('Versiunea a fost restaurată pe site.');
+          } }, 'Restaurează'))));
+      } catch (e) { if (e.message !== 'auth') list.replaceChildren(h('p', { class: 'msg err' }, 'Nu am putut încărca istoricul.')); }
+    })();
+    return box;
+  }
+
+  function focusFirst(sel) { setTimeout(() => { const el = document.querySelector(sel); if (el) el.focus(); }, 30); }
+  function focusLast(sel) { setTimeout(() => { const els = document.querySelectorAll(sel); const el = els[els.length - 1]; if (el) { el.focus(); el.scrollIntoView({ block: 'center', behavior: 'smooth' }); } }, 30); }
+
+  function renderTop() {
+    const who = document.getElementById('who');
+    if (who) who.replaceChildren('Conectat ca ', h('b', null, S.user || ''));
+  }
+
+  function render() {
+    const y = window.scrollY;
+    const view = S.tab === 'echipa' ? viewTeam() : S.tab === 'sponsori' ? viewSponsors() : S.tab === 'istoric' ? viewHistory() : viewAwards();
+    const fmt = new Intl.DateTimeFormat('ro-RO', { dateStyle: 'medium', timeStyle: 'short' });
+    app.replaceChildren(
+      h('header', { class: 'top' }, h('div', { class: 'wrap top-in' },
+        h('div', { class: 'brand' }, h('img', { src: '/assets/img/logo.png', alt: '' }), h('div', null, h('b', null, 'Homosapiens'), h('span', null, 'Administrare site'))),
+        h('div', { class: 'top-r' },
+          h('span', { class: 'who', id: 'who' }, 'Conectat ca ', h('b', null, S.user || '')),
+          h('a', { class: 'btn btn-ghost btn-sm', href: '/', target: '_blank', rel: 'noopener' }, 'Vezi site-ul'),
+          h('button', { class: 'btn btn-ghost btn-sm', type: 'button', onclick: async () => {
+            if (isDirty() && !confirm('Ai modificări nesalvate. Ieși oricum?')) return;
+            await fetch('/api/logout', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: '{}' });
+            S.data = null; S.saved = ''; showLogin();
+          } }, 'Ieși')))),
+      h('main', { class: 'wrap' },
+        h('nav', { class: 'tabs', 'aria-label': 'Secțiuni' }, TABS.map(([id, label]) => h('button', { class: 'tab' + (S.tab === id ? ' on' : ''), type: 'button', 'aria-pressed': S.tab === id ? 'true' : 'false', onclick: () => { S.tab = id; window.scrollTo(0, 0); render(); } }, label))),
+        S.meta ? h('p', { class: 'hint', style: 'margin-top:6px' }, 'Ultima salvare: ' + fmt.format(new Date(S.meta.ts)) + ', de ' + S.meta.who + '.') : null,
+        view),
+      h('div', { class: 'bar', id: 'bar' }, h('div', { class: 'bar-in' },
+        h('div', { class: 'state' }, h('span', { class: 'dot' }), h('span', { id: 'bar-text' })),
+        h('div', { class: 'bar-acts' },
+          h('button', { class: 'btn btn-ghost', id: 'undo', type: 'button', onclick: undo }, 'Anulează'),
+          h('button', { class: 'btn btn-primary', id: 'save', type: 'button', onclick: save }, 'Salvează pe site'))))
+    );
+    window.scrollTo(0, y);
+    updateBar();
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>
