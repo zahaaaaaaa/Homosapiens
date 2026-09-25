@@ -1,5 +1,5 @@
 /assets/*
-  Cache-Control: public, max-age=2592000
+  Cache-Control: public, max-age=86400
 /support.js
   Cache-Control: public, max-age=86400
 /*
