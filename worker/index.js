@@ -266,6 +266,11 @@ async function api(request, env, url) {
   const path = url.pathname;
   const method = request.method;
 
+  if (path === '/api/version' && method === 'GET') {
+    const v = env.CF_VERSION_METADATA || {};
+    return json({ version: v.id || null, tag: v.tag || null, configured: !!env.ADMIN_USERS });
+  }
+
   if (path === '/api/content' && method === 'GET') {
     const cur = await store.getContent();
     if (!cur) return new Response(null, { status: 204, headers: { 'cache-control': 'no-store' } });

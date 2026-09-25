@@ -12,5 +12,6 @@
     "bindings": [{ "name": "STORE", "class_name": "HsStore" }]
   },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["HsStore"] }],
+  "version_metadata": { "binding": "CF_VERSION_METADATA" },
   "observability": { "enabled": true }
 }
