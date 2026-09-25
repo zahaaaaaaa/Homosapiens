@@ -1044,7 +1044,22 @@ class Component extends DCLogic {
             }
           }
         });
-        this.hsYTIv = setInterval(() => { try { if (pl.getCurrentTime && pl.getCurrentTime() >= END - 0.3) pl.seekTo(START, true); } catch (x) {} }, 500);
+        const kick = () => {
+          try {
+            const st = pl.getPlayerState ? pl.getPlayerState() : 1;
+            if (st !== 1 && st !== 3) { pl.mute(); pl.playVideo(); }
+          } catch (x) {}
+        };
+        let n = 0;
+        this.hsYTIv = setInterval(() => {
+          try {
+            if (pl.getCurrentTime && pl.getCurrentTime() >= END - 0.3) pl.seekTo(START, true);
+            n += 1; if (n % 4 === 0 && document.visibilityState === 'visible') kick();
+          } catch (x) {}
+        }, 500);
+        ['visibilitychange', 'pointerdown', 'keydown', 'touchstart', 'scroll'].forEach((ev) => {
+          try { window.addEventListener(ev, kick, { passive: true }); } catch (x) {}
+        });
       } catch (x) {}
     };
     if (window.YT && window.YT.Player) { make(); return; }
