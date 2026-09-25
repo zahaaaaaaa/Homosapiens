@@ -14,7 +14,7 @@ Linkuri directe către taburi: `/#echipa`, `/#premii`, `/#despre`, `/#sponsori`,
 
 Acolo se editează premiile (pe sezoane), echipa (cu poze) și sponsorii (cu logo). Ce se salvează apare imediat pe site; fiecare salvare intră în „Istoric” și poate fi restaurată.
 
-Conturile **nu** sunt în acest repo. Ele stau în secretul `ADMIN_USERS` al Worker-ului (Cloudflare → Workers & Pages → homosapiens → Settings → Variables and Secrets), sub forma:
+Conturile **nu** sunt în acest repo. Ele stau în secretul `ADMIN_USERS` al Worker-ului (Cloudflare → Workers & Pages → homosapienss, Worker-ul cu domeniul homosapiens.ro → Settings → Variables and Secrets), sub forma:
 
 ```
 utilizator:parola;alt_utilizator:alta_parola

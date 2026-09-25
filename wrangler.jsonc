@@ -1,6 +1,6 @@
 {
   // Cloudflare Worker: serves ./public and the /api used by homosapiens.ro/update
-  "name": "homosapiens",
+  "name": "homosapienss",
   "main": "worker/index.js",
   "compatibility_date": "2026-06-01",
   "assets": {
