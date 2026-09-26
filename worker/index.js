@@ -6,14 +6,11 @@
  * its version history, uploaded images, login sessions, failed-login counters and the
  * messages sent through the contact form.
  *
- * Accounts live in the Durable Object and are managed from /update ("Conturi" tab). They were
- * first added with a one-time activation link (/update/#setup=...): the link carries the
- * account lines, and SETUP_HASH below is only a fingerprint of that content, so this public
- * repository holds no password material. Optionally, more accounts can come from the
- * ADMIN_USERS secret in the Cloudflare dashboard, in either form:
+ * Accounts come only from the ADMIN_USERS secret in the Cloudflare dashboard (Worker
+ * "homosapienss" -> Settings -> Variables and Secrets, type Secret), in either form:
  *   user:password;user2:password2          (plain)
- *   user:pbkdf2$20000$<salt>$<hash>        (hashed, produced by /update/parola/)
- * Accounts from the secret take precedence over site accounts with the same name.
+ *   user:pbkdf2$100000$<salt>$<hash>       (PBKDF2-SHA256, salt and hash in base64)
+ * Both forms can be mixed. Nothing about accounts is stored in this repository.
  *
  * Contact form email: the MAILER binding (send_email in wrangler.jsonc) sends each message
  * to the team inbox. It works once Email Routing is on for homosapiens.ro and the inbox is a

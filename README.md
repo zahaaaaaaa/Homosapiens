@@ -29,7 +29,7 @@ Conturile **nu** sunt în acest repo. Ele stau în `ADMIN_USERS` la Worker-ul **
 utilizator:parola;alt_utilizator:alta_parola
 ```
 
-sau, mai sigur, cu parole criptate generate la `homosapiens.ro/update/parola/`.
+Merge și forma criptată `utilizator:pbkdf2$100000$<salt>$<hash>` (PBKDF2-SHA256).
 
 ## Formularul de contact
 
