@@ -159,6 +159,31 @@ details.tr[open] summary::before{content:"− "}
 .toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);z-index:40;max-width:min(92vw,520px);padding:12px 16px;border-radius:14px;font-weight:700;font-size:14px;box-shadow:0 20px 40px -20px rgba(0,0,0,.4);animation:tIn .35s var(--ease)}
 .toast.ok{background:var(--ok);color:#fff}.toast.err{background:var(--danger);color:#fff}
 @keyframes tIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+/* v3: sections, contacts, bank accounts, robots */
+.sect{display:flex;flex-direction:column;gap:14px;margin-bottom:18px}
+.sect h3{font:800 19px/1.2 var(--f-display);letter-spacing:-.02em}
+.shead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.rec{flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.rec.on{border-color:transparent;background:var(--ok-soft)}
+.rec .hint{max-width:72ch;margin-top:4px}
+.rows{display:flex;flex-direction:column;gap:10px}
+.prow,.brow{display:grid;gap:10px;align-items:end;padding:14px;border-radius:16px;background:var(--bg);border:1px solid var(--line)}
+.prow.off,.brow.off{opacity:.6}
+.prow{grid-template-columns:56px minmax(0,1.3fr) minmax(0,.8fr) minmax(0,1fr) minmax(0,1.1fr)}
+.brow{grid-template-columns:minmax(0,.7fr) minmax(0,1.7fr) minmax(0,1.2fr) minmax(0,.9fr)}
+.rfoot{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.av{width:56px;height:56px;border-radius:14px;object-fit:cover;object-position:center 25%;background:var(--surface-2);display:grid;place-items:center;font:800 18px var(--f-display);color:var(--ink-2)}
+.hint.ok{color:var(--ok);font-weight:700}.hint.bad{color:var(--danger);font-weight:700}
+textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
+.trg1{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
+.grid.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.bot{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:20px;background:var(--surface);border:1px solid var(--line)}
+.bot.off{opacity:.62}
+.stage{position:relative;aspect-ratio:5/4;border-radius:14px;overflow:hidden;display:grid;place-items:center;padding:14px;background:radial-gradient(90% 85% at 50% 42%,#fff,#E6E9EF)}
+.stage img{max-width:100%;max-height:100%;object-fit:contain}
+.stage .hint{color:#5D626E}
+@media(max-width:980px){.prow{grid-template-columns:56px minmax(0,1fr) minmax(0,1fr)}.prow .wide{grid-column:2/-1}.brow{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.brow .wide{grid-column:1/-1}.grid.g3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.prow{grid-template-columns:56px minmax(0,1fr)}.prow > .field{grid-column:1/-1}.brow{grid-template-columns:1fr}.grid.g3{grid-template-columns:1fr}}
 .overlay{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(6px);padding:16px}
 </style>
 </head>
@@ -167,22 +192,24 @@ details.tr[open] summary::before{content:"− "}
 <script>
 (() => {
   'use strict';
-  const ROLES = [
-    ['prog', 'Programare'], ['eng', 'Inginerie'], ['cad', 'CAD'], ['pr', 'PR'], ['prLead', 'PR și outreach (responsabil)'], ['drive', 'Driver'],
-    ['hwcad', 'Hardware și CAD'], ['driveEng', 'Driver și inginerie'], ['peer', 'Peer mentor'], ['member', 'Membru']
-  ];
+  const ROLES = [['software', 'Software (programare)'], ['hardware', 'Hardware (inginerie și CAD)'], ['pr', 'PR'], ['peer', 'Peer mentor'], ['member', 'Membru']];
+  const OLD_ROLES = { prog: 'software', eng: 'hardware', cad: 'hardware', hwcad: 'hardware', drive: 'hardware', driveEng: 'hardware', prLead: 'pr' };
+  const CURS = [['RON', 'Lei (RON)'], ['EUR', 'Euro (EUR)'], ['USD', 'Dolari (USD)'], ['GBP', 'Lire (GBP)']];
+  const BANKS = { BTRL: 'Banca Transilvania', REVO: 'Revolut', BRDE: 'BRD', RNCB: 'BCR', INGB: 'ING Bank', RZBR: 'Raiffeisen Bank', CECE: 'CEC Bank', BACX: 'UniCredit Bank', OTPV: 'OTP Bank', BREL: 'Libra Internet Bank', UGBI: 'Garanti BBVA', PIRB: 'First Bank', CARP: 'Patria Bank', TREZ: 'Trezoreria Statului' };
+  const DEF_SETTINGS = { recruiting: false, email: 'team@homosapiens.ro' };
+  const V3_KEYS = ['settings', 'contacts', 'bank', 'robots'];
   const COUNTRIES = [
     ['ro', 'România'], ['us', 'SUA'], ['it', 'Italia'], ['de', 'Germania'], ['fr', 'Franța'], ['es', 'Spania'], ['gb', 'Marea Britanie'],
     ['gr', 'Grecia'], ['hu', 'Ungaria'], ['pl', 'Polonia'], ['tr', 'Turcia'], ['md', 'Republica Moldova'], ['bg', 'Bulgaria'], ['nl', 'Țările de Jos'], ['', 'Fără țară']
   ];
   const PLACES = [[0, 'Fără loc'], [1, 'Locul 1'], [2, 'Locul 2'], [3, 'Locul 3']];
-  const TABS = [['premii', 'Premii'], ['echipa', 'Echipa'], ['sponsori', 'Sponsori'], ['mesaje', 'Mesaje'], ['istoric', 'Istoric']];
+  const TABS = [['premii', 'Premii'], ['roboti', 'Roboți'], ['echipa', 'Echipa'], ['sponsori', 'Sponsori'], ['contact', 'Contact și conturi'], ['mesaje', 'Mesaje'], ['istoric', 'Istoric']];
   const TOPIC_RO = { sponsor: 'Sponsorizare', collab: 'Colaborare', press: 'Presă', other: 'Altceva' };
   const SUPPORT_RO = { money: 'Financiar', goods: 'Produse sau materiale', services: 'Servicii', mentoring: 'Mentorat sau vizite' };
   const AMOUNT_RO = { a1: 'Sub 1.000 lei', a2: '1.000-5.000 lei', a3: '5.000-10.000 lei', a4: 'Peste 10.000 lei' };
   const LANGS = [['en', 'English'], ['fr', 'Français'], ['zh', '中文']];
 
-  const S = { user: null, data: null, saved: '', meta: null, tab: 'premii', fromDefault: false, originals: {}, busy: {}, msgNew: 0 };
+  const S = { user: null, data: null, saved: '', meta: null, tab: 'premii', fromDefault: false, originals: {}, busy: {}, msgNew: 0, cut: {} };
   const app = document.getElementById('app');
 
   /* ---------- tiny DOM helper ---------- */
@@ -267,6 +294,12 @@ details.tr[open] summary::before{content:"− "}
     const res = await fetch('/api/content', { cache: 'no-store' });
     if (res.status === 200) { S.data = await res.json(); S.fromDefault = false; }
     else { S.data = await (await fetch('/content-default.json', { cache: 'no-store' })).json(); S.fromDefault = true; }
+    if (!S.fromDefault && V3_KEYS.some((k) => S.data[k] === undefined)) {
+      try {
+        const def = await (await fetch('/content-default.json', { cache: 'no-store' })).json();
+        for (const k of V3_KEYS) if (S.data[k] === undefined && def[k] !== undefined) S.data[k] = def[k];
+      } catch { /* empty lists are fine */ }
+    }
     normalize(S.data);
     S.saved = S.fromDefault ? '' : JSON.stringify(S.data);
     render();
@@ -275,6 +308,11 @@ details.tr[open] summary::before{content:"− "}
   function normalize(d) {
     d.v = 1; d.seasons = d.seasons || []; d.team = d.team || []; d.sponsors = d.sponsors || []; d.mig = Array.isArray(d.mig) ? d.mig : [];
     for (const s of d.seasons) { s.awards = s.awards || []; for (const a of s.awards) { a.name = a.name || {}; a.event = a.event || {}; a.note = a.note || {}; } }
+    d.settings = Object.assign({}, DEF_SETTINGS, d.settings && typeof d.settings === 'object' ? d.settings : {});
+    for (const k of ['contacts', 'bank', 'robots']) if (!Array.isArray(d[k])) d[k] = [];
+    for (const m of d.team) if (OLD_ROLES[m.role]) m.role = OLD_ROLES[m.role];
+    for (const c of d.contacts) c.role = c.role && typeof c.role === 'object' ? c.role : {};
+    for (const r of d.robots) { r.name = r.name || {}; r.text = r.text || {}; }
   }
 
   /* ---------- state ---------- */
@@ -320,12 +358,30 @@ details.tr[open] summary::before{content:"− "}
       oninput: (e) => { const v = e.target.value; if (v) m.ro = v; else delete m.ro; if (opts.required) e.target.classList.toggle('empty', !v.trim()); changed(); } });
     return h('div', { class: 'field ' + (opts.cls || '') }, h('span', { class: 'lbl' }, label), inp);
   }
-  function trInputs(label, obj, key) {
+  function trInputs(label, obj, key, area) {
     obj[key] = obj[key] || {};
     const m = obj[key];
     return LANGS.map(([l, ln]) => h('div', { class: 'field' }, h('span', { class: 'lbl' }, label + ' · ' + ln),
-      h('input', { class: 'in', value: m[l] || '', placeholder: m.ro ? 'gol = ca în română' : '', 'aria-label': label + ' ' + ln,
+      h(area ? 'textarea' : 'input', { class: 'in', value: m[l] || '', placeholder: m.ro ? 'gol = ca în română' : '', 'aria-label': label + ' ' + ln, rows: area ? 3 : null,
         oninput: (e) => { const v = e.target.value; if (v) m[l] = v; else delete m[l]; changed(); } })));
+  }
+  function mlArea(label, obj, key, opts = {}) {
+    obj[key] = obj[key] || {};
+    const m = obj[key];
+    const inp = h('textarea', { class: 'in', rows: 3, placeholder: opts.ph || '', maxlength: opts.max || 300, 'aria-label': label,
+      oninput: (e) => { const v = e.target.value; if (v) m.ro = v; else delete m.ro; changed(); } });
+    inp.value = m.ro || '';
+    return h('div', { class: 'field ' + (opts.cls || '') }, h('span', { class: 'lbl' }, label), inp);
+  }
+  function ibanInfo(raw) {
+    const ib = String(raw || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (!ib) return { cls: 'bad', msg: 'Scrie IBAN-ul.' };
+    const shape = /^[A-Z]{2}\d{2}[A-Z0-9]{10,30}$/.test(ib) && !(ib.startsWith('RO') && ib.length !== 24);
+    let m = 0;
+    for (const ch of ib.slice(4) + ib.slice(0, 4)) { const v = ch >= 'A' ? String(ch.charCodeAt(0) - 55) : ch; for (const dg of v) m = (m * 10 + Number(dg)) % 97; }
+    if (!shape || m !== 1) return { cls: 'bad', msg: 'IBAN-ul nu pare corect. Verifică literele și cifrele.' };
+    const bank = BANKS[ib.slice(4, 8)];
+    return { cls: 'ok', msg: 'IBAN corect' + (bank ? ' · ' + bank : '') + '.', bank: bank || '' };
   }
   function select(label, options, value, onChange, cls) {
     const sel = h('select', { class: 'sel', 'aria-label': label, onchange: (e) => { onChange(e.target.value); changed(); } },
@@ -404,6 +460,68 @@ details.tr[open] summary::before{content:"− "}
     out.getContext('2d').drawImage(c, x0, y0, out.width, out.height, 0, 0, out.width, out.height);
     return { blob: await toBlob(out, 'image/png'), ar: out.width / out.height };
   }
+  /* Robot renders: scale to 1000 px, clear the white background (flood fill from the edges plus
+     bigger white holes seen through the frame), soften the edge, trim, save as WebP (PNG if the browser can't). */
+  async function makeCutout(file, removeBg) {
+    const img = await decode(file);
+    let scale = Math.min(1, 1000 / Math.max(img.width, img.height));
+    for (let attempt = 0; attempt < 4; attempt++) {
+      const w = Math.max(1, Math.round(img.width * scale)), hh = Math.max(1, Math.round(img.height * scale));
+      const c = document.createElement('canvas'); c.width = w; c.height = hh;
+      const x = c.getContext('2d'); x.drawImage(img, 0, 0, w, hh);
+      const id = x.getImageData(0, 0, w, hh), d = id.data, N = w * hh;
+      if (removeBg) {
+        const white = (p) => { const i = p * 4; return d[i + 3] < 16 || Math.min(d[i], d[i + 1], d[i + 2]) >= 246; };
+        const bg = new Uint8Array(N), seen = new Uint8Array(N);
+        const fill = (start, mark) => {
+          const stack = [start], got = [];
+          seen[start] = 1;
+          while (stack.length) {
+            const p = stack.pop(); got.push(p);
+            const px = p % w, py = (p - px) / w;
+            const nb = [px > 0 ? p - 1 : -1, px < w - 1 ? p + 1 : -1, py > 0 ? p - w : -1, py < hh - 1 ? p + w : -1];
+            for (const q of nb) if (q >= 0 && !seen[q] && white(q)) { seen[q] = 1; stack.push(q); }
+          }
+          if (mark || got.length >= 60) for (const p of got) bg[p] = 1;
+        };
+        for (let px = 0; px < w; px++) { for (const p of [px, (hh - 1) * w + px]) if (!seen[p] && white(p)) fill(p, true); }
+        for (let py = 0; py < hh; py++) { for (const p of [py * w, py * w + w - 1]) if (!seen[p] && white(p)) fill(p, true); }
+        for (let p = 0; p < N; p++) if (!seen[p] && white(p)) fill(p, false);
+        // soft edge: pixels within 2 px of the background get alpha from how far they are from white
+        let near = bg;
+        for (let r = 0; r < 2; r++) {
+          const nx = new Uint8Array(N);
+          for (let p = 0; p < N; p++) {
+            if (near[p]) { nx[p] = 1; continue; }
+            const px = p % w;
+            if ((px > 0 && near[p - 1]) || (px < w - 1 && near[p + 1]) || (p >= w && near[p - w]) || (p < N - w && near[p + w])) nx[p] = 1;
+          }
+          near = nx;
+        }
+        for (let p = 0; p < N; p++) {
+          const i = p * 4;
+          if (bg[p]) { d[i + 3] = 0; continue; }
+          if (!near[p]) continue;
+          const a = Math.max(0, Math.min(1, (255 - Math.min(d[i], d[i + 1], d[i + 2])) / 70));
+          if (a < 0.02) { d[i + 3] = 0; continue; }
+          for (let k = 0; k < 3; k++) d[i + k] = Math.max(0, Math.min(255, Math.round((d[i + k] - 255 * (1 - a)) / a)));
+          d[i + 3] = Math.round(a * (d[i + 3]));
+        }
+        x.putImageData(id, 0, 0);
+      }
+      // trim to what is visible
+      let x0 = w, y0 = hh, x1 = -1, y1 = -1;
+      for (let py = 0; py < hh; py++) for (let px = 0; px < w; px++) if (d[(py * w + px) * 4 + 3] > 12) { if (px < x0) x0 = px; if (px > x1) x1 = px; if (py < y0) y0 = py; if (py > y1) y1 = py; }
+      if (x1 < 0) throw new Error('empty');
+      const out = document.createElement('canvas'); out.width = x1 - x0 + 1; out.height = y1 - y0 + 1;
+      out.getContext('2d').drawImage(c, x0, y0, out.width, out.height, 0, 0, out.width, out.height);
+      let blob = await toBlob(out, 'image/webp', 0.9);
+      if (!blob || blob.type !== 'image/webp') blob = await toBlob(out, 'image/png');
+      if (blob && blob.size <= 1400 * 1024) return { blob };
+      scale *= 0.75;
+    }
+    throw new Error('Imaginea e prea mare chiar și micșorată. Încearcă o poză mai mică.');
+  }
   async function upload(blob) {
     const res = await api('/api/admin/upload', { method: 'POST', headers: { 'content-type': blob.type }, body: blob });
     if (!res.ok) throw new Error(await readErr(res));
@@ -461,8 +579,12 @@ details.tr[open] summary::before{content:"− "}
     const d = S.data;
     const box = h('div');
     box.append(h('div', { class: 'head' },
-      h('div', null, h('h2', null, 'Echipa'), h('p', null, 'Ordinea de aici e ordinea de pe site. Poza se decupează automat la 4:5; fără poză, pe site apar inițialele. Rolul decide și filtrul (ex. „Hardware și CAD” apare la Inginerie și la CAD).')),
+      h('div', null, h('h2', null, 'Echipa'), h('p', null, 'Ordinea de aici e ordinea de pe site. Poza se decupează automat la 4:5; fără poză, pe site apar inițialele. Rolul decide și filtrul de pe site: Software, Hardware sau PR.')),
       h('button', { class: 'btn btn-primary', type: 'button', onclick: () => { d.team.push({ id: uid(), active: true, name: '', role: 'member', roleText: '', alumni: false, grad: '', photo: '' }); render(); focusLast('.person .nm input'); } }, icon(I.plus), 'Membru nou')));
+    const rec = h('section', { class: 'card sect rec' + (d.settings.recruiting ? ' on' : '') },
+      h('div', null, h('h3', null, 'Recrutări'), h('p', { class: 'hint' }, 'Când e bifat, pe pagina Echipa apare cardul „Vrei în echipă?”, cu link spre formularul de contact. Bifează-l doar în perioada de recrutări.')),
+      check('Arată „Vrei în echipă?” pe site', d.settings, 'recruiting', (v) => rec.classList.toggle('on', v)));
+    box.append(rec);
     const grid = h('div', { class: 'grid' });
     d.team.forEach((m, i) => {
       const ph = h('div', { class: 'ph' + (S.busy[m.id] ? ' busy' : '') },
@@ -523,6 +645,113 @@ details.tr[open] summary::before{content:"− "}
       grid.append(card);
     });
     box.append(grid);
+    return box;
+  }
+
+  function viewRobots() {
+    const d = S.data;
+    const box = h('div');
+    box.append(h('div', { class: 'head' },
+      h('div', null, h('h2', null, 'Roboți'), h('p', null, 'Apar pe pagina Premii, la „Evoluția roboților”, în ordinea de aici, și lângă sezonul lor, în palmares. La încărcare, fundalul alb al pozei se scoate automat; debifează dacă poza nu are fundal alb.')),
+      h('button', { class: 'btn btn-primary', type: 'button', onclick: () => { d.robots.push({ id: uid(), active: true, season: (d.seasons[0] && d.seasons[0].id) || '', name: {}, text: {}, photo: '' }); render(); focusLast('.bot .nm input'); } }, icon(I.plus), 'Robot nou')));
+    const seasonOpts = [['', 'Fără sezon']].concat(d.seasons.map((se) => [se.id, (se.season || '?') + (se.game ? ' · ' + se.game : '')]));
+    const grid = h('div', { class: 'grid g3' });
+    if (!d.robots.length) box.append(h('p', { class: 'empty-note' }, 'Niciun robot încă. Apasă „Robot nou”.'));
+    d.robots.forEach((r, i) => {
+      if (S.cut[r.id] === undefined) S.cut[r.id] = true;
+      const opt = { cut: S.cut[r.id] };
+      const stage = h('div', { class: 'stage' + (S.busy[r.id] ? ' busy' : '') }, r.photo ? h('img', { src: r.photo, alt: '' }) : h('span', { class: 'hint' }, 'Fără poză'));
+      const card = h('article', { class: 'bot' + (r.active ? '' : ' off') }, stage,
+        h('div', { class: 'row2' },
+          h('button', { class: 'btn btn-soft btn-sm', type: 'button', onclick: () => pickFile(async (f) => {
+            S.busy[r.id] = true; render();
+            try { const { blob } = await makeCutout(f, S.cut[r.id] !== false); r.photo = await upload(blob); toast('Poza e încărcată. Nu uita să salvezi.'); }
+            catch (e) { if (e.message !== 'auth') toast(e.message === 'decode' ? 'Nu pot citi imaginea. Folosește JPG sau PNG.' : e.message === 'empty' ? 'Imaginea pare goală.' : (e.message || 'Încărcarea a eșuat.'), 'err'); }
+            finally { delete S.busy[r.id]; render(); }
+          }) }, r.photo ? 'Schimbă poza' : 'Încarcă poza'),
+          h('label', { class: 'chk' + (opt.cut ? ' on' : '') }, h('input', { type: 'checkbox', checked: opt.cut, onchange: (e) => { S.cut[r.id] = e.target.checked; e.target.parentNode.classList.toggle('on', e.target.checked); } }), 'Scoate fundalul alb')),
+        mlText('Titlu', r, 'name', { ph: 'DECODE · League Meets', required: true, cls: 'nm', max: 80 }),
+        select('Sezon', seasonOpts, r.season || '', (v) => { r.season = v; }),
+        mlArea('Descriere', r, 'text', { ph: 'Ce are special robotul', max: 320 }),
+        h('details', { class: 'tr' }, h('summary', null, 'Traduceri (opțional)'),
+          h('p', { class: 'hint', style: 'margin-top:8px' }, 'Dacă lași un câmp gol, pe site apare textul în română.'),
+          h('div', { class: 'trg1' }, trInputs('Titlu', r, 'name')),
+          h('div', { class: 'trg1' }, trInputs('Descriere', r, 'text', true))),
+        h('div', { class: 'row2' }, check('Activ', r, 'active', (v) => card.classList.toggle('off', !v))),
+        h('div', { class: 'acts' }, moveBtns(d.robots, i, true), delBtn('robotul', () => d.robots.splice(i, 1))));
+      grid.append(card);
+    });
+    box.append(grid);
+    return box;
+  }
+
+  function viewContact() {
+    const d = S.data;
+    const box = h('div');
+    box.append(h('div', { class: 'head' }, h('div', null, h('h2', null, 'Contact și conturi'), h('p', null, 'Ce apare pe pagina Contact și la Sponsori. Ordinea persoanelor și a conturilor de aici e ordinea de pe site.'))));
+
+    box.append(h('section', { class: 'card sect' },
+      h('h3', null, 'Emailul echipei'),
+      text('Email afișat pe site', d.settings, 'email', { ph: 'team@homosapiens.ro', max: 120, required: true }),
+      h('p', { class: 'hint' }, 'Apare pe pagina Contact și în butonul „Trimite pe email”. Mesajele trimise din formularul de pe site ajung în continuare automat în inboxul echipei și în tabul Mesaje.')));
+
+    const photoOpts = (c) => {
+      const o = [['', 'Fără poză (inițiale)']].concat(d.team.filter((m) => m.photo).map((m) => [m.photo, 'Poza lui ' + m.name]));
+      if (c.photo && !o.some(([v]) => v === c.photo)) o.push([c.photo, 'Poza încărcată']);
+      return o;
+    };
+    const people = h('div', { class: 'rows' });
+    if (!d.contacts.length) people.append(h('p', { class: 'empty-note' }, 'Nicio persoană. Apasă „Adaugă persoană”.'));
+    d.contacts.forEach((c, i) => {
+      const avatar = c.photo ? h('img', { class: 'av', src: c.photo, alt: '' }) : h('span', { class: 'av' }, initials(String(c.name || '').replace(/^\s*(prof|dr|ing|conf|lect)\.?\s+/i, '')));
+      const row = h('div', { class: 'prow' + (c.active ? '' : ' off') },
+        avatar,
+        text('Nume', c, 'name', { ph: 'Prenume Nume', max: 80, required: true, cls: 'nm' }),
+        mlText('Rol', c, 'role', { ph: 'PR', max: 60 }),
+        text('Telefon', c, 'phone', { ph: '+40 7xx xxx xxx', max: 32 }),
+        h('div', { class: 'field wide' }, h('span', { class: 'lbl' }, 'Poză'),
+          h('div', { class: 'row2' },
+            h('select', { class: 'sel', style: 'flex:1;min-width:0', 'aria-label': 'Poză', onchange: (e) => { c.photo = e.target.value; render(); changed(); } },
+              photoOpts(c).map(([v, t]) => h('option', { value: v, selected: v === (c.photo || '') ? true : null }, t))),
+            h('button', { class: 'btn btn-soft btn-sm', type: 'button', onclick: () => pickFile(async (f) => {
+              try { const { blob } = await makePhoto(f); c.photo = await upload(blob); toast('Poza e încărcată. Nu uita să salvezi.'); render(); }
+              catch (e) { if (e.message !== 'auth') toast(e.message === 'decode' ? 'Nu pot citi imaginea. Folosește JPG sau PNG.' : (e.message || 'Încărcarea a eșuat.'), 'err'); }
+            }) }, 'Încarcă'))),
+        h('div', { class: 'rfoot' },
+          h('div', { class: 'row2' }, check('Activ', c, 'active', (v) => row.classList.toggle('off', !v))),
+          h('details', { class: 'tr', style: 'flex:1;min-width:220px;border-top:0;padding-top:0' }, h('summary', null, 'Traduceri rol'), h('div', { class: 'trg' }, trInputs('Rol', c, 'role'))),
+          h('div', { class: 'acts' }, moveBtns(d.contacts, i), delBtn(c.name || 'persoana', () => d.contacts.splice(i, 1)))));
+      people.append(row);
+    });
+    box.append(h('section', { class: 'card sect' },
+      h('div', { class: 'shead' }, h('div', null, h('h3', null, 'Cu cine vorbești'), h('p', { class: 'hint', style: 'margin-top:4px' }, 'Persoanele de contact, cu telefon. Apar pe pagina Contact și la Sponsori, la „Invitație”.')),
+        h('button', { class: 'btn btn-soft btn-sm', type: 'button', onclick: () => { d.contacts.push({ id: uid(), active: true, name: '', role: { ro: 'PR' }, phone: '', photo: '' }); render(); focusLast('.prow .nm input'); } }, icon(I.plus), 'Adaugă persoană')),
+      people));
+
+    const accounts = h('div', { class: 'rows' });
+    if (!d.bank.length) accounts.append(h('p', { class: 'empty-note' }, 'Niciun cont. Apasă „Adaugă cont”.'));
+    d.bank.forEach((b, i) => {
+      const status = h('p', { class: 'hint' });
+      const bankField = h('input', { class: 'in', value: b.bank || '', maxlength: 60, 'aria-label': 'Banca', oninput: (e) => { b.bank = e.target.value; changed(); } });
+      const upd = () => { const v = ibanInfo(b.iban); status.textContent = v.msg; status.className = 'hint ' + v.cls; bankField.placeholder = v.bank || 'numele băncii'; };
+      const ibanIn = h('input', { class: 'in', value: b.iban || '', maxlength: 42, placeholder: 'RO00 XXXX 0000 0000 0000 0000', 'aria-label': 'IBAN', spellcheck: 'false', autocapitalize: 'characters',
+        style: 'font-family:ui-monospace,Menlo,Consolas,monospace', oninput: (e) => { b.iban = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); upd(); changed(); } });
+      upd();
+      const row = h('div', { class: 'brow' + (b.active ? '' : ' off') },
+        select('Moneda', CURS, b.cur || 'RON', (v) => { b.cur = v; }),
+        h('div', { class: 'field wide' }, h('span', { class: 'lbl' }, 'IBAN'), ibanIn),
+        text('Titular', b, 'holder', { ph: 'Numele de pe cont', max: 100 }),
+        h('div', { class: 'field' }, h('span', { class: 'lbl' }, 'Banca (opțional)'), bankField),
+        h('div', { class: 'rfoot' },
+          status,
+          h('div', { class: 'row2', style: 'align-items:center' }, check('Activ', b, 'active', (v) => row.classList.toggle('off', !v)),
+            h('div', { class: 'acts' }, moveBtns(d.bank, i), delBtn('contul', () => d.bank.splice(i, 1))))));
+      accounts.append(row);
+    });
+    box.append(h('section', { class: 'card sect' },
+      h('div', { class: 'shead' }, h('div', null, h('h3', null, 'Conturi bancare'), h('p', { class: 'hint', style: 'margin-top:4px' }, 'Apar la Sponsori („Sprijin direct”) și pe pagina Contact, fiecare cu buton de copiere. Banca se recunoaște automat din IBAN; câmpul „Banca” e doar dacă vrei alt nume.')),
+        h('button', { class: 'btn btn-soft btn-sm', type: 'button', onclick: () => { d.bank.push({ id: uid(), active: true, cur: 'RON', holder: '', iban: '', bank: '' }); render(); focusLast('.brow input[aria-label="IBAN"]'); } }, icon(I.plus), 'Adaugă cont')),
+      accounts));
     return box;
   }
 
@@ -662,7 +891,7 @@ details.tr[open] summary::before{content:"− "}
 
   function render() {
     const y = window.scrollY;
-    const view = S.tab === 'echipa' ? viewTeam() : S.tab === 'sponsori' ? viewSponsors() : S.tab === 'mesaje' ? viewMessages() : S.tab === 'istoric' ? viewHistory() : viewAwards();
+    const view = S.tab === 'echipa' ? viewTeam() : S.tab === 'roboti' ? viewRobots() : S.tab === 'contact' ? viewContact() : S.tab === 'sponsori' ? viewSponsors() : S.tab === 'mesaje' ? viewMessages() : S.tab === 'istoric' ? viewHistory() : viewAwards();
     const fmt = new Intl.DateTimeFormat('ro-RO', { dateStyle: 'medium', timeStyle: 'short' });
     app.replaceChildren(
       h('header', { class: 'top' }, h('div', { class: 'wrap top-in' },

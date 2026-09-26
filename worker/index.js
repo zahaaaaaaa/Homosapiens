@@ -6,10 +6,14 @@
  * its version history, uploaded images, login sessions, failed-login counters and the
  * messages sent through the contact form.
  *
- * Accounts come from the ADMIN_USERS secret, set in the Cloudflare dashboard:
+ * Accounts live in the Durable Object and are managed from /update ("Conturi" tab). They were
+ * first added with a one-time activation link (/update/#setup=...): the link carries the
+ * account lines, and SETUP_HASH below is only a fingerprint of that content, so this public
+ * repository holds no password material. Optionally, more accounts can come from the
+ * ADMIN_USERS secret in the Cloudflare dashboard, in either form:
  *   user:password;user2:password2          (plain)
- *   user:pbkdf2$100000$<salt>$<hash>       (hashed, produced by /update/parola/)
- * Both forms can be mixed. Nothing about accounts is stored in this repository.
+ *   user:pbkdf2$20000$<salt>$<hash>        (hashed, produced by /update/parola/)
+ * Accounts from the secret take precedence over site accounts with the same name.
  *
  * Contact form email: the MAILER binding (send_email in wrangler.jsonc) sends each message
  * to the team inbox. It works once Email Routing is on for homosapiens.ro and the inbox is a
@@ -26,7 +30,9 @@ const FAIL_WINDOW_MS = 15 * 60 * 1000;
 const MAX_FAILS_IP = 8;
 const MAX_FAILS_USER = 12;
 const HISTORY_KEEP = 40;
-const ROLES = ['prog', 'eng', 'cad', 'pr', 'prLead', 'drive', 'hwcad', 'driveEng', 'peer', 'member'];
+const ROLES = ['software', 'hardware', 'pr', 'peer', 'member', 'prog', 'eng', 'cad', 'prLead', 'drive', 'hwcad', 'driveEng'];
+const CURRENCIES = ['RON', 'EUR', 'USD', 'GBP'];
+const SITE_EMAIL = 'team@homosapiens.ro';
 const LANGS = ['ro', 'en', 'fr', 'zh'];
 const MSG_KEEP = 1000;
 const HIT_WINDOW_MS = 24 * 3600 * 1000;
@@ -315,8 +321,35 @@ function cleanContent(c) {
     size: ['x', 'w', 'm', 's'].includes(s && s.size) ? s.size : '',
     mono: !(s && s.mono === false)
   }));
+  const set = c.settings && typeof c.settings === 'object' ? c.settings : {};
+  const mail = str(set.email, 120);
+  const settings = { recruiting: bool(set.recruiting), email: EMAIL_RE.test(mail) ? mail : SITE_EMAIL };
+  const contacts = arr(c.contacts, 12).map((p) => ({
+    id: idOf(p && p.id),
+    active: bool(p && p.active),
+    name: str(p && p.name, 80),
+    role: ml(p && p.role, 60),
+    phone: str(p && p.phone, 32).replace(/[^\d+ ()-]/g, '').trim(),
+    photo: img(p && p.photo)
+  }));
+  const bank = arr(c.bank, 12).map((b) => ({
+    id: idOf(b && b.id),
+    active: bool(b && b.active),
+    cur: CURRENCIES.includes(b && b.cur) ? b.cur : 'RON',
+    holder: str(b && b.holder, 100),
+    iban: str(b && b.iban, 60).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 34),
+    bank: str(b && b.bank, 60)
+  }));
+  const robots = arr(c.robots, 24).map((r) => ({
+    id: idOf(r && r.id),
+    active: bool(r && r.active),
+    season: str(r && r.season, 40),
+    name: ml(r && r.name, 80),
+    text: ml(r && r.text, 320),
+    photo: img(r && r.photo)
+  }));
   const mig = arr(c.mig, 20).filter((x) => typeof x === 'string' && /^[\w.-]{1,40}$/.test(x));
-  return { v: 1, seasons, team, sponsors, mig };
+  return { v: 1, seasons, team, sponsors, settings, contacts, bank, robots, mig };
 }
 
 /* ---------- one-time content update (September 2026 partnership proposal) ----------
@@ -347,7 +380,7 @@ async function builtInContent(env, url) {
   } catch { return null; }
 }
 
-async function migrate(c, env, url) {
+async function migrateProposal(c, env, url) {
   if (!c || c.v !== 1) return false;
   const done = Array.isArray(c.mig) ? c.mig : [];
   if (done.includes(MIG)) return false;
@@ -378,6 +411,26 @@ async function migrate(c, env, url) {
     }
   }
   c.mig = done.concat([MIG]);
+  return true;
+}
+
+/* Version 3 (September 2026): Software / Hardware / PR roles, and the settings, contacts,
+ * bank accounts and robots that /update edits now. Stored content gets the built-in ones once. */
+const MIG3 = '2026-09-v3';
+const OLD_ROLES = { prog: 'software', eng: 'hardware', cad: 'hardware', hwcad: 'hardware', drive: 'hardware', driveEng: 'hardware', prLead: 'pr' };
+
+async function migrate(c, env, url) {
+  if (!c || c.v !== 1) return false;
+  let changed = await migrateProposal(c, env, url);
+  const done = Array.isArray(c.mig) ? c.mig : [];
+  if (done.includes(MIG3)) return changed;
+  const def = await builtInContent(env, url);
+  if (!def) return changed;
+  for (const m of c.team || []) if (m && OLD_ROLES[m.role]) m.role = OLD_ROLES[m.role];
+  for (const k of ['settings', 'contacts', 'bank', 'robots']) {
+    if (c[k] === undefined && def[k] !== undefined) c[k] = def[k];
+  }
+  c.mig = done.concat([MIG3]);
   return true;
 }
 

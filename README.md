@@ -12,9 +12,18 @@ Linkuri directe către taburi: `/#echipa`, `/#premii`, `/#despre`, `/#sponsori`,
 
 ## Administrare: homosapiens.ro/update
 
-Acolo se editează premiile (pe sezoane), echipa (cu poze) și sponsorii (cu logo). Ce se salvează apare imediat pe site; fiecare salvare intră în „Istoric” și poate fi restaurată. Tabul „Mesaje” arată ce trimit vizitatorii prin formularul de contact.
+Acolo se editează:
 
-Conturile **nu** sunt în acest repo. Ele stau în secretul `ADMIN_USERS` al Worker-ului (Cloudflare → Workers & Pages → homosapienss, Worker-ul cu domeniul homosapiens.ro → Settings → Variables and Secrets), sub forma:
+- **Premii**: sezoanele și premiile.
+- **Roboți**: roboții de pe pagina Premii („Evoluția roboților”), cu poză (fundalul alb se scoate automat la încărcare).
+- **Echipa**: membrii, cu poze și rol (Software, Hardware, PR), plus butonul pentru cardul „Vrei în echipă?” (pornit doar în perioada de recrutări).
+- **Sponsori**: logo-urile.
+- **Contact și conturi**: emailul afișat, persoanele de contact cu telefon și conturile bancare (IBAN, titular, bancă).
+- **Mesaje**: ce trimit vizitatorii prin formularul de contact.
+
+Ce se salvează apare imediat pe site; fiecare salvare intră în „Istoric” și poate fi restaurată.
+
+Conturile **nu** sunt în acest repo. Ele stau în `ADMIN_USERS` la Worker-ul **homosapienss** (Cloudflare → Workers & Pages → homosapienss → Settings → Variables and Secrets), de tip **Secret**, ca să nu se șteargă la deploy. Forma:
 
 ```
 utilizator:parola;alt_utilizator:alta_parola
@@ -35,4 +44,7 @@ Din `/update` → „Mesaje” → „Trimite un email de test” se verifică d
 
 - `src/Main.dc.html` este sursa paginii (formatul Claude Design); `public/index.html` se generează din ea.
 - **Versiunea 1** (înainte de redesign-ul din 26 septembrie 2026): commit `a4bfa82`. Pentru a reveni la ea, fișierele din `public/`, `worker/` și `src/` se readuc din acel commit.
-- **Versiunea 2** (26 septembrie 2026): textele din propunerea de parteneriat 2026-2027, harta drumurilor, bugetul, formularul de contact cu trimitere automată pe email.
+- **Versiunea 2** (26 septembrie 2026): textele din propunerea de parteneriat 2026-2027, harta drumurilor, bugetul, formularul de contact cu trimitere automată pe email. Salvată în branch-ul `versiunea-2` (commit `2df90d6`).
+- **Versiunea 3** (26 septembrie 2026): roboții la Premii, persoanele de contact cu telefon, conturile bancare, emailul team@homosapiens.ro, rolurile Software/Hardware/PR, cardul de recrutare cu buton în /update, texte din prezentarea 2026.
+
+Pentru a reveni la o versiune („revert 2”): fișierele din `public/`, `worker/`, `src/` și `wrangler.jsonc` se readuc din branch-ul `versiunea-1` sau `versiunea-2` și se face push pe `main`. Conținutul salvat din /update rămâne în Durable Object.
