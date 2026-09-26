@@ -45,6 +45,6 @@ Din `/update` → „Mesaje” → „Trimite un email de test” se verifică d
 - `src/Main.dc.html` este sursa paginii (formatul Claude Design); `public/index.html` se generează din ea.
 - **Versiunea 1** (înainte de redesign-ul din 26 septembrie 2026): commit `a4bfa82`. Pentru a reveni la ea, fișierele din `public/`, `worker/` și `src/` se readuc din acel commit.
 - **Versiunea 2** (26 septembrie 2026): textele din propunerea de parteneriat 2026-2027, harta drumurilor, bugetul, formularul de contact cu trimitere automată pe email. Salvată în branch-ul `versiunea-2` (commit `2df90d6`).
-- **Versiunea 3** (26 septembrie 2026): roboții la Premii, persoanele de contact cu telefon, conturile bancare, emailul team@homosapiens.ro, rolurile Software/Hardware/PR, cardul de recrutare cu buton în /update, texte din prezentarea 2026.
+- **Versiunea 3** (26 septembrie 2026): roboții la Premii (cu buton Pornit/Oprit), persoanele de contact cu telefon, conturile bancare, emailul team@homosapiens.ro, rolurile Software/Hardware/PR, cardul de recrutare cu buton în /update, texte din prezentarea 2026. Salvată în branch-ul `versiunea-3`.
 
 Pentru a reveni la o versiune („revert 2”): fișierele din `public/`, `worker/`, `src/` și `wrangler.jsonc` se readuc din branch-ul `versiunea-1` sau `versiunea-2` și se face push pe `main`. Conținutul salvat din /update rămâne în Durable Object.
