@@ -323,7 +323,7 @@ function cleanContent(c) {
   }));
   const set = c.settings && typeof c.settings === 'object' ? c.settings : {};
   const mail = str(set.email, 120);
-  const settings = { recruiting: bool(set.recruiting), email: EMAIL_RE.test(mail) ? mail : SITE_EMAIL };
+  const settings = { recruiting: bool(set.recruiting), showRobots: set.showRobots !== false, email: EMAIL_RE.test(mail) ? mail : SITE_EMAIL };
   const contacts = arr(c.contacts, 12).map((p) => ({
     id: idOf(p && p.id),
     active: bool(p && p.active),

@@ -1758,7 +1758,7 @@ class Component extends DCLogic {
         S('sp-razedent', 'Razedent', '', ''),
         S('sp-eurolia', 'Eurolia', '', '')
       ],
-      settings: { recruiting: false, email: 'team@homosapiens.ro' },
+      settings: { recruiting: false, showRobots: true, email: 'team@homosapiens.ro' },
       contacts: [
         { id: 'c-voicu', active: true, name: 'Prof. Amalia Voicu', role: ML((d) => d.contact.mentorK), phone: '+40745503291', photo: '' },
         { id: 'c-beldimanescu', active: true, name: 'Ioana Beldimănescu', role: PR, phone: '+40747855654', photo: '/assets/echipa/beldimanescu.jpg' },
@@ -2557,7 +2557,7 @@ class Component extends DCLogic {
     });
     const seasonOf = {};
     (C.seasons || []).forEach((se) => { if (se && se.id) seasonOf[se.id] = se; });
-    const robots = LIST('robots').filter((r) => r && r.active !== false && r.photo && tx(r.name)).map((r, i) => {
+    const robots = (ST.showRobots === false ? [] : LIST('robots')).filter((r) => r && r.active !== false && r.photo && tx(r.name)).map((r, i) => {
       const se = seasonOf[r.season];
       return {
         sid: r.season || '', n: (i < 9 ? '0' : '') + (i + 1), name: tx(r.name), d: tx(r.text), photo: r.photo, alt: t.awards.botAlt + ': ' + tx(r.name),
