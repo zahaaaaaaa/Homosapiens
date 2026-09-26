@@ -21,3 +21,8 @@ utilizator:parola;alt_utilizator:alta_parola
 ```
 
 sau, mai sigur, cu parole criptate generate la `homosapiens.ro/update/parola/`.
+
+## Versiuni
+
+- `src/Main.dc.html` este sursa paginii (formatul Claude Design); `public/index.html` se generează din ea.
+- **Versiunea 1** (înainte de redesign-ul din 26 septembrie 2026): commit `a4bfa82`. Pentru a reveni la ea, fișierele din `public/`, `worker/` și `src/` se readuc din acel commit.
