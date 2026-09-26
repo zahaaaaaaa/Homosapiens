@@ -51,7 +51,7 @@ h1,h2,h3,p{margin:0}
 .btn:disabled{opacity:.5;cursor:default}
 .btn-primary{background:var(--ink);color:var(--bg)}
 .btn-ghost{background:transparent;border-color:var(--line-2);color:var(--ink)}
-a.btn{text-decoration:none}
+a.btn{text-decoration:none;color:var(--ink)}
 .btn-soft{background:var(--surface-2)}
 .btn-danger{background:transparent;color:var(--danger);border-color:color-mix(in srgb,var(--danger) 35%,transparent)}
 .btn-sm{min-height:34px;padding:0 12px;font-size:13px}
@@ -127,6 +127,28 @@ details.tr[open] summary::before{content:"− "}
 .hrow b{font-weight:800}
 .hrow span{color:var(--muted);font-size:13.5px}
 
+/* messages */
+.mstate{display:flex;flex-direction:column;gap:10px;padding:16px 18px;border-radius:18px;margin-bottom:16px;border:1px solid var(--line)}
+.mstate.warn{background:var(--warn-soft);border-color:transparent;color:var(--ink)}
+.mstate.ok{background:var(--ok-soft);border-color:transparent}
+.mstate b{font-weight:800}
+.mstate ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.mstate .row2{align-items:center}
+.msgs{display:flex;flex-direction:column;gap:12px}
+.mcard{display:flex;flex-direction:column;gap:8px;padding:16px 18px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
+.mcard.done{opacity:.72}
+.mhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.mhead b{font:800 17px/1.2 var(--f-display);letter-spacing:-.01em}
+.tag{display:inline-flex;align-items:center;min-height:24px;padding:0 9px;border-radius:999px;background:var(--surface-2);font-size:12px;font-weight:800;margin-left:6px;vertical-align:2px}
+.tag.new{background:var(--blue-soft);color:var(--blue)}
+.tag.ok{background:var(--ok-soft);color:var(--ok)}
+.mmeta{font-size:14px;color:var(--ink-2);overflow-wrap:anywhere}
+.mmeta a{color:var(--blue);font-weight:700}
+.msubj{font-weight:800}
+.mbody{white-space:pre-wrap;overflow-wrap:anywhere;padding:12px 14px;border-radius:12px;background:var(--bg)}
+.mfoot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.mfoot .acts{flex-wrap:wrap}
+
 /* save bar */
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line)}
 .bar-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -146,7 +168,7 @@ details.tr[open] summary::before{content:"− "}
 (() => {
   'use strict';
   const ROLES = [
-    ['prog', 'Programare'], ['eng', 'Inginerie'], ['cad', 'CAD'], ['pr', 'PR'], ['drive', 'Driver'],
+    ['prog', 'Programare'], ['eng', 'Inginerie'], ['cad', 'CAD'], ['pr', 'PR'], ['prLead', 'PR și outreach (responsabil)'], ['drive', 'Driver'],
     ['hwcad', 'Hardware și CAD'], ['driveEng', 'Driver și inginerie'], ['peer', 'Peer mentor'], ['member', 'Membru']
   ];
   const COUNTRIES = [
@@ -154,10 +176,13 @@ details.tr[open] summary::before{content:"− "}
     ['gr', 'Grecia'], ['hu', 'Ungaria'], ['pl', 'Polonia'], ['tr', 'Turcia'], ['md', 'Republica Moldova'], ['bg', 'Bulgaria'], ['nl', 'Țările de Jos'], ['', 'Fără țară']
   ];
   const PLACES = [[0, 'Fără loc'], [1, 'Locul 1'], [2, 'Locul 2'], [3, 'Locul 3']];
-  const TABS = [['premii', 'Premii'], ['echipa', 'Echipa'], ['sponsori', 'Sponsori'], ['istoric', 'Istoric']];
+  const TABS = [['premii', 'Premii'], ['echipa', 'Echipa'], ['sponsori', 'Sponsori'], ['mesaje', 'Mesaje'], ['istoric', 'Istoric']];
+  const TOPIC_RO = { sponsor: 'Sponsorizare', collab: 'Colaborare', press: 'Presă', other: 'Altceva' };
+  const SUPPORT_RO = { money: 'Financiar', goods: 'Produse sau materiale', services: 'Servicii', mentoring: 'Mentorat sau vizite' };
+  const AMOUNT_RO = { a1: 'Sub 1.000 lei', a2: '1.000-5.000 lei', a3: '5.000-10.000 lei', a4: 'Peste 10.000 lei' };
   const LANGS = [['en', 'English'], ['fr', 'Français'], ['zh', '中文']];
 
-  const S = { user: null, data: null, saved: '', meta: null, tab: 'premii', fromDefault: false, originals: {}, busy: {} };
+  const S = { user: null, data: null, saved: '', meta: null, tab: 'premii', fromDefault: false, originals: {}, busy: {}, msgNew: 0 };
   const app = document.getElementById('app');
 
   /* ---------- tiny DOM helper ---------- */
@@ -245,9 +270,10 @@ details.tr[open] summary::before{content:"− "}
     normalize(S.data);
     S.saved = S.fromDefault ? '' : JSON.stringify(S.data);
     render();
+    loadMsgCount();
   }
   function normalize(d) {
-    d.v = 1; d.seasons = d.seasons || []; d.team = d.team || []; d.sponsors = d.sponsors || [];
+    d.v = 1; d.seasons = d.seasons || []; d.team = d.team || []; d.sponsors = d.sponsors || []; d.mig = Array.isArray(d.mig) ? d.mig : [];
     for (const s of d.seasons) { s.awards = s.awards || []; for (const a of s.awards) { a.name = a.name || {}; a.event = a.event || {}; a.note = a.note || {}; } }
   }
 
@@ -526,6 +552,106 @@ details.tr[open] summary::before{content:"− "}
     return box;
   }
 
+  function mailStatus(mail, onTest) {
+    const test = h('button', { class: 'btn btn-ghost btn-sm', type: 'button', onclick: onTest }, 'Trimite un email de test');
+    const last = mail.last;
+    if (!mail.configured) {
+      return h('div', { class: 'mstate warn' },
+        h('p', null, h('b', null, 'Trimiterea automată pe email nu e activată încă. '), 'Mesajele de pe site se salvează aici între timp.'),
+        h('ol', null,
+          h('li', null, 'În Cloudflare, la domeniul homosapiens.ro, deschide Email Routing și activează-l (acceptă înregistrările DNS propuse).'),
+          h('li', null, 'La Destination addresses adaugă ' + mail.to + ' și apasă linkul din emailul de verificare primit acolo.'),
+          h('li', null, 'Revino aici și apasă „Trimite un email de test”.')));
+    }
+    if (last && !last.ok) {
+      const code = String(last.code || '');
+      const hint = /SENDER|DOMAIN/i.test(code) ? 'Verifică dacă Email Routing e activat pentru homosapiens.ro în Cloudflare.'
+        : /RECIPIENT|destination|verified/i.test(code) ? 'Verifică dacă ' + mail.to + ' e confirmată la Email Routing → Destination addresses.'
+        : 'Încearcă din nou peste câteva minute.';
+      return h('div', { class: 'mstate warn' },
+        h('p', null, h('b', null, 'Ultima trimitere pe email nu a reușit'), ' (' + (code || 'eroare') + '). ' + hint + ' Mesajele rămân salvate aici.'),
+        h('div', { class: 'row2' }, test));
+    }
+    return h('div', { class: 'mstate ok' },
+      h('p', null, h('b', null, 'Mesajele pleacă automat pe ' + mail.to + '. '), 'Le găsești și aici, cu tot cu datele firmei.'),
+      h('div', { class: 'row2' }, test));
+  }
+
+  function setMsgCount(n) {
+    S.msgNew = n;
+    const b = document.querySelector('.tab[data-tab="mesaje"]');
+    if (b) b.textContent = 'Mesaje' + (n ? ' (' + n + ')' : '');
+  }
+
+  async function loadMsgCount() {
+    try {
+      const res = await fetch('/api/admin/messages', { credentials: 'same-origin', cache: 'no-store' });
+      if (!res.ok) return;
+      const j = await res.json();
+      setMsgCount(j.items.filter((m) => m.status !== 'done').length);
+    } catch { /* the tab still works */ }
+  }
+
+  function viewMessages() {
+    const box = h('div');
+    const state = h('div');
+    const list = h('div', { class: 'msgs' }, h('p', { class: 'hint' }, 'Se încarcă…'));
+    box.append(h('div', { class: 'head' }, h('div', null, h('h2', null, 'Mesaje'), h('p', null, 'Ce trimit vizitatorii prin formularul de contact de pe site, cel mai nou primul. Când trimiterea pe email e activă, fiecare mesaj ajunge și în inboxul echipei.'))), state, list);
+    const fmt = new Intl.DateTimeFormat('ro-RO', { dateStyle: 'medium', timeStyle: 'short' });
+    const load = async () => {
+      try {
+        const res = await api('/api/admin/messages');
+        const j = await res.json();
+        setMsgCount(j.items.filter((m) => m.status !== 'done').length);
+        state.replaceChildren(mailStatus(j.mail, async (e) => {
+          const btn = e.currentTarget; btn.disabled = true; btn.textContent = 'Se trimite…';
+          try {
+            const r = await api('/api/admin/mail-test', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' });
+            const rj = await r.json();
+            if (rj.ok) toast('Emailul de test a plecat spre ' + j.mail.to + '. Verifică inboxul (și Spam).');
+            else toast('Emailul de test nu a plecat: ' + (rj.code || 'eroare') + '.', 'err');
+          } catch (x) { if (x.message !== 'auth') toast('Nu mă pot conecta la server.', 'err'); }
+          load();
+        }));
+        list.replaceChildren();
+        if (!j.items.length) { list.append(h('p', { class: 'empty-note' }, 'Niciun mesaj încă. Când cineva scrie din pagina Contact, mesajul apare aici.')); return; }
+        for (const m of j.items) {
+          const extra = [];
+          if (m.support && m.support.length) extra.push('Sprijin: ' + m.support.map((x) => SUPPORT_RO[x] || x).join(', '));
+          if (m.amount) extra.push('Sumă: ' + (AMOUNT_RO[m.amount] || m.amount));
+          if (m.lang && m.lang !== 'ro') extra.push('Limba site-ului: ' + m.lang.toUpperCase());
+          const reply = 'mailto:' + m.email + '?subject=' + encodeURIComponent('Re: ' + (m.subject || 'mesajul tău către Homosapiens'));
+          const done = m.status === 'done';
+          list.append(h('article', { class: 'mcard' + (done ? ' done' : '') },
+            h('div', { class: 'mhead' },
+              h('div', null, h('b', null, m.name || '(fără nume)'), h('span', { class: 'tag' }, TOPIC_RO[m.topic] || m.topic || ''), h('span', { class: 'tag ' + (done ? 'ok' : 'new') }, done ? 'Rezolvat' : 'Nou')),
+              h('span', { class: 'hint' }, fmt.format(new Date(m.ts)))),
+            h('p', { class: 'mmeta' }, h('a', { href: reply }, m.email || ''), [m.company, m.cui ? 'CUI ' + m.cui : '', m.role, m.phone].filter(Boolean).map((x) => ' · ' + x).join('')),
+            extra.length ? h('p', { class: 'hint' }, extra.join(' · ')) : null,
+            m.subject ? h('p', { class: 'msubj' }, m.subject) : null,
+            h('p', { class: 'mbody' }, m.msg || ''),
+            h('div', { class: 'mfoot' },
+              h('span', { class: 'hint' }, m.mail && m.mail.ok ? 'Trimis și pe email.' : 'Netrimis pe email' + (m.mail && m.mail.code ? ' (' + m.mail.code + ')' : '') + '.'),
+              h('div', { class: 'acts' },
+                h('a', { class: 'btn btn-soft btn-sm', href: reply }, 'Răspunde'),
+                h('button', { class: 'btn btn-ghost btn-sm', type: 'button', onclick: async () => {
+                  const r = await api('/api/admin/messages/' + m.id + '/status', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ status: done ? 'new' : 'done' }) }).catch(() => null);
+                  if (!r || !r.ok) { toast('Nu am putut schimba starea.', 'err'); return; }
+                  load();
+                } }, done ? 'Marchează ca nou' : 'Marchează rezolvat'),
+                h('button', { class: 'btn btn-danger btn-sm', type: 'button', onclick: async () => {
+                  if (!confirm('Ștergi definitiv mesajul de la ' + (m.name || 'acest vizitator') + '?')) return;
+                  const r = await api('/api/admin/messages/' + m.id, { method: 'DELETE' }).catch(() => null);
+                  if (!r || !r.ok) { toast('Nu am putut șterge mesajul.', 'err'); return; }
+                  toast('Mesajul a fost șters.'); load();
+                } }, 'Șterge')))));
+        }
+      } catch (e) { if (e.message !== 'auth') list.replaceChildren(h('p', { class: 'msg err' }, 'Nu am putut încărca mesajele.')); }
+    };
+    load();
+    return box;
+  }
+
   function focusFirst(sel) { setTimeout(() => { const el = document.querySelector(sel); if (el) el.focus(); }, 30); }
   function focusLast(sel) { setTimeout(() => { const els = document.querySelectorAll(sel); const el = els[els.length - 1]; if (el) { el.focus(); el.scrollIntoView({ block: 'center', behavior: 'smooth' }); } }, 30); }
 
@@ -536,7 +662,7 @@ details.tr[open] summary::before{content:"− "}
 
   function render() {
     const y = window.scrollY;
-    const view = S.tab === 'echipa' ? viewTeam() : S.tab === 'sponsori' ? viewSponsors() : S.tab === 'istoric' ? viewHistory() : viewAwards();
+    const view = S.tab === 'echipa' ? viewTeam() : S.tab === 'sponsori' ? viewSponsors() : S.tab === 'mesaje' ? viewMessages() : S.tab === 'istoric' ? viewHistory() : viewAwards();
     const fmt = new Intl.DateTimeFormat('ro-RO', { dateStyle: 'medium', timeStyle: 'short' });
     app.replaceChildren(
       h('header', { class: 'top' }, h('div', { class: 'wrap top-in' },
@@ -550,7 +676,7 @@ details.tr[open] summary::before{content:"− "}
             S.data = null; S.saved = ''; showLogin();
           } }, 'Ieși')))),
       h('main', { class: 'wrap' },
-        h('nav', { class: 'tabs', 'aria-label': 'Secțiuni' }, TABS.map(([id, label]) => h('button', { class: 'tab' + (S.tab === id ? ' on' : ''), type: 'button', 'aria-pressed': S.tab === id ? 'true' : 'false', onclick: () => { S.tab = id; window.scrollTo(0, 0); render(); } }, label))),
+        h('nav', { class: 'tabs', 'aria-label': 'Secțiuni' }, TABS.map(([id, label]) => h('button', { class: 'tab' + (S.tab === id ? ' on' : ''), type: 'button', 'data-tab': id, 'aria-pressed': S.tab === id ? 'true' : 'false', onclick: () => { S.tab = id; window.scrollTo(0, 0); render(); } }, label + (id === 'mesaje' && S.msgNew ? ' (' + S.msgNew + ')' : '')))),
         S.meta ? h('p', { class: 'hint', style: 'margin-top:6px' }, 'Ultima salvare: ' + fmt.format(new Date(S.meta.ts)) + ', de ' + S.meta.who + '.') : null,
         view),
       h('div', { class: 'bar', id: 'bar' }, h('div', { class: 'bar-in' },

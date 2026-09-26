@@ -13,5 +13,8 @@
   },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["HsStore"] }],
   "version_metadata": { "binding": "CF_VERSION_METADATA" },
+  // Contact form: sends each message to the team inbox (needs Email Routing on homosapiens.ro
+  // and the inbox verified as a destination address; until then messages wait on /update).
+  "send_email": [{ "name": "MAILER", "destination_address": "thehomosapiens123@gmail.com" }],
   "observability": { "enabled": true }
 }

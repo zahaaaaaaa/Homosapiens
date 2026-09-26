@@ -12,7 +12,7 @@ Linkuri directe către taburi: `/#echipa`, `/#premii`, `/#despre`, `/#sponsori`,
 
 ## Administrare: homosapiens.ro/update
 
-Acolo se editează premiile (pe sezoane), echipa (cu poze) și sponsorii (cu logo). Ce se salvează apare imediat pe site; fiecare salvare intră în „Istoric” și poate fi restaurată.
+Acolo se editează premiile (pe sezoane), echipa (cu poze) și sponsorii (cu logo). Ce se salvează apare imediat pe site; fiecare salvare intră în „Istoric” și poate fi restaurată. Tabul „Mesaje” arată ce trimit vizitatorii prin formularul de contact.
 
 Conturile **nu** sunt în acest repo. Ele stau în secretul `ADMIN_USERS` al Worker-ului (Cloudflare → Workers & Pages → homosapienss, Worker-ul cu domeniul homosapiens.ro → Settings → Variables and Secrets), sub forma:
 
@@ -22,7 +22,17 @@ utilizator:parola;alt_utilizator:alta_parola
 
 sau, mai sigur, cu parole criptate generate la `homosapiens.ro/update/parola/`.
 
+## Formularul de contact
+
+Mesajele din pagina Contact se salvează în Durable Object (le vezi la `/update`, tabul „Mesaje”) și pleacă automat pe `thehomosapiens123@gmail.com` prin legătura `MAILER` (`send_email` în `wrangler.jsonc`). Pentru ca emailul să plece, în Cloudflare trebuie:
+
+1. Email Routing activat pentru domeniul `homosapiens.ro` (se acceptă înregistrările DNS propuse).
+2. `thehomosapiens123@gmail.com` adăugată la Email Routing → Destination addresses și confirmată din emailul de verificare.
+
+Din `/update` → „Mesaje” → „Trimite un email de test” se verifică dacă totul e în regulă.
+
 ## Versiuni
 
 - `src/Main.dc.html` este sursa paginii (formatul Claude Design); `public/index.html` se generează din ea.
 - **Versiunea 1** (înainte de redesign-ul din 26 septembrie 2026): commit `a4bfa82`. Pentru a reveni la ea, fișierele din `public/`, `worker/` și `src/` se readuc din acel commit.
+- **Versiunea 2** (26 septembrie 2026): textele din propunerea de parteneriat 2026-2027, harta drumurilor, bugetul, formularul de contact cu trimitere automată pe email.
