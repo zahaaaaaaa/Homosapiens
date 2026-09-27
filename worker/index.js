@@ -12,6 +12,10 @@
  *   user:pbkdf2$100000$<salt>$<hash>       (PBKDF2-SHA256, salt and hash in base64)
  * Both forms can be mixed. Nothing about accounts is stored in this repository.
  *
+ * Recruitment: while "recruiting" is on in the saved settings, POST /api/recruit stores an
+ * application (table apps) and returns a code (HS-XXXX-XXXX); POST /api/recruit/status tells the
+ * applicant their status by that code. The team decides on /update ("Recrutări" tab).
+ *
  * Contact form email: the MAILER binding (send_email in wrangler.jsonc) sends each message
  * to the team inbox. It works once Email Routing is on for homosapiens.ro and the inbox is a
  * verified destination address. Until then messages are still saved and shown on /update.
@@ -34,10 +38,25 @@ const LANGS = ['ro', 'en', 'fr', 'zh'];
 const MSG_KEEP = 1000;
 const HIT_WINDOW_MS = 24 * 3600 * 1000;
 const MAIL_TO = 'thehomosapiens123@gmail.com';
+const APP_KEEP = 3000;
+const APP_STATUS = ['new', 'interview', 'accepted', 'rejected'];
+const DEPTS = { prog: 'Programare', eng: 'Inginerie', cad: 'CAD', pr: 'PR' };
+const GRADES = { 9: 'a IX-a', 10: 'a X-a', 11: 'a XI-a', 12: 'a XII-a' };
+const HOURS = { h1: 'Sub 3 ore', h2: '3-6 ore', h3: '6-10 ore', h4: 'Peste 10 ore' };
+const SOURCES = { s1: 'De la prieteni sau colegi', s2: 'Instagram, Facebook sau TikTok', s3: 'La școală', s4: 'La un eveniment', s5: 'Altfel' };
+const CODE_ABC = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 const MAIL_FROM = 'site@homosapiens.ro';
 
 const hex = (u8) => Array.from(u8, (b) => b.toString(16).padStart(2, '0')).join('');
 const randomId = (bytes = 16) => hex(crypto.getRandomValues(new Uint8Array(bytes)));
+// 8 characters from a 32-letter alphabet without look-alikes (0/O, 1/I): about 10^12 codes.
+const newCode = () => Array.from(crypto.getRandomValues(new Uint8Array(8)), (b) => CODE_ABC[b % 32]).join('');
+const showCode = (c) => 'HS-' + c.slice(0, 4) + '-' + c.slice(4);
+const normCode = (x) => {
+  let v = String(x || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (v.length === 10 && v.startsWith('HS')) v = v.slice(2);
+  return v;
+};
 
 export class HsStore extends DurableObject {
   constructor(ctx, env) {
@@ -50,6 +69,7 @@ export class HsStore extends DurableObject {
     this.sql.exec('CREATE TABLE IF NOT EXISTS fails (k TEXT NOT NULL, ts INTEGER NOT NULL)');
     this.sql.exec("CREATE TABLE IF NOT EXISTS msgs (id TEXT PRIMARY KEY, ts INTEGER NOT NULL, data TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'new', mail TEXT)");
     this.sql.exec('CREATE TABLE IF NOT EXISTS hits (k TEXT NOT NULL, ts INTEGER NOT NULL)');
+    this.sql.exec("CREATE TABLE IF NOT EXISTS apps (id TEXT PRIMARY KEY, code TEXT NOT NULL UNIQUE, ts INTEGER NOT NULL, data TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'new', note TEXT NOT NULL DEFAULT '', updated INTEGER, mail TEXT)");
   }
 
   rows(query, ...params) { return this.sql.exec(query, ...params).toArray(); }
@@ -178,6 +198,51 @@ export class HsStore extends DurableObject {
     const n = this.rows('SELECT COUNT(*) AS n FROM msgs WHERE id = ?', id)[0].n;
     this.sql.exec('DELETE FROM msgs WHERE id = ?', id);
     return n > 0;
+  }
+
+  /* recruitment */
+  addApp(data) {
+    const id = randomId(8);
+    const ts = Date.now();
+    let code = newCode();
+    for (let i = 0; i < 8 && this.rows('SELECT 1 FROM apps WHERE code = ?', code).length; i++) code = newCode();
+    this.sql.exec("INSERT INTO apps (id, code, ts, data, status, note) VALUES (?, ?, ?, ?, 'new', '')", id, code, ts, data);
+    return { id, code, ts };
+  }
+
+  countApps() { return this.rows('SELECT COUNT(*) AS n FROM apps')[0].n; }
+
+  getAppByCode(code) {
+    const r = this.rows('SELECT data, status, note FROM apps WHERE code = ?', code);
+    return r.length ? r[0] : null;
+  }
+
+  setAppMail(id, mail) {
+    this.sql.exec('UPDATE apps SET mail = ? WHERE id = ?', mail, id);
+    this.sql.exec("INSERT INTO kv (k, v) VALUES ('mail', ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v", mail);
+    return true;
+  }
+
+  listApps() {
+    return this.rows('SELECT id, code, ts, data, status, note, updated, mail FROM apps ORDER BY ts DESC');
+  }
+
+  updateApp(id, status, note) {
+    const n = this.rows('SELECT COUNT(*) AS n FROM apps WHERE id = ?', id)[0].n;
+    this.sql.exec('UPDATE apps SET status = ?, note = ?, updated = ? WHERE id = ?', status, note, Date.now(), id);
+    return n > 0;
+  }
+
+  deleteApp(id) {
+    const n = this.rows('SELECT COUNT(*) AS n FROM apps WHERE id = ?', id)[0].n;
+    this.sql.exec('DELETE FROM apps WHERE id = ?', id);
+    return n > 0;
+  }
+
+  clearApps() {
+    const n = this.countApps();
+    this.sql.exec('DELETE FROM apps');
+    return n;
   }
 }
 
@@ -320,7 +385,13 @@ function cleanContent(c) {
   }));
   const set = c.settings && typeof c.settings === 'object' ? c.settings : {};
   const mail = str(set.email, 120);
-  const settings = { recruiting: bool(set.recruiting), showRobots: set.showRobots !== false, email: EMAIL_RE.test(mail) ? mail : SITE_EMAIL };
+  const settings = {
+    recruiting: bool(set.recruiting),
+    recruitResults: bool(set.recruitResults),
+    recruitNote: ml(set.recruitNote, 400),
+    showRobots: set.showRobots !== false,
+    email: EMAIL_RE.test(mail) ? mail : SITE_EMAIL
+  };
   const contacts = arr(c.contacts, 12).map((p) => ({
     id: idOf(p && p.id),
     active: bool(p && p.active),
@@ -536,6 +607,66 @@ async function sendMail(env, subject, text, replyTo) {
   }
 }
 
+/* ---------- recruitment ---------- */
+
+function cleanApp(b) {
+  if (!b || typeof b !== 'object') return null;
+  const txt = (x, n) => (typeof x === 'string' ? x.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '').trim().slice(0, n) : '');
+  const line = (x, n) => txt(x, n).replace(/\s+/g, ' ');
+  const a = {
+    last: line(b.last, 60),
+    first: line(b.first, 60),
+    phone: line(b.phone, 24).replace(/[^\d+ ()-]/g, '').trim(),
+    email: line(b.email, 120),
+    school: line(b.school, 120),
+    grade: Object.prototype.hasOwnProperty.call(GRADES, String(b.grade)) ? String(b.grade) : '',
+    dept: Array.isArray(b.dept) ? Object.keys(DEPTS).filter((d) => b.dept.includes(d)) : [],
+    exp: txt(b.exp, 2000),
+    why: txt(b.why, 2000),
+    hours: Object.prototype.hasOwnProperty.call(HOURS, b.hours) ? b.hours : '',
+    source: Object.prototype.hasOwnProperty.call(SOURCES, b.source) ? b.source : '',
+    other: txt(b.other, 2000),
+    lang: ['ro', 'en', 'fr', 'zh'].includes(b.lang) ? b.lang : 'ro'
+  };
+  if (!a.last || !a.first || a.phone.replace(/\D/g, '').length < 9 || !EMAIL_RE.test(a.email) || !a.school || !a.grade
+    || !a.dept.length || !a.exp || !a.why || !a.hours || b.consent !== true) return null;
+  return a;
+}
+
+function appMailText(a, code, ts) {
+  const when = new Intl.DateTimeFormat('ro-RO', { timeZone: 'Europe/Bucharest', dateStyle: 'long', timeStyle: 'short' }).format(new Date(ts));
+  const depts = a.dept.map((d) => DEPTS[d]).join(', ');
+  const lines = [
+    'Înscriere nouă la recrutări, de pe homosapiens.ro.',
+    '',
+    'Cod: ' + showCode(code),
+    'Primită: ' + when,
+    'Nume: ' + a.last,
+    'Prenume: ' + a.first,
+    'Telefon: ' + a.phone,
+    'Email: ' + a.email,
+    'Liceul: ' + a.school,
+    'Clasa: ' + GRADES[a.grade],
+    'Departament: ' + depts,
+    'Timp pe săptămână: ' + HOURS[a.hours]
+  ];
+  if (a.source) lines.push('A aflat: ' + SOURCES[a.source]);
+  if (a.lang !== 'ro') lines.push('Limba site-ului: ' + a.lang.toUpperCase());
+  lines.push('', 'Ce a făcut până acum:', a.exp, '', 'De ce vrea să intre în echipă:', a.why);
+  if (a.other) lines.push('', 'Altceva:', a.other);
+  lines.push('', 'Decizia se dă din homosapiens.ro/update, tabul Recrutări. Candidatul își vede rezultatul pe site, cu codul de mai sus.');
+  return { subject: '[Recrutări] ' + a.first + ' ' + a.last + ' · ' + depts, text: lines.join('\n') + '\n' };
+}
+
+async function siteSettings(store) {
+  const cur = await store.getContent();
+  let set = {};
+  if (cur) {
+    try { const c = JSON.parse(cur.content); if (c && c.settings && typeof c.settings === 'object') set = c.settings; } catch { /* closed */ }
+  }
+  return { recruiting: set.recruiting === true, results: set.recruitResults === true };
+}
+
 async function ipKey(request) {
   const ip = request.headers.get('CF-Connecting-IP') || 'local';
   return 'c:' + hex(await sha256('hs19053|' + ip)).slice(0, 24);
@@ -593,6 +724,46 @@ async function api(request, env, url) {
     const mail = await sendMail(env, subject, body, { email: m.email, name: m.name });
     await store.setMessageMail(saved.id, JSON.stringify(mail));
     return json({ ok: true, id: saved.id, mailed: mail.ok });
+  }
+
+  if (path === '/api/recruit' && method === 'POST') {
+    const text = await request.text();
+    if (text.length > 20000) return err(413, 'too_big', 'Înscrierea e prea lungă.');
+    let b;
+    try { b = JSON.parse(text); } catch { return err(400, 'bad_request', 'Date invalide.'); }
+    // Filled honeypot or a form sent faster than a person can fill it: a made-up code, nothing kept.
+    if ((b && typeof b.hp === 'string' && b.hp.trim()) || !(Number(b && b.t) >= 3000)) return json({ ok: true, code: showCode(newCode()) });
+    if (!(await siteSettings(store)).recruiting) return err(403, 'closed', 'Înscrierile sunt închise.');
+    const a = cleanApp(b);
+    if (!a) return err(400, 'invalid', 'Completează toate câmpurile obligatorii.');
+    const key = 'r' + (await ipKey(request));
+    if ((await store.hitCount(key, 10 * 60 * 1000)) >= 3 || (await store.hitCount(key, HIT_WINDOW_MS)) >= 8
+      || (await store.hitCount('r:all', HIT_WINDOW_MS)) >= 500 || (await store.countApps()) >= APP_KEEP) {
+      return err(429, 'rate', 'Prea multe înscrieri într-un timp scurt. Încearcă din nou mai târziu.');
+    }
+    await store.noteHit(key);
+    await store.noteHit('r:all');
+    const saved = await store.addApp(JSON.stringify(a));
+    const m = appMailText(a, saved.code, saved.ts);
+    const mail = await sendMail(env, m.subject, m.text, { email: a.email, name: a.first + ' ' + a.last });
+    await store.setAppMail(saved.id, JSON.stringify(mail));
+    return json({ ok: true, code: showCode(saved.code) });
+  }
+
+  if (path === '/api/recruit/status' && method === 'POST') {
+    let b;
+    try { b = await request.json(); } catch { return err(400, 'bad_request', 'Date invalide.'); }
+    const set = await siteSettings(store);
+    if (!set.recruiting && !set.results) return err(403, 'closed', 'Verificarea rezultatelor nu e deschisă acum.');
+    const key = 's' + (await ipKey(request));
+    if ((await store.hitCount(key, 10 * 60 * 1000)) >= 30) return err(429, 'rate', 'Prea multe încercări. Mai încearcă peste câteva minute.');
+    await store.noteHit(key);
+    const code = normCode(b && b.code);
+    const app = /^[A-Z0-9]{8}$/.test(code) ? await store.getAppByCode(code) : null;
+    if (!app) return err(404, 'not_found', 'Nu am găsit acest cod.');
+    let first = '';
+    try { first = JSON.parse(app.data).first || ''; } catch { /* no name */ }
+    return json({ status: APP_STATUS.includes(app.status) ? app.status : 'new', first, message: app.note || '' });
   }
 
   if (path === '/api/login' && method === 'POST') {
@@ -702,6 +873,40 @@ async function api(request, env, url) {
   const mdel = path.match(/^\/api\/admin\/messages\/([a-f0-9]{16})$/);
   if (mdel && method === 'DELETE') {
     if (!(await store.deleteMessage(mdel[1]))) return err(404, 'not_found', 'Mesajul nu există.');
+    return json({ ok: true });
+  }
+
+  if (path === '/api/admin/recruits' && method === 'GET') {
+    const rows = await store.listApps();
+    const items = rows.map((r) => {
+      let data = {};
+      let mail = null;
+      try { data = JSON.parse(r.data); } catch { /* keep empty */ }
+      try { mail = r.mail ? JSON.parse(r.mail) : null; } catch { /* keep null */ }
+      return Object.assign({}, data, { id: r.id, code: showCode(r.code), ts: r.ts, status: r.status, note: r.note || '', updated: r.updated || null, mail });
+    });
+    return json({ items });
+  }
+
+  if (path === '/api/admin/recruits/clear' && method === 'POST') {
+    let b;
+    try { b = await request.json(); } catch { return err(400, 'bad_request', 'Date invalide.'); }
+    if (!b || b.confirm !== 'STERGE') return err(400, 'confirm', 'Confirmarea lipsește.');
+    return json({ ok: true, deleted: await store.clearApps() });
+  }
+
+  const rap = path.match(/^\/api\/admin\/recruits\/([a-f0-9]{16})$/);
+  if (rap && method === 'POST') {
+    let b;
+    try { b = await request.json(); } catch { return err(400, 'bad_request', 'Date invalide.'); }
+    const status = APP_STATUS.includes(b && b.status) ? b.status : null;
+    if (!status) return err(400, 'bad_status', 'Stare necunoscută.');
+    const note = typeof (b && b.note) === 'string' ? b.note.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '').trim().slice(0, 1000) : '';
+    if (!(await store.updateApp(rap[1], status, note))) return err(404, 'not_found', 'Înscrierea nu există.');
+    return json({ ok: true, status, note });
+  }
+  if (rap && method === 'DELETE') {
+    if (!(await store.deleteApp(rap[1]))) return err(404, 'not_found', 'Înscrierea nu există.');
     return json({ ok: true });
   }
 

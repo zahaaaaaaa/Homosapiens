@@ -193,6 +193,30 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
 .sw input:checked + .sw-track::after{transform:translateX(22px)}
 .sw input:focus-visible + .sw-track{outline:2px solid var(--blue);outline-offset:3px}
 .sw-state{min-width:44px}
+/* v5: recruitment */
+.trow{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--bg)}
+.trow.on{border-color:transparent;background:var(--ok-soft)}
+.trow b{font-weight:800}
+.trow .hint{max-width:72ch;margin-top:2px}
+.rbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.fchips{display:flex;gap:6px;flex-wrap:wrap}
+.fchip{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:800;font-size:13px;cursor:pointer}
+.fchip.on{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.rsearch{max-width:280px;min-height:38px}
+.tag.code{font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.04em}
+.tag.st-new{background:var(--blue-soft);color:var(--blue)}
+.tag.st-interview{background:var(--warn-soft);color:var(--warn)}
+.tag.st-accepted{background:var(--ok-soft);color:var(--ok)}
+.tag.st-rejected{background:var(--danger-soft);color:var(--danger)}
+.qa{display:flex;flex-direction:column;gap:4px}
+.decide{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.seg{display:flex;gap:4px;flex-wrap:wrap;padding:4px;border-radius:14px;border:1px solid var(--line);background:var(--bg)}
+.segb{min-height:36px;padding:0 12px;border:0;border-radius:10px;background:transparent;color:var(--ink-2);font-weight:800;font-size:13px;cursor:pointer}
+.segb:hover{background:var(--surface-2)}
+.segb.on.s-new{background:var(--blue-soft);color:var(--blue)}
+.segb.on.s-interview{background:var(--warn-soft);color:var(--warn)}
+.segb.on.s-accepted{background:var(--ok);color:#fff}
+.segb.on.s-rejected{background:var(--danger);color:#fff}
 .overlay{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(6px);padding:16px}
 </style>
 </head>
@@ -205,20 +229,25 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
   const OLD_ROLES = { prog: 'software', eng: 'hardware', cad: 'hardware', hwcad: 'hardware', drive: 'hardware', driveEng: 'hardware', prLead: 'pr' };
   const CURS = [['RON', 'Lei (RON)'], ['EUR', 'Euro (EUR)'], ['USD', 'Dolari (USD)'], ['GBP', 'Lire (GBP)']];
   const BANKS = { BTRL: 'Banca Transilvania', REVO: 'Revolut', BRDE: 'BRD', RNCB: 'BCR', INGB: 'ING Bank', RZBR: 'Raiffeisen Bank', CECE: 'CEC Bank', BACX: 'UniCredit Bank', OTPV: 'OTP Bank', BREL: 'Libra Internet Bank', UGBI: 'Garanti BBVA', PIRB: 'First Bank', CARP: 'Patria Bank', TREZ: 'Trezoreria Statului' };
-  const DEF_SETTINGS = { recruiting: false, showRobots: true, email: 'team@homosapiens.ro' };
+  const DEF_SETTINGS = { recruiting: false, recruitResults: false, recruitNote: {}, showRobots: true, email: 'team@homosapiens.ro' };
+  const APP_ST = [['new', 'În așteptare'], ['interview', 'Interviu'], ['accepted', 'Acceptat'], ['rejected', 'Respins']];
+  const DEPT_RO = { prog: 'Programare', eng: 'Inginerie', cad: 'CAD', pr: 'PR' };
+  const GRADE_RO = { 9: 'a IX-a', 10: 'a X-a', 11: 'a XI-a', 12: 'a XII-a' };
+  const HOURS_RO = { h1: 'Sub 3 ore', h2: '3-6 ore', h3: '6-10 ore', h4: 'Peste 10 ore' };
+  const SOURCE_RO = { s1: 'De la prieteni sau colegi', s2: 'Instagram, Facebook sau TikTok', s3: 'La școală', s4: 'La un eveniment', s5: 'Altfel' };
   const V3_KEYS = ['settings', 'contacts', 'bank', 'robots'];
   const COUNTRIES = [
     ['ro', 'România'], ['us', 'SUA'], ['it', 'Italia'], ['de', 'Germania'], ['fr', 'Franța'], ['es', 'Spania'], ['gb', 'Marea Britanie'],
     ['gr', 'Grecia'], ['hu', 'Ungaria'], ['pl', 'Polonia'], ['tr', 'Turcia'], ['md', 'Republica Moldova'], ['bg', 'Bulgaria'], ['nl', 'Țările de Jos'], ['', 'Fără țară']
   ];
   const PLACES = [[0, 'Fără loc'], [1, 'Locul 1'], [2, 'Locul 2'], [3, 'Locul 3']];
-  const TABS = [['premii', 'Premii'], ['roboti', 'Roboți'], ['echipa', 'Echipa'], ['sponsori', 'Sponsori'], ['contact', 'Contact și conturi'], ['mesaje', 'Mesaje'], ['istoric', 'Istoric']];
+  const TABS = [['premii', 'Premii'], ['roboti', 'Roboți'], ['echipa', 'Echipa'], ['recrutari', 'Recrutări'], ['sponsori', 'Sponsori'], ['contact', 'Contact și conturi'], ['mesaje', 'Mesaje'], ['istoric', 'Istoric']];
   const TOPIC_RO = { sponsor: 'Sponsorizare', collab: 'Colaborare', press: 'Presă', other: 'Altceva' };
   const SUPPORT_RO = { money: 'Financiar', goods: 'Produse sau materiale', services: 'Servicii', mentoring: 'Mentorat sau vizite' };
   const AMOUNT_RO = { a1: 'Sub 1.000 lei', a2: '1.000-5.000 lei', a3: '5.000-10.000 lei', a4: 'Peste 10.000 lei' };
   const LANGS = [['en', 'English'], ['fr', 'Français'], ['zh', '中文']];
 
-  const S = { user: null, data: null, saved: '', meta: null, tab: 'premii', fromDefault: false, originals: {}, busy: {}, msgNew: 0, cut: {} };
+  const S = { user: null, data: null, saved: '', meta: null, tab: 'premii', fromDefault: false, originals: {}, busy: {}, msgNew: 0, cut: {}, recNew: 0, rf: 'all', rq: '' };
   const app = document.getElementById('app');
 
   /* ---------- tiny DOM helper ---------- */
@@ -313,11 +342,13 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
     S.saved = S.fromDefault ? '' : JSON.stringify(S.data);
     render();
     loadMsgCount();
+    loadRecruitCount();
   }
   function normalize(d) {
     d.v = 1; d.seasons = d.seasons || []; d.team = d.team || []; d.sponsors = d.sponsors || []; d.mig = Array.isArray(d.mig) ? d.mig : [];
     for (const s of d.seasons) { s.awards = s.awards || []; for (const a of s.awards) { a.name = a.name || {}; a.event = a.event || {}; a.note = a.note || {}; } }
     d.settings = Object.assign({}, DEF_SETTINGS, d.settings && typeof d.settings === 'object' ? d.settings : {});
+    if (!d.settings.recruitNote || typeof d.settings.recruitNote !== 'object') d.settings.recruitNote = {};
     for (const k of ['contacts', 'bank', 'robots']) if (!Array.isArray(d[k])) d[k] = [];
     for (const m of d.team) if (OLD_ROLES[m.role]) m.role = OLD_ROLES[m.role];
     for (const c of d.contacts) c.role = c.role && typeof c.role === 'object' ? c.role : {};
@@ -597,8 +628,10 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
       h('div', null, h('h2', null, 'Echipa'), h('p', null, 'Ordinea de aici e ordinea de pe site. Poza se decupează automat la 4:5; fără poză, pe site apar inițialele. Rolul decide și filtrul de pe site: Software, Hardware sau PR.')),
       h('button', { class: 'btn btn-primary', type: 'button', onclick: () => { d.team.push({ id: uid(), active: true, name: '', role: 'member', roleText: '', alumni: false, grad: '', photo: '' }); render(); focusLast('.person .nm input'); } }, icon(I.plus), 'Membru nou')));
     const rec = h('section', { class: 'card sect rec' + (d.settings.recruiting ? ' on' : '') },
-      h('div', null, h('h3', null, 'Recrutări'), h('p', { class: 'hint' }, 'Pornit: pe pagina Echipa apare cardul „Vrei în echipă?”, cu link spre formularul de contact. Pornește-l doar în perioada de recrutări.')),
-      toggle(d.settings, 'recruiting', 'Arată „Vrei în echipă?” pe site', (v) => rec.classList.toggle('on', v)));
+      h('div', null, h('h3', null, 'Recrutări'), h('p', { class: 'hint' }, d.settings.recruiting
+        ? 'Formularul de înscriere e pornit, deci pe pagina Echipa apare și cardul „Vrei în echipă?”.'
+        : 'Formularul de înscriere e oprit. Când îl pornești din tabul Recrutări, pe pagina Echipa apare și cardul „Vrei în echipă?”.')),
+      h('button', { class: 'btn btn-soft btn-sm', type: 'button', onclick: () => { S.tab = 'recrutari'; window.scrollTo(0, 0); render(); } }, 'Deschide Recrutări'));
     box.append(rec);
     const grid = h('div', { class: 'grid' });
     d.team.forEach((m, i) => {
@@ -774,6 +807,144 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
     return box;
   }
 
+  function setRecruitCount(n) {
+    S.recNew = n;
+    const b = document.querySelector('.tab[data-tab="recrutari"]');
+    if (b) b.textContent = 'Recrutări' + (n ? ' (' + n + ')' : '');
+  }
+
+  async function loadRecruitCount() {
+    try {
+      const res = await fetch('/api/admin/recruits', { credentials: 'same-origin', cache: 'no-store' });
+      if (!res.ok) return;
+      const j = await res.json();
+      setRecruitCount(j.items.filter((x) => x.status === 'new').length);
+    } catch { /* the tab still works */ }
+  }
+
+  function viewRecruit() {
+    const d = S.data;
+    const box = h('div');
+    box.append(h('div', { class: 'head' }, h('div', null, h('h2', null, 'Recrutări'),
+      h('p', null, 'Când formularul e pornit, pe site apar pagina „Recrutări”, butonul din meniu, anunțul de pe prima pagină și cardul „Vrei în echipă?”. Fiecare candidat primește un cod (HS-XXXX-XXXX) cu care își vede rezultatul pe site.'))));
+
+    const row = (title, hint, key) => {
+      const r = h('div', { class: 'trow' + (d.settings[key] ? ' on' : '') },
+        h('div', null, h('b', null, title), h('p', { class: 'hint' }, hint)),
+        toggle(d.settings, key, title, (v) => r.classList.toggle('on', v)));
+      return r;
+    };
+    box.append(h('section', { class: 'card sect' },
+      h('h3', null, 'Setări'),
+      row('Formularul de înscriere', 'Pornit: oricine poate trimite o înscriere de pe site. Oprit: pagina Recrutări dispare (dacă nu e pornită nici verificarea de mai jos).', 'recruiting'),
+      row('Verificarea rezultatului cu cod', 'Pornește-o după ce ați decis, ca fiecare să-și vadă rezultatul și după ce închideți formularul. Cât timp formularul e pornit, verificarea merge oricum.', 'recruitResults'),
+      mlText('Mesaj sus pe pagina Recrutări (opțional)', d.settings, 'recruitNote', { ph: 'ex. Înscrieri până pe 15 octombrie. Interviurile au loc pe 18 octombrie, în sala 12.', max: 400 }),
+      h('details', { class: 'tr' }, h('summary', null, 'Traduceri mesaj (opțional)'), h('div', { class: 'trg' }, trInputs('Mesaj', d.settings, 'recruitNote'))),
+      h('p', { class: 'hint' }, 'Setările de aici ajung pe site după „Salvează pe site”. Deciziile pentru candidați, mai jos, se salvează imediat.')));
+
+    const fmt = new Intl.DateTimeFormat('ro-RO', { dateStyle: 'medium', timeStyle: 'short' });
+    const stLabel = (k) => (APP_ST.find((x) => x[0] === k) || APP_ST[0])[1];
+    const listBox = h('div', { class: 'msgs' }, h('p', { class: 'hint' }, 'Se încarcă…'));
+    const chips = h('div', { class: 'fchips' });
+    const search = h('input', { class: 'in rsearch', type: 'search', placeholder: 'Caută nume, cod, liceu…', value: S.rq, 'aria-label': 'Caută',
+      oninput: (e) => { S.rq = e.target.value; draw(); } });
+    let items = [];
+    const csvBtn = h('button', { class: 'btn btn-ghost btn-sm', type: 'button', onclick: () => downloadCsv() }, 'Descarcă tabel (CSV)');
+    const clearBtn = h('button', { class: 'btn btn-danger btn-sm', type: 'button', onclick: async () => {
+      if (!items.length) return;
+      const ans = prompt('Ștergi definitiv toate cele ' + items.length + ' înscrieri (de exemplu, după ce s-a încheiat recrutarea)? Scrie STERGE ca să confirmi.');
+      if (ans === null) return;
+      if (ans.trim().toUpperCase() !== 'STERGE') { toast('Nu am șters nimic: confirmarea nu se potrivește.', 'err'); return; }
+      const r = await api('/api/admin/recruits/clear', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ confirm: 'STERGE' }) }).catch(() => null);
+      if (!r || !r.ok) { toast('Nu am putut șterge înscrierile.', 'err'); return; }
+      toast('Toate înscrierile au fost șterse.'); load();
+    } }, 'Șterge toate');
+    box.append(h('section', { class: 'card sect' },
+      h('div', { class: 'shead' }, h('h3', null, 'Înscrieri'), h('div', { class: 'row2' }, csvBtn, clearBtn)),
+      h('div', { class: 'rbar' }, chips, search),
+      listBox));
+
+    function downloadCsv() {
+      if (!items.length) { toast('Nu există încă înscrieri.', 'err'); return; }
+      const cols = [['Cod', (x) => x.code], ['Data', (x) => fmt.format(new Date(x.ts))], ['Decizia', (x) => stLabel(x.status)], ['Nume', (x) => x.last], ['Prenume', (x) => x.first],
+        ['Telefon', (x) => x.phone], ['Email', (x) => x.email], ['Liceul', (x) => x.school], ['Clasa', (x) => GRADE_RO[x.grade] || x.grade],
+        ['Departament', (x) => (x.dept || []).map((k) => DEPT_RO[k] || k).join(', ')], ['Timp pe săptămână', (x) => HOURS_RO[x.hours] || ''], ['A aflat', (x) => SOURCE_RO[x.source] || ''],
+        ['Ce a făcut până acum', (x) => x.exp], ['De ce vrea să intre', (x) => x.why], ['Altceva', (x) => x.other], ['Mesaj pentru candidat', (x) => x.note]];
+      const esc = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+      const lines = [cols.map((c) => esc(c[0])).join(';')].concat(items.map((x) => cols.map((c) => esc(c[1](x))).join(';')));
+      const url = URL.createObjectURL(new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' }));
+      const a = h('a', { href: url, download: 'inscrieri-homosapiens-' + new Date().toISOString().slice(0, 10) + '.csv' });
+      document.body.append(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    }
+
+    async function saveApp(it, status, note, btn) {
+      if (btn) btn.disabled = true;
+      const r = await api('/api/admin/recruits/' + it.id, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ status, note }) }).catch(() => null);
+      if (!r || !r.ok) { toast('Nu am putut salva decizia.', 'err'); if (btn) btn.disabled = false; return; }
+      const j = await r.json();
+      it.status = j.status; it.note = j.note; it.updated = Date.now();
+      setRecruitCount(items.filter((x) => x.status === 'new').length);
+      const live = d.settings.recruiting || d.settings.recruitResults;
+      toast(live ? 'Salvat. ' + (it.first || 'Candidatul') + ' vede decizia când își verifică codul.' : 'Salvat. Pornește „Verificarea rezultatului cu cod” ca să vadă decizia pe site.');
+      draw();
+    }
+
+    function card(it) {
+      const note = h('textarea', { class: 'in', rows: 2, maxlength: 1000, placeholder: 'ex. Interviul e joi, 16 octombrie, la 15:00, în sala 12. Adu un pix.', 'aria-label': 'Mesaj pentru candidat' });
+      note.value = it.note || '';
+      const saveNote = h('button', { class: 'btn btn-soft btn-sm', type: 'button', disabled: true, onclick: (e) => saveApp(it, it.status, note.value, e.currentTarget) }, 'Salvează mesajul');
+      note.addEventListener('input', () => { saveNote.disabled = note.value === (it.note || ''); });
+      const qa = (label, text) => (text ? h('div', { class: 'qa' }, h('span', { class: 'lbl' }, label), h('p', { class: 'mbody' }, text)) : null);
+      const phoneHref = 'tel:' + String(it.phone || '').replace(/[^\d+]/g, '');
+      return h('article', { class: 'mcard' },
+        h('div', { class: 'mhead' },
+          h('div', null, h('b', null, ((it.first || '') + ' ' + (it.last || '')).trim() || '(fără nume)'), h('span', { class: 'tag code' }, it.code), h('span', { class: 'tag st-' + it.status }, stLabel(it.status))),
+          h('span', { class: 'hint' }, fmt.format(new Date(it.ts)))),
+        h('p', { class: 'mmeta' }, [GRADE_RO[it.grade] ? 'Clasa ' + GRADE_RO[it.grade] : '', it.school, (it.dept || []).map((k) => DEPT_RO[k] || k).join(', '), HOURS_RO[it.hours] ? HOURS_RO[it.hours] + ' pe săptămână' : ''].filter(Boolean).join(' · ')),
+        h('p', { class: 'mmeta' }, h('a', { href: phoneHref }, it.phone || ''), ' · ', h('a', { href: 'mailto:' + (it.email || '') }, it.email || ''), it.source ? ' · A aflat: ' + (SOURCE_RO[it.source] || it.source) : ''),
+        qa('Ce a făcut până acum', it.exp), qa('De ce vrea să intre în echipă', it.why), qa('Altceva', it.other),
+        h('div', { class: 'decide' }, h('span', { class: 'lbl' }, 'Decizia'),
+          h('div', { class: 'seg', role: 'group', 'aria-label': 'Decizia' }, APP_ST.map(([k, lab]) => h('button', { class: 'segb' + (it.status === k ? ' on s-' + k : ''), type: 'button', 'aria-pressed': it.status === k ? 'true' : 'false',
+            onclick: (e) => { if (it.status !== k) saveApp(it, k, note.value, e.currentTarget); } }, lab)))),
+        h('div', { class: 'field' }, h('span', { class: 'lbl' }, 'Mesaj pentru candidat (opțional, îl vede când își verifică codul)'), note),
+        h('div', { class: 'mfoot' },
+          h('span', { class: 'hint' }, (it.updated ? 'Ultima modificare: ' + fmt.format(new Date(it.updated)) + '. ' : '') + (it.mail && it.mail.ok ? 'Trimisă și pe email.' : 'Netrimisă pe email.')),
+          h('div', { class: 'acts' }, saveNote,
+            h('button', { class: 'btn btn-danger btn-sm', type: 'button', onclick: async () => {
+              if (!confirm('Ștergi definitiv înscrierea lui ' + (((it.first || '') + ' ' + (it.last || '')).trim() || 'acest candidat') + '?')) return;
+              const r = await api('/api/admin/recruits/' + it.id, { method: 'DELETE' }).catch(() => null);
+              if (!r || !r.ok) { toast('Nu am putut șterge înscrierea.', 'err'); return; }
+              items = items.filter((x) => x !== it); setRecruitCount(items.filter((x) => x.status === 'new').length); toast('Înscrierea a fost ștearsă.'); draw();
+            } }, 'Șterge'))));
+    }
+
+    function draw() {
+      const count = (k) => (k === 'all' ? items.length : items.filter((x) => x.status === k).length);
+      chips.replaceChildren(...[['all', 'Toate']].concat(APP_ST).map(([k, lab]) => h('button', { class: 'fchip' + (S.rf === k ? ' on' : ''), type: 'button', 'aria-pressed': S.rf === k ? 'true' : 'false',
+        onclick: () => { S.rf = k; draw(); } }, lab + ' ' + count(k))));
+      const q = S.rq.trim().toLowerCase();
+      const shown = items.filter((x) => (S.rf === 'all' || x.status === S.rf)
+        && (!q || [x.first, x.last, x.code, x.school, x.email, x.phone].some((v) => String(v || '').toLowerCase().includes(q))));
+      listBox.replaceChildren();
+      if (!items.length) { listBox.append(h('p', { class: 'empty-note' }, d.settings.recruiting ? 'Nicio înscriere încă. Apar aici imediat ce cineva trimite formularul de pe site.' : 'Nicio înscriere. Pornește „Formularul de înscriere” și salvează pe site ca să primești înscrieri.')); return; }
+      if (!shown.length) { listBox.append(h('p', { class: 'empty-note' }, 'Nicio înscriere nu se potrivește.')); return; }
+      for (const it of shown) listBox.append(card(it));
+    }
+
+    async function load() {
+      try {
+        const res = await api('/api/admin/recruits');
+        const j = await res.json();
+        items = j.items;
+        setRecruitCount(items.filter((x) => x.status === 'new').length);
+        draw();
+      } catch (e) { if (e.message !== 'auth') listBox.replaceChildren(h('p', { class: 'msg err' }, 'Nu am putut încărca înscrierile.')); }
+    }
+    load();
+    return box;
+  }
+
   function viewHistory() {
     const box = h('div');
     const list = h('div', { class: 'hist' }, h('p', { class: 'hint' }, 'Se încarcă…'));
@@ -910,7 +1081,7 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
 
   function render() {
     const y = window.scrollY;
-    const view = S.tab === 'echipa' ? viewTeam() : S.tab === 'roboti' ? viewRobots() : S.tab === 'contact' ? viewContact() : S.tab === 'sponsori' ? viewSponsors() : S.tab === 'mesaje' ? viewMessages() : S.tab === 'istoric' ? viewHistory() : viewAwards();
+    const view = S.tab === 'echipa' ? viewTeam() : S.tab === 'roboti' ? viewRobots() : S.tab === 'contact' ? viewContact() : S.tab === 'recrutari' ? viewRecruit() : S.tab === 'sponsori' ? viewSponsors() : S.tab === 'mesaje' ? viewMessages() : S.tab === 'istoric' ? viewHistory() : viewAwards();
     const fmt = new Intl.DateTimeFormat('ro-RO', { dateStyle: 'medium', timeStyle: 'short' });
     app.replaceChildren(
       h('header', { class: 'top' }, h('div', { class: 'wrap top-in' },
@@ -924,7 +1095,7 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
             S.data = null; S.saved = ''; showLogin();
           } }, 'Ieși')))),
       h('main', { class: 'wrap' },
-        h('nav', { class: 'tabs', 'aria-label': 'Secțiuni' }, TABS.map(([id, label]) => h('button', { class: 'tab' + (S.tab === id ? ' on' : ''), type: 'button', 'data-tab': id, 'aria-pressed': S.tab === id ? 'true' : 'false', onclick: () => { S.tab = id; window.scrollTo(0, 0); render(); } }, label + (id === 'mesaje' && S.msgNew ? ' (' + S.msgNew + ')' : '')))),
+        h('nav', { class: 'tabs', 'aria-label': 'Secțiuni' }, TABS.map(([id, label]) => h('button', { class: 'tab' + (S.tab === id ? ' on' : ''), type: 'button', 'data-tab': id, 'aria-pressed': S.tab === id ? 'true' : 'false', onclick: () => { S.tab = id; window.scrollTo(0, 0); render(); } }, label + (id === 'mesaje' && S.msgNew ? ' (' + S.msgNew + ')' : '') + (id === 'recrutari' && S.recNew ? ' (' + S.recNew + ')' : '')))),
         S.meta ? h('p', { class: 'hint', style: 'margin-top:6px' }, 'Ultima salvare: ' + fmt.format(new Date(S.meta.ts)) + ', de ' + S.meta.who + '.') : null,
         view),
       h('div', { class: 'bar', id: 'bar' }, h('div', { class: 'bar-in' },

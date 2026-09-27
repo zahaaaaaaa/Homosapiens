@@ -16,7 +16,8 @@ Acolo se editează:
 
 - **Premii**: sezoanele și premiile.
 - **Roboți**: roboții de pe pagina Premii („Evoluția roboților”), cu poză (fundalul alb se scoate automat la încărcare).
-- **Echipa**: membrii, cu poze și rol (Software, Hardware, PR), plus butonul pentru cardul „Vrei în echipă?” (pornit doar în perioada de recrutări).
+- **Echipa**: membrii, cu poze și rol (Software, Hardware, PR).
+- **Recrutări**: butoanele pentru formularul de înscriere și pentru verificarea rezultatului, mesajul de sus al paginii, lista înscrierilor cu decizia pentru fiecare (În așteptare, Interviu, Acceptat, Respins), un mesaj pentru candidat și tabelul CSV. Fiecare candidat primește un cod `HS-XXXX-XXXX` cu care își vede rezultatul pe homosapiens.ro/#recrutari.
 - **Sponsori**: logo-urile.
 - **Contact și conturi**: emailul afișat, persoanele de contact cu telefon și conturile bancare (IBAN, titular, bancă).
 - **Mesaje**: ce trimit vizitatorii prin formularul de contact.
@@ -46,5 +47,7 @@ Din `/update` → „Mesaje” → „Trimite un email de test” se verifică d
 - **Versiunea 1** (înainte de redesign-ul din 26 septembrie 2026): commit `a4bfa82`. Pentru a reveni la ea, fișierele din `public/`, `worker/` și `src/` se readuc din acel commit.
 - **Versiunea 2** (26 septembrie 2026): textele din propunerea de parteneriat 2026-2027, harta drumurilor, bugetul, formularul de contact cu trimitere automată pe email. Salvată în branch-ul `versiunea-2` (commit `2df90d6`).
 - **Versiunea 3** (26 septembrie 2026): roboții la Premii (cu buton Pornit/Oprit), persoanele de contact cu telefon, conturile bancare, emailul team@homosapiens.ro, rolurile Software/Hardware/PR, cardul de recrutare cu buton în /update, texte din prezentarea 2026. Salvată în branch-ul `versiunea-3`.
+- **Versiunea 4** (27 septembrie 2026): Versiunea 3 fără pagina /update/parola. Salvată în branch-ul `versiunea-4` („revert 4”).
+- **Versiunea 5** (27 septembrie 2026): recrutările, cu formular de înscriere, cod pentru rezultat și tabul Recrutări în /update.
 
-Pentru a reveni la o versiune („revert 2”): fișierele din `public/`, `worker/`, `src/` și `wrangler.jsonc` se readuc din branch-ul `versiunea-1` sau `versiunea-2` și se face push pe `main`. Conținutul salvat din /update rămâne în Durable Object.
+Pentru a reveni la o versiune („revert 2”, „revert 4”): fișierele din `public/`, `worker/`, `src/` și `wrangler.jsonc` se readuc din branch-ul `versiunea-N` și se face push pe `main`. Conținutul salvat din /update rămâne în Durable Object.

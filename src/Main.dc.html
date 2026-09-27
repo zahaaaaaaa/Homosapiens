@@ -724,6 +724,60 @@ figure{margin:0}
 .prog-cta:hover .prog-go svg{transform:translateX(4px)}
 .prog-go svg{transition:transform .3s var(--ease)}
 .tr-text + .tr-text{margin-top:-4px}
+/* v5: recruitment */
+.badge-join{margin:0 8px 8px 0;border-color:transparent;background:var(--blue-soft);color:var(--blue)}
+.badge-join:hover{border-color:color-mix(in srgb,var(--blue) 40%,transparent)}
+.badge-join svg{color:currentColor}
+.live-dot{position:relative;flex:none;width:8px;height:8px;border-radius:50%;background:#1F9D55}
+.live-dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid #1F9D55;opacity:0;animation:livePulse 1.8s ease-out infinite}
+@keyframes livePulse{from{transform:scale(.5);opacity:.7}to{transform:scale(1.5);opacity:0}}
+@media (prefers-reduced-motion: reduce){.live-dot::after{animation:none}}
+.tab-dot{display:inline-block;width:6px;height:6px;margin-left:6px;border-radius:50%;background:#1F9D55;vertical-align:2px}
+.join-note{display:flex;align-items:flex-start;gap:12px;margin-bottom:clamp(18px,2.4vw,26px);padding:16px 18px;border-radius:18px;background:var(--blue-soft);color:var(--ink);font:600 15.5px/1.5 var(--f-body)}
+.join-note svg{flex:none;margin-top:1px;color:var(--blue)}
+.code-alert{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px 18px;margin-bottom:clamp(18px,2.4vw,26px);padding:clamp(18px,2.4vw,24px);border-radius:22px;border:2px solid var(--danger);background:color-mix(in srgb,var(--danger) 9%,var(--surface));color:var(--danger)}
+.code-alert > svg{align-self:start}
+.code-alert-t{font:800 clamp(19px,2vw,23px)/1.2 var(--f-display);letter-spacing:-.02em}
+.code-alert-body p + p{margin-top:4px;font-weight:600}
+.code-alert-code{display:flex;flex-direction:column;align-items:flex-end;gap:8px;padding:14px 16px;border-radius:16px;background:var(--surface);color:var(--ink)}
+.code-k{display:block;font:800 11.5px var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.code-v{display:block;font:600 clamp(24px,3vw,32px)/1.1 var(--f-mono);letter-spacing:.05em;color:var(--ink);white-space:nowrap;user-select:all}
+@media(max-width:760px){.code-alert{grid-template-columns:auto minmax(0,1fr)}.code-alert-code{grid-column:1/-1;align-items:flex-start}}
+.join{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(24px,4vw,48px);align-items:start}
+.jside{display:flex;flex-direction:column;gap:10px}
+.jside .cinfo-k{padding-top:0}
+.jside .cinfo-k ~ .cinfo-k{padding-top:14px}
+.jstep{display:grid;grid-template-columns:40px minmax(0,1fr);gap:14px;padding:16px 18px;border-radius:20px;background:var(--surface);border:1px solid var(--line)}
+.jstep-n{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:var(--surface-2);font:800 16px var(--f-display);color:var(--ink)}
+.jstep-t{font:700 16px/1.25 var(--f-display);letter-spacing:-.01em}
+.jstep-d{margin-top:3px;font-size:14px;line-height:1.5;color:var(--muted)}
+.jdept{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.jdept > div{padding:14px 16px;border-radius:18px;background:var(--surface-2)}
+.jdept b{display:block;font:700 15.5px var(--f-display);letter-spacing:-.01em;color:var(--ink)}
+.jdept > div > span{display:block;margin-top:3px;font-size:13.5px;line-height:1.45;color:var(--muted)}
+.jswitch{display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--surface-2);align-self:flex-start;max-width:100%}
+.jswitch button{min-height:44px;padding:0 18px;border:0;border-radius:999px;background:transparent;color:var(--muted);font:800 14px var(--f-body);cursor:pointer;white-space:nowrap;transition:background-color .2s,color .2s}
+.jswitch button.on{background:var(--surface);color:var(--ink);box-shadow:0 2px 10px -4px rgba(0,0,0,.3)}
+.fhint{margin-top:-4px;font-size:13.5px;line-height:1.5;color:var(--muted)}
+.consent{display:flex;align-items:flex-start;gap:12px;width:100%;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--bg);color:var(--ink-2);font:600 14px/1.5 var(--f-body);text-align:left;cursor:pointer;transition:border-color .2s,background-color .2s}
+.consent.on{border-color:var(--blue);background:var(--blue-soft);color:var(--ink)}
+.cbox{flex:none;display:grid;place-items:center;width:22px;height:22px;margin-top:1px;border-radius:7px;border:2px solid var(--line-2);background:var(--surface);color:transparent}
+.consent.on .cbox{border-color:var(--blue);background:var(--blue);color:var(--blue-ink)}
+.code-row{display:flex;gap:10px;flex-wrap:wrap}
+.code-input{flex:1 1 220px;width:auto;font-family:var(--f-mono);font-size:18px;letter-spacing:.08em;text-transform:uppercase}
+.res{display:flex;align-items:flex-start;gap:14px;padding:18px 20px;border-radius:20px;border:1px solid var(--line);background:var(--surface-2);animation:up .5s var(--ease) both}
+.res-ico{flex:none;display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:var(--surface);color:var(--muted)}
+.res-ok{border-color:color-mix(in srgb,#1F9D55 45%,transparent);background:color-mix(in srgb,#1F9D55 12%,var(--surface))}
+.res-ok .res-ico{color:#1F9D55}
+.res-int{border-color:transparent;background:var(--blue-soft)}
+.res-int .res-ico{color:var(--blue)}
+.res-t{font:700 clamp(18px,1.8vw,21px)/1.3 var(--f-display);letter-spacing:-.015em}
+.res-d{margin-top:4px;color:var(--ink-2)}
+.res-msg{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--surface)}
+.res-msg b{display:block;margin-bottom:4px;font:800 11.5px var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.res-msg p{white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:900px){.join{grid-template-columns:1fr}.jside{order:2}}
+@media(max-width:420px){.jdept{grid-template-columns:1fr}.jswitch button{padding:0 14px}}
 </style>
 </helmet>
 <div id="root" class="root" data-theme="{{theme}}" lang="{{lang}}" style="--b-l: {{bL}}; --b-d: {{bD}}; --b-soft-l: {{bSL}}; --b-soft-d: {{bSD}}">
@@ -740,7 +794,7 @@ figure{margin:0}
       </button>
       <nav class="tabs" aria-label="{{t.ui.pages}}">
         <sc-for list="{{tabs}}" as="tb" hint-placeholder-count="6">
-          <button class="{{tb.cls}}" onClick="{{tb.go}}" aria-current="{{tb.current}}">{{tb.label}}</button>
+          <button class="{{tb.cls}}" onClick="{{tb.go}}" aria-current="{{tb.current}}">{{tb.label}}<sc-if value="{{tb.dot}}" hint-placeholder-val="{{false}}"><span class="tab-dot" aria-hidden="true"></span></sc-if></button>
         </sc-for>
       </nav>
       <div class="hdr-actions">
@@ -775,6 +829,7 @@ figure{margin:0}
     <section class="hero">
       <div class="wrap hero-in">
         <div>
+          <sc-if value="{{recruitOpen}}" hint-placeholder-val="{{false}}"><button class="badge badge-join up d1" onClick="{{goJoin}}"><span class="live-dot" aria-hidden="true"></span><span>{{t.join.badge}}</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></sc-if>
           <button class="badge up d1" onClick="{{goAwards}}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4zM17 5h3v2a3 3 0 01-3 3M7 5H4v2a3 3 0 003 3"/></svg><span>{{t.hero.badge}}</span></button>
           <h1 class="h-display">
             <span class="mask"><span class="rise d1">{{t.hero.l1}}</span></span>
@@ -1024,7 +1079,7 @@ figure{margin:0}
           <article class="pm">
             <div class="pm-join">
               <div><h3 class="m-name">{{t.team.joinTitle}}</h3><p class="m-role" style="margin-top: 10px">{{t.team.joinText}}</p></div>
-              <button class="link-btn" onClick="{{goContact}}">{{t.team.joinCta}}<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+              <button class="link-btn" onClick="{{goJoin}}">{{t.team.joinCta}}<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
             </div>
           </article>
         </sc-if>
@@ -1540,6 +1595,114 @@ figure{margin:0}
   </main>
   </sc-if>
 
+  <sc-if value="{{isJoin}}" hint-placeholder-val="{{false}}">
+  <main class="page">
+    <section class="wrap phead">
+      <p class="eyebrow up d1">{{t.join.eyebrow}}</p>
+      <h1 class="h1 up d1">{{t.join.title}}</h1>
+      <p class="lead up d2">{{t.join.lead}}</p>
+    </section>
+    <section class="wrap">
+      <sc-if value="{{jShowDone}}" hint-placeholder-val="{{false}}">
+        <div class="code-alert" role="alert">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+          <div class="code-alert-body"><p class="code-alert-t">{{t.join.warnTitle}}</p><p>{{t.join.warnText}}</p></div>
+          <div class="code-alert-code"><span class="code-k">{{t.join.codeK}}</span><b class="code-v">{{jCode}}</b><button class="mini" onClick="{{copyCode}}">{{codeCopyLabel}}</button></div>
+        </div>
+      </sc-if>
+      <sc-if value="{{hasJoinNote}}" hint-placeholder-val="{{false}}">
+        <div class="join-note up d3"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><p>{{joinNote}}</p></div>
+      </sc-if>
+      <div class="join">
+        <aside class="jside up d3">
+          <p class="cinfo-k">{{t.join.howK}}</p>
+          <sc-for list="{{joinSteps}}" as="st" hint-placeholder-count="3">
+            <div class="jstep"><span class="jstep-n">{{st.n}}</span><div><p class="jstep-t">{{st.t}}</p><p class="jstep-d">{{st.d}}</p></div></div>
+          </sc-for>
+          <p class="cinfo-k">{{t.join.deptK}}</p>
+          <div class="jdept">
+            <sc-for list="{{joinDepts}}" as="dp" hint-placeholder-count="4">
+              <div><b>{{dp.t}}</b><span>{{dp.d}}</span></div>
+            </sc-for>
+          </div>
+        </aside>
+
+        <div class="form up d4">
+          <div class="jswitch" role="group" aria-label="{{t.join.eyebrow}}">
+            <button class="{{jApplyCls}}" aria-pressed="{{jApplyPressed}}" onClick="{{pickApply}}">{{t.join.tabApply}}</button>
+            <button class="{{jCheckCls}}" aria-pressed="{{jCheckPressed}}" onClick="{{pickCheck}}">{{t.join.tabCheck}}</button>
+          </div>
+
+          <sc-if value="{{jShowForm}}" hint-placeholder-val="{{true}}">
+            <p class="h3">{{t.join.formTitle}}</p>
+            <div class="row2">
+              <div class="field"><label for="j-last">{{t.join.lastName}}</label><input id="j-last" class="input" type="text" autocomplete="family-name" placeholder="{{t.join.lastNamePh}}" value="{{jLast}}" onChange="{{setJLast}}"/></div>
+              <div class="field"><label for="j-first">{{t.join.firstName}}</label><input id="j-first" class="input" type="text" autocomplete="given-name" placeholder="{{t.join.firstNamePh}}" value="{{jFirst}}" onChange="{{setJFirst}}"/></div>
+            </div>
+            <div class="row2">
+              <div class="field"><label for="j-phone">{{t.join.phone}}</label><input id="j-phone" class="input" type="tel" autocomplete="tel" placeholder="{{t.join.phonePh}}" value="{{jPhone}}" onChange="{{setJPhone}}"/></div>
+              <div class="field"><label for="j-email">{{t.join.email}}</label><input id="j-email" class="input" type="email" autocomplete="email" placeholder="{{t.join.emailPh}}" value="{{jEmail}}" onChange="{{setJEmail}}"/></div>
+            </div>
+            <div class="field"><label for="j-school">{{t.join.school}}</label><input id="j-school" class="input" type="text" placeholder="{{t.join.schoolPh}}" value="{{jSchool}}" onChange="{{setJSchool}}"/></div>
+            <div class="field"><span class="flabel">{{t.join.grade}}</span><div class="chips"><sc-for list="{{gradeOpts}}" as="o" hint-placeholder-count="4"><button class="{{o.cls}}" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for></div></div>
+            <div class="field"><span class="flabel">{{t.join.dept}} <span class="opt">{{t.join.deptHint}}</span></span><div class="chips"><sc-for list="{{deptOpts}}" as="o" hint-placeholder-count="4"><button class="{{o.cls}}" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for></div></div>
+            <div class="field"><label for="j-exp">{{t.join.exp}}</label><p class="fhint">{{t.join.expHint}}</p><textarea id="j-exp" class="input" rows="4" value="{{jExp}}" onChange="{{setJExp}}"></textarea></div>
+            <div class="field"><label for="j-why">{{t.join.why}}</label><textarea id="j-why" class="input" rows="4" value="{{jWhy}}" onChange="{{setJWhy}}"></textarea></div>
+            <div class="field"><span class="flabel">{{t.join.hours}}</span><div class="chips"><sc-for list="{{hoursOpts}}" as="o" hint-placeholder-count="4"><button class="{{o.cls}}" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for></div></div>
+            <div class="field"><span class="flabel">{{t.join.source}} <span class="opt">{{t.contact.optional}}</span></span><div class="chips"><sc-for list="{{sourceOpts}}" as="o" hint-placeholder-count="4"><button class="{{o.cls}}" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for></div></div>
+            <div class="field"><label for="j-other">{{t.join.other}} <span class="opt">{{t.contact.optional}}</span></label><textarea id="j-other" class="input" rows="3" value="{{jOther}}" onChange="{{setJOther}}"></textarea></div>
+            <div class="hp" aria-hidden="true"><label for="j-website">{{t.contact.hp}}</label><input id="j-website" type="text" tabindex="-1" autocomplete="off" value="{{jHp}}" onChange="{{setJHp}}"/></div>
+            <button class="{{consentCls}}" aria-pressed="{{consentPressed}}" onClick="{{toggleConsent}}"><span class="cbox" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span>{{t.join.consent}}</span></button>
+            <button class="{{jSendCls}}" onClick="{{submitJoin}}" aria-busy="{{jSendingStr}}">{{jSendLabel}}<svg class="arr" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            <sc-if value="{{jShowMiss}}" hint-placeholder-val="{{false}}"><p class="form-err" role="alert">{{jMissText}}</p></sc-if>
+            <sc-if value="{{jShowErr}}" hint-placeholder-val="{{false}}"><p class="form-err" role="alert">{{jErrText}}</p></sc-if>
+            <p class="form-note">{{t.join.privacy}}</p>
+          </sc-if>
+
+          <sc-if value="{{jShowDone}}" hint-placeholder-val="{{false}}">
+            <div class="sent" role="status">
+              <span class="sent-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+              <p class="h3">{{t.join.doneTitle}}</p>
+              <p class="soft">{{t.join.doneText}}</p>
+              <sc-if value="{{jIsDemo}}" hint-placeholder-val="{{false}}"><p class="fine">{{t.join.demo}}</p></sc-if>
+              <button class="btn btn-ghost" onClick="{{goCheckWithCode}}">{{t.join.checkNow}}<svg class="arr" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{jShowClosed}}" hint-placeholder-val="{{false}}">
+            <p class="h3">{{t.join.closedTitle}}</p>
+            <p class="soft">{{t.join.closedText}}</p>
+            <button class="btn btn-ghost" onClick="{{pickCheck}}">{{t.join.tabCheck}}<svg class="arr" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </sc-if>
+
+          <sc-if value="{{jShowCheck}}" hint-placeholder-val="{{false}}">
+            <p class="h3">{{t.join.checkTitle}}</p>
+            <p class="soft">{{t.join.checkText}}</p>
+            <div class="field">
+              <label for="j-code">{{t.join.codeK}}</label>
+              <div class="code-row">
+                <input id="j-code" class="input code-input" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="{{t.join.codePh}}" value="{{codeIn}}" onChange="{{setCodeIn}}"/>
+                <button class="{{chkBtnCls}}" onClick="{{checkCode}}" aria-busy="{{chkBusyStr}}">{{chkLabel}}</button>
+              </div>
+            </div>
+            <sc-if value="{{chkShow}}" hint-placeholder-val="{{false}}">
+              <div class="{{chkCls}}" role="status">
+                <span class="res-ico" aria-hidden="true"><sc-if value="{{chkIsOk}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></sc-if><sc-if value="{{chkIsInt}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18"/></svg></sc-if><sc-if value="{{chkIsWait}}" hint-placeholder-val="{{true}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></sc-if><sc-if value="{{chkIsNo}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 000-7.8z"/></svg></sc-if></span>
+                <div>
+                  <p class="res-t">{{chkTitle}}</p>
+                  <p class="res-d">{{chkText}}</p>
+                  <sc-if value="{{chkHasMsg}}" hint-placeholder-val="{{false}}"><div class="res-msg"><b>{{t.join.msgK}}</b><p>{{chkMsg}}</p></div></sc-if>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{chkHasErr}}" hint-placeholder-val="{{false}}"><p class="form-err" role="alert">{{chkErrText}}</p></sc-if>
+          </sc-if>
+        </div>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
   <footer class="foot">
     <div class="wrap">
       <div class="foot-top">
@@ -1616,17 +1779,23 @@ class Component extends DCLogic {
     /* Set to true only in the copy hosted on homosapiens.ro: enables the YouTube loop and address-bar links. */
     this.hsStandalone = false;
     this.hsYTRef = (el) => this.hsYTMount(el);
-    this.hsSlugs = { home: 'acasa', team: 'echipa', awards: 'premii', about: 'despre', sponsors: 'sponsori', contact: 'contact' };
+    this.hsSlugs = { home: 'acasa', team: 'echipa', awards: 'premii', about: 'despre', sponsors: 'sponsori', contact: 'contact', join: 'recrutari' };
     const tab0 = this.hsTabFromHash();
+    let joinCode = '';
+    try { joinCode = window.localStorage.getItem('hs19053-joincode') || ''; } catch (e) {}
     this.state = {
       tab: tab0, lang: lang, theme: theme, langOpen: false, p: reduce ? 1 : 0, teamF: 'all',
       topic: 'sponsor', cName: '', cEmail: '', cSubject: '', cMsg: '',
       cCompany: '', cCui: '', cRole: '', cPhone: '', cSupport: [], cAmount: '',
       cTried: false, cSent: false, copyState: 'idle', emailCopied: false,
       cStatus: 'idle', cErr: '', cHp: '', numP: 1, ibanCopied: '',
+      jMode: '', jLast: '', jFirst: '', jPhone: '', jEmail: '', jSchool: '', jGrade: '', jDept: [], jExp: '', jWhy: '', jHours: '', jSource: '', jOther: '',
+      jConsent: false, jHp: '', jTried: false, jStatus: 'idle', jErr: '', jCode: '', codeCopied: false,
+      codeIn: joinCode, chkStatus: 'idle', chkRes: null,
       cms: null
     };
     this.hsFormT0 = Date.now();
+    this.hsJoinT0 = Date.now();
     this.hsNumsRef = (el) => this.hsNumsObs(el);
   }
 
@@ -1738,7 +1907,7 @@ class Component extends DCLogic {
         S('sp-razedent', 'Razedent', '', ''),
         S('sp-eurolia', 'Eurolia', '', '')
       ],
-      settings: { recruiting: false, showRobots: true, email: 'team@homosapiens.ro' },
+      settings: { recruiting: false, recruitResults: false, recruitNote: {}, showRobots: true, email: 'team@homosapiens.ro' },
       contacts: [
         { id: 'c-voicu', active: true, name: 'Prof. Amalia Voicu', role: ML((d) => d.contact.mentorK), phone: '+40745503291', photo: '' },
         { id: 'c-beldimanescu', active: true, name: 'Ioana Beldimănescu', role: PR, phone: '+40747855654', photo: '/_blob/bcac8b59151e9ebe32f57b369364128d' },
@@ -1769,6 +1938,7 @@ class Component extends DCLogic {
     if (this.hsNumsIO) { try { this.hsNumsIO.disconnect(); } catch (e) {} }
     if (this.hsNumIv) clearInterval(this.hsNumIv);
     if (this.hsIbT) clearTimeout(this.hsIbT);
+    if (this.hsCodeT) clearTimeout(this.hsCodeT);
   }
 
   /* Numbers on the home page count up the first time they scroll into view. */
@@ -1848,6 +2018,47 @@ class Component extends DCLogic {
     p.then((r) => r.json().then((j) => ({ ok: r.ok && !!j && j.ok === true, status: r.status }), () => ({ ok: false, status: r.status })))
       .then((x) => { if (x.ok) fin('sent'); else fin('error', x.status === 429 ? 'rate' : 'generic'); })
       .catch(() => fin('error', 'net'));
+  }
+
+  /* Recruitment: send the application, then check a code. The copy inside the design canvas only simulates both. */
+  hsJoinSend(payload) {
+    this.setState({ jStatus: 'sending', jErr: '', jTried: false });
+    const done = (code) => {
+      this.hsSave('hs19053-joincode', code);
+      this.setState({ jStatus: 'done', jErr: '', jCode: code, codeIn: code, chkStatus: 'idle', chkRes: null });
+      this.hsTop();
+    };
+    const fail = (er) => this.setState({ jStatus: 'error', jErr: er });
+    if (!this.hsStandalone) { setTimeout(() => done('HS-DEMO-2026'), 500); return; }
+    let p;
+    try {
+      p = fetch('/api/recruit', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
+    } catch (e) { fail('net'); return; }
+    p.then((r) => r.json().then((j) => ({ r: r, j: j }), () => ({ r: r, j: null })))
+      .then((x) => {
+        if (x.r.ok && x.j && x.j.ok === true && x.j.code) done(String(x.j.code));
+        else fail(x.r.status === 429 ? 'rate' : (x.r.status === 403 ? 'closed' : 'generic'));
+      })
+      .catch(() => fail('net'));
+  }
+
+  hsJoinCheck(code) {
+    const c = String(code || '').trim();
+    if (!c) { this.setState({ chkStatus: 'notfound', chkRes: null }); return; }
+    this.setState({ chkStatus: 'checking', chkRes: null });
+    if (!this.hsStandalone) { setTimeout(() => this.setState({ chkStatus: 'done', chkRes: { status: 'new', first: 'Andrei', message: '' } }), 500); return; }
+    let p;
+    try {
+      p = fetch('/api/recruit/status', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ code: c }) });
+    } catch (e) { this.setState({ chkStatus: 'error' }); return; }
+    p.then((r) => r.json().then((j) => ({ r: r, j: j }), () => ({ r: r, j: null })))
+      .then((x) => {
+        if (x.r.ok && x.j && x.j.status) {
+          this.hsSave('hs19053-joincode', c);
+          this.setState({ chkStatus: 'done', chkRes: { status: String(x.j.status), first: String(x.j.first || ''), message: String(x.j.message || '') } });
+        } else this.setState({ chkStatus: x.r.status === 404 ? 'notfound' : (x.r.status === 429 ? 'rate' : 'error'), chkRes: null });
+      })
+      .catch(() => this.setState({ chkStatus: 'error' }));
   }
 
   hsPrime(el) {
@@ -1946,6 +2157,7 @@ class Component extends DCLogic {
     this.hsTop();
     if (id === 'home') this.hsCount();
     if (id === 'contact') this.hsFormT0 = Date.now();
+    if (id === 'join') this.hsJoinT0 = Date.now();
   }
 
   hsScrollGal(dir) {
@@ -2001,7 +2213,7 @@ class Component extends DCLogic {
     return {
       ro: {
         ui: { home: 'Homosapiens, pagina principală', pages: 'Pagini', language: 'Alege limba', theme: 'Schimbă tema, luminos sau întunecat', close: 'Închide meniul', prev: 'Fotografia anterioară', next: 'Fotografia următoare', copy: 'Copiază', copied: 'Copiat' },
-        nav: { home: 'Acasă', team: 'Echipa', awards: 'Premii', about: 'Despre', sponsors: 'Sponsori', contact: 'Contact' },
+        nav: { home: 'Acasă', team: 'Echipa', awards: 'Premii', about: 'Despre', sponsors: 'Sponsori', contact: 'Contact', join: 'Recrutări' },
         hero: { badge: 'Inspire Award, locul 2 la Long Beach, 2026', l1: 'Construim roboți.', l2: 'Reprezentăm Buzăul.', sub: 'Echipa FIRST Tech Challenge a Colegiului Național „B. P. Hasdeu” din Buzău. Locul 7 în lume în sezonul DECODE, din peste 8.800 de echipe.', ctaSponsor: 'Devino sponsor', ctaAwards: 'Vezi premiile', videoTitle: 'Urmărește meciul', videoSub: 'Pe YouTube, de la minutul 32:30, durează 2:45', videoCap: 'Unul dintre cele mai bune meciuri ale noastre, 32:30-35:15', videoLink: 'YouTube', posterAria: 'Deschide meciul pe YouTube, de la minutul 32:30', clipAria: 'Clip dintr-un meci Homosapiens, rulează în buclă', posterAlt: 'Echipa Homosapiens încurajează din tribună, la o competiție FTC' },
         ticker: ['Locul 7 mondial, din peste 8.800 de echipe', 'Al 6-lea record mondial: 577 de puncte', 'Inspire Award, locul 2, Long Beach 2026', '9 din 9 victorii în calificări la Bucharest Twin Cup', 'Reach Award, locul 1, Romania East League', 'Reach Award, locul 3, Campionatul Național', 'Control Award la FTC Italy Championship', 'Motivate Award la Michiana Premier Event', '2 huburi de robotică în mediul rural', 'Sezonul 2026-2027: BIOBUZZ'],
         home: {
@@ -2036,7 +2248,7 @@ class Component extends DCLogic {
           { title: 'Romania East League Tournament', text: 'Reach Award, locul 1. Primul premiu al sezonului.', alt: 'Echipa Homosapiens cu diploma, în fața panoului competiției' },
           { title: 'Alături de comunitate', text: 'Tabere de vară gratuite, ateliere și evenimente pentru copii.', alt: 'Membrii echipei și un grup mare de copii, în aer liber' }
         ],
-        team: { title: 'Oamenii din spatele robotului.', lead: 'Elevi de la Hasdeu care proiectează, construiesc, programează și prezintă robotul. Cifrele spun ce am realizat; oamenii din spatele lor spun cine suntem.', photoAlt: 'Echipa Homosapiens în sezonul 2025-2026, cu mentora echipei și robotul 19053, la o competiție', photoCap: 'Echipa Homosapiens, sezonul 2025-2026', mentorK: 'Mentor', mentorName: 'Prof. Amalia Voicu', mentorRole: 'Mentora echipei, profesoară de informatică', membersTitle: 'Echipa.', joinTitle: 'Vrei în echipă?', joinText: 'Scrie-ne și îți spunem cum te poți alătura.', joinCta: 'Scrie-ne', soon: 'Poză în curând', filterAria: 'Filtrează după departament', photoOf: 'Fotografie cu', countTpl: '{a} membri și {b} absolvenți', f: { all: 'Toți', software: 'Software', hardware: 'Hardware', pr: 'PR', alumni: 'Absolvenți' }, fd: { all: 'Elevii care construiesc Homosapiens în sezonul BIOBUZZ, plus absolvenții noștri.', software: 'Scriu codul robotului, pentru perioada autonomă și pentru teleop.', hardware: 'Proiectează robotul în CAD, apoi îl construiesc și îl testează, de la șasiu la mecanisme.', pr: 'Fotografii, povești, activități în comunitate și relația cu sponsorii.', alumni: 'Mulțumim pentru sezoanele petrecute cu noi.' }, roles: { software: 'Software', hardware: 'Hardware', pr: 'PR', prog: 'Software', eng: 'Hardware', cad: 'Hardware', hwcad: 'Hardware', drive: 'Hardware', driveEng: 'Hardware', prLead: 'PR', peer: 'Peer mentor', member: 'Membru al echipei' }, classOf: 'Promoția {y}' },
+        team: { title: 'Oamenii din spatele robotului.', lead: 'Elevi de la Hasdeu care proiectează, construiesc, programează și prezintă robotul. Cifrele spun ce am realizat; oamenii din spatele lor spun cine suntem.', photoAlt: 'Echipa Homosapiens în sezonul 2025-2026, cu mentora echipei și robotul 19053, la o competiție', photoCap: 'Echipa Homosapiens, sezonul 2025-2026', mentorK: 'Mentor', mentorName: 'Prof. Amalia Voicu', mentorRole: 'Mentora echipei, profesoară de informatică', membersTitle: 'Echipa.', joinTitle: 'Vrei în echipă?', joinText: 'Înscrierile sunt deschise. Completezi formularul și primești un cod cu care îți afli rezultatul.', joinCta: 'Înscrie-te', soon: 'Poză în curând', filterAria: 'Filtrează după departament', photoOf: 'Fotografie cu', countTpl: '{a} membri și {b} absolvenți', f: { all: 'Toți', software: 'Software', hardware: 'Hardware', pr: 'PR', alumni: 'Absolvenți' }, fd: { all: 'Elevii care construiesc Homosapiens în sezonul BIOBUZZ, plus absolvenții noștri.', software: 'Scriu codul robotului, pentru perioada autonomă și pentru teleop.', hardware: 'Proiectează robotul în CAD, apoi îl construiesc și îl testează, de la șasiu la mecanisme.', pr: 'Fotografii, povești, activități în comunitate și relația cu sponsorii.', alumni: 'Mulțumim pentru sezoanele petrecute cu noi.' }, roles: { software: 'Software', hardware: 'Hardware', pr: 'PR', prog: 'Software', eng: 'Hardware', cad: 'Hardware', hwcad: 'Hardware', drive: 'Hardware', driveEng: 'Hardware', prLead: 'PR', peer: 'Peer mentor', member: 'Membru al echipei' }, classOf: 'Promoția {y}' },
         awards: {
           title: 'Premiile noastre.', lead: 'Patru sezoane consecutive cu distincții oficiale, în România, Italia și Statele Unite.',
           featK: 'Cel mai important premiu', featEvent: 'Western Edge Premier Event, Sea Division, Long Beach, California, mai 2026', featLead: 'La peste 10.500 km de Buzău, printre cei mai buni din lume.', featText: '88 de echipe din întreaga lume. Interviuri cu juriul, integral în limba engleză. Un caiet tehnic care documentează un an întreg de muncă. Și un robot care a trebuit să convingă pe teren.', featDesc: 'Cel mai prestigios premiu din FIRST Tech Challenge, pentru excelență pe teren și în afara lui.', fTeams: 'echipe din întreaga lume', fWins: 'victorii în calificări', fDiv: 'clasare în divizie', fCapV: 'Căpitan', fCap: 'de alianță în playoff', featAlt: 'Echipa Homosapiens cu bannerul echipei și tricolorul, la Western Edge Premier Event', featQuote: 'Am plecat din Buzău ca să învățăm de la cei mai buni. Ne-am întors printre ei.',
@@ -2103,11 +2315,12 @@ class Component extends DCLogic {
           invK: 'Invitație', invTitle: 'Următorul capitol se scrie împreună.', invText: 'Căutăm parteneri care cred în performanță, tehnologie, educație și în generația care va construi viitorul.', invText2: 'Orice formă de sprijin contează. Pe lângă finanțare, contribuțiile în produse, servicii, transport, materiale sau expertiză au pentru noi o valoare la fel de mare.', invMin: '10 min', invMinText: 'Îți propunem o discuție scurtă, în care să îți prezentăm echipa și modul în care putem crea valoare pentru ambele părți.', invCta: 'Propune o discuție', prK: 'PR', mentorK: 'Mentor'
         },
         contact: { title: 'Hai să vorbim.', lead: 'Pentru sponsorizări, colaborări sau presă, scrie-ne aici. Mesajul ajunge direct la echipă, pe email.', emailK: 'Email', addrK: 'Adresă', addrV: 'Colegiul Național „B. P. Hasdeu”, Bulevardul Gării 1, Buzău', bankK: 'Conturi bancare', callTpl: 'Sună: {n}, {p}', peopleK: 'Cu cine vorbești', prK: 'PR', mentorK: 'Mentor', topicsLabel: 'Despre ce ne scrii?', topics: { sponsor: 'Sponsorizare', collab: 'Colaborare', press: 'Presă', other: 'Altceva' }, spTitle: 'Detalii despre firmă', company: 'Numele firmei', companyPh: 'Numele companiei', cui: 'CUI', cuiPh: 'RO12345678', role: 'Funcția ta', rolePh: 'De exemplu, director de marketing', phone: 'Telefon', phonePh: '07xx xxx xxx', optional: '(opțional)', supportLabel: 'Ce fel de sprijin?', support: { money: 'Financiar', goods: 'Produse sau materiale', services: 'Servicii', mentoring: 'Mentorat sau vizite' }, amountLabel: 'Suma estimativă', amounts: { a1: 'Sub 1.000 lei', a2: '1.000-5.000 lei', a3: '5.000-10.000 lei', a4: 'Peste 10.000 lei' }, name: 'Nume', namePh: 'Numele tău', emailPh: 'nume@firma.ro', subject: 'Subiect', subjectPh: 'Despre ce e vorba', msg: 'Mesaj', msgPh: 'Scrie mesajul aici', send: 'Trimite mesajul', sendMail: 'Trimite pe email', sending: 'Se trimite…', copyMsg: 'Copiază mesajul', err: 'Completează numele, un email valid și mesajul.', errCompany: 'Completează numele firmei, numele tău, un email valid și mesajul.', ok: 'Se deschide aplicația ta de email cu mesajul completat. Dacă nu se deschide, folosește Copiază mesajul și trimite-l la {email}.', copied: 'Mesajul e copiat. Lipește-l într-un email către {email}.', copyFail: 'Nu am putut copia automat. Selectează textul de mai jos și copiază-l.', sentTitle: 'Mesajul a ajuns la echipă.', sentText: 'Îți răspundem pe email, de obicei în câteva zile.', sendAnother: 'Scrie alt mesaj', failNet: 'Nu am putut trimite mesajul. Verifică conexiunea la internet și încearcă din nou.', failRate: 'Ai trimis deja câteva mesaje. Încearcă din nou peste câteva minute.', failGeneric: 'Nu am putut trimite mesajul. Încearcă din nou sau scrie-ne direct la {email}.', privacy: 'Folosim datele din formular doar ca să îți răspundem.', hp: 'Lasă acest câmp gol', defaultSubject: 'Mesaj de pe site', b: { topic: 'Tip', name: 'Nume', email: 'Email', company: 'Firma', cui: 'CUI', role: 'Funcție', phone: 'Telefon', support: 'Sprijin', amount: 'Sumă estimativă', msg: 'Mesaj' } },
+        join: { badge: 'Recrutările sunt deschise. Înscrie-te!', eyebrow: 'Recrutări Homosapiens', title: 'Vino în echipă.', lead: 'Căutăm elevi curioși, care vor să învețe programare, inginerie, CAD sau PR. Nu trebuie să știi deja totul; trebuie doar să vrei să evoluezi alături de noi.', tabApply: 'Mă înscriu', tabCheck: 'Am deja un cod', howK: 'Cum funcționează', steps: [{ t: 'Completezi formularul', d: 'Durează câteva minute. Răspunde sincer, nu există răspunsuri greșite.' }, { t: 'Primești un cod', d: 'Apare imediat după ce trimiți formularul. Notează-l: fără el nu îți poți afla rezultatul.' }, { t: 'Îți afli rezultatul', d: 'Revii pe această pagină, alegi „Am deja un cod” și îl introduci.' }], deptK: 'Ce poți face la noi', depts: { prog: { t: 'Programare', d: 'Codul robotului, pentru perioada autonomă și teleop.' }, eng: { t: 'Inginerie', d: 'Construim, reglăm și testăm robotul.' }, cad: { t: 'CAD', d: 'Proiectăm piesele robotului în 3D.' }, pr: { t: 'PR', d: 'Povești, social media, sponsori și proiecte în comunitate.' } }, formTitle: 'Formular de înscriere', lastName: 'Nume', lastNamePh: 'Popescu', firstName: 'Prenume', firstNamePh: 'Andrei', phone: 'Telefon', phonePh: '07xx xxx xxx', email: 'Email', emailPh: 'nume@exemplu.ro', school: 'Liceul', schoolPh: 'Colegiul Național „B. P. Hasdeu”', grade: 'Clasa', grades: { g9: 'a IX-a', g10: 'a X-a', g11: 'a XI-a', g12: 'a XII-a' }, dept: 'În ce departament vrei să fii?', deptHint: '(poți alege mai multe)', exp: 'Ce ai mai făcut până acum?', expHint: 'Voluntariat, proiecte, concursuri, cluburi, orice îți place să faci. Dacă încă nimic, scrie asta, e în regulă.', why: 'De ce vrei să intri în Homosapiens?', hours: 'Cât timp poți aloca pe săptămână?', hoursOpts: { h1: 'Sub 3 ore', h2: '3-6 ore', h3: '6-10 ore', h4: 'Peste 10 ore' }, source: 'Cum ai aflat de recrutări?', sources: { s1: 'De la prieteni sau colegi', s2: 'Instagram, Facebook sau TikTok', s3: 'La școală', s4: 'La un eveniment', s5: 'Altfel' }, other: 'Vrei să ne mai spui ceva?', consent: 'Sunt de acord ca echipa Homosapiens să folosească datele din formular doar pentru recrutare.', send: 'Trimite înscrierea', sending: 'Se trimite…', missing: 'Mai ai de completat: {f}.', f: { lastName: 'numele', firstName: 'prenumele', phone: 'telefonul', email: 'un email valid', school: 'liceul', grade: 'clasa', dept: 'departamentul', exp: 'ce ai mai făcut', why: 'de ce vrei să intri', hours: 'timpul pe săptămână', consent: 'acordul pentru date' }, failNet: 'Nu am putut trimite înscrierea. Verifică internetul și încearcă din nou.', failRate: 'Ai trimis deja o înscriere de curând. Dacă ai greșit ceva, scrie-ne pe pagina Contact.', failClosed: 'Înscrierile tocmai s-au închis.', failGeneric: 'Nu am putut trimite înscrierea. Încearcă din nou în câteva minute.', warnTitle: 'Notează-ți codul acum!', warnText: 'Fără el nu îți poți afla rezultatul. Fă o poză ecranului sau copiază codul într-un loc sigur.', codeK: 'Codul tău', doneTitle: 'Înscrierea ta a ajuns la echipă.', doneText: 'După ce se încheie înscrierile, revino aici, alege „Am deja un cod” și introdu codul ca să vezi rezultatul.', checkNow: 'Verifică acum', closedTitle: 'Înscrierile sunt închise acum.', closedText: 'Dacă te-ai înscris deja, alege „Am deja un cod” ca să-ți vezi rezultatul.', checkTitle: 'Verifică-ți rezultatul', checkText: 'Introdu codul primit când te-ai înscris.', codePh: 'HS-XXXX-XXXX', check: 'Verifică', checking: 'Se verifică…', res: { new: { t: 'Înscrierea ta e în curs de evaluare, {n}.', d: 'Revino aici mai târziu. Rezultatul apare cu același cod.' }, interview: { t: 'Te chemăm la interviu, {n}!', d: 'Detaliile sunt mai jos. Dacă nu poți ajunge, anunță-ne pe pagina Contact.' }, accepted: { t: 'Felicitări, {n}! Bun venit în Homosapiens.', d: 'Te contactăm pe telefon sau pe email cu pașii următori.' }, rejected: { t: 'Îți mulțumim pentru înscriere, {n}.', d: 'De data aceasta nu te-am putut primi în echipă. Te încurajăm să încerci din nou la următoarea recrutare.' } }, msgK: 'Mesaj de la echipă', notFound: 'Nu am găsit acest cod. Verifică literele și cifrele și încearcă din nou.', checkRate: 'Prea multe încercări. Mai încearcă peste câteva minute.', checkFail: 'Nu am putut verifica acum. Încearcă din nou.', privacy: 'Datele tale le vede doar echipa și le folosim doar pentru recrutare.', demo: 'Previzualizare: pe homosapiens.ro, aici apare codul real.' },
         footer: { tagline: 'Echipa FIRST Tech Challenge #19053 a Colegiului Național „B. P. Hasdeu” din Buzău.', cta: 'Scrie-ne', pagesH: 'Pagini', socialH: 'Urmărește-ne', rights: '© 2026 Homosapiens, FTC #19053, RO109', data: 'Date: FIRST, FTCScout, Agerpres', top: 'Sus', organizer: 'Organizator', founding: 'Partener fondator', partnersAria: 'FIRST Tech Challenge România, sezonul 11, 2026-2027' }
       },
       en: {
         ui: { home: 'Homosapiens home page', pages: 'Pages', language: 'Choose language', theme: 'Switch between light and dark theme', close: 'Close menu', prev: 'Previous photo', next: 'Next photo', copy: 'Copy', copied: 'Copied' },
-        nav: { home: 'Home', team: 'Team', awards: 'Awards', about: 'About', sponsors: 'Sponsors', contact: 'Contact' },
+        nav: { home: 'Home', team: 'Team', awards: 'Awards', about: 'About', sponsors: 'Sponsors', contact: 'Contact', join: 'Join us' },
         hero: { badge: 'Inspire Award, 2nd place at Long Beach, 2026', l1: 'We build robots.', l2: 'We represent Buzău.', sub: 'The FIRST Tech Challenge team of Bogdan Petriceicu Hasdeu National College in Buzău, Romania. 7th in the world in the DECODE season, out of more than 8,800 teams.', ctaSponsor: 'Become a sponsor', ctaAwards: 'See our awards', videoTitle: 'Watch the match', videoSub: 'On YouTube, from 32:30, runs 2:45', videoCap: 'One of our best matches, 32:30-35:15', videoLink: 'YouTube', posterAria: 'Open the match on YouTube at 32:30', clipAria: 'Clip from a Homosapiens match, playing on loop', posterAlt: 'The Homosapiens team cheering in the stands at an FTC event' },
         ticker: ['7th in the world, out of 8,800+ teams', '6th world record: 577 points', 'Inspire Award, 2nd place, Long Beach 2026', '9 out of 9 qualification wins at the Bucharest Twin Cup', 'Reach Award, 1st place, Romania East League', 'Reach Award, 3rd place, Romania Championship', 'Control Award at the FTC Italy Championship', 'Motivate Award at the Michiana Premier Event', '2 robotics hubs in rural communities', '2026-2027 season: BIOBUZZ'],
         home: {
@@ -2142,7 +2355,7 @@ class Component extends DCLogic {
           { title: 'Romania East League Tournament', text: 'Reach Award, 1st place. Our first award of the season.', alt: 'The Homosapiens team with its certificate in front of the event backdrop' },
           { title: 'With our community', text: 'Free summer camps, workshops and events for children.', alt: 'Team members with a large group of children outdoors' }
         ],
-        team: { title: 'The people behind the robot.', lead: 'Hasdeu students who design, build, program and present the robot. The numbers show what we have achieved; the people behind them show who we are.', photoAlt: 'The Homosapiens team in the 2025-2026 season, with the team mentor and robot 19053, at a competition', photoCap: 'The Homosapiens team, 2025-2026 season', mentorK: 'Mentor', mentorName: 'Amalia Voicu', mentorRole: 'Team mentor and computer science teacher', membersTitle: 'The team.', joinTitle: 'Want to join?', joinText: 'Write to us and we will tell you how.', joinCta: 'Write to us', soon: 'Photo coming soon', filterAria: 'Filter by department', photoOf: 'Photo of', countTpl: '{a} members and {b} alumni', f: { all: 'All', software: 'Software', hardware: 'Hardware', pr: 'PR', alumni: 'Alumni' }, fd: { all: 'The students building Homosapiens in the BIOBUZZ season, plus our alumni.', software: 'They write the robot’s code, for the autonomous period and teleop.', hardware: 'They design the robot in CAD, then build and test it, from the chassis to the mechanisms.', pr: 'Photos, stories, community work and our relationship with sponsors.', alumni: 'Thank you for the seasons you spent with us.' }, roles: { software: 'Software', hardware: 'Hardware', pr: 'PR', prog: 'Software', eng: 'Hardware', cad: 'Hardware', hwcad: 'Hardware', drive: 'Hardware', driveEng: 'Hardware', prLead: 'PR', peer: 'Peer mentor', member: 'Team member' }, classOf: 'Class of {y}' },
+        team: { title: 'The people behind the robot.', lead: 'Hasdeu students who design, build, program and present the robot. The numbers show what we have achieved; the people behind them show who we are.', photoAlt: 'The Homosapiens team in the 2025-2026 season, with the team mentor and robot 19053, at a competition', photoCap: 'The Homosapiens team, 2025-2026 season', mentorK: 'Mentor', mentorName: 'Amalia Voicu', mentorRole: 'Team mentor and computer science teacher', membersTitle: 'The team.', joinTitle: 'Want to join?', joinText: 'Applications are open. Fill in the form and get a code to check your result.', joinCta: 'Apply', soon: 'Photo coming soon', filterAria: 'Filter by department', photoOf: 'Photo of', countTpl: '{a} members and {b} alumni', f: { all: 'All', software: 'Software', hardware: 'Hardware', pr: 'PR', alumni: 'Alumni' }, fd: { all: 'The students building Homosapiens in the BIOBUZZ season, plus our alumni.', software: 'They write the robot’s code, for the autonomous period and teleop.', hardware: 'They design the robot in CAD, then build and test it, from the chassis to the mechanisms.', pr: 'Photos, stories, community work and our relationship with sponsors.', alumni: 'Thank you for the seasons you spent with us.' }, roles: { software: 'Software', hardware: 'Hardware', pr: 'PR', prog: 'Software', eng: 'Hardware', cad: 'Hardware', hwcad: 'Hardware', drive: 'Hardware', driveEng: 'Hardware', prLead: 'PR', peer: 'Peer mentor', member: 'Team member' }, classOf: 'Class of {y}' },
         awards: {
           title: 'Our awards.', lead: 'Four seasons in a row with official awards, in Romania, Italy and the United States.',
           featK: 'Our biggest award', featEvent: 'Western Edge Premier Event, Sea Division, Long Beach, California, May 2026', featLead: 'More than 10,500 km from Buzău, among the best in the world.', featText: '88 teams from around the world. Judge interviews held entirely in English. An engineering portfolio documenting a whole year of work. And a robot that had to prove itself on the field.', featDesc: 'The most prestigious award in FIRST Tech Challenge, for excellence on and off the field.', fTeams: 'teams from around the world', fWins: 'qualification wins', fDiv: 'division rank', fCapV: 'Captain', fCap: 'of a playoff alliance', featAlt: 'The Homosapiens team with its banner and the Romanian flag at the Western Edge Premier Event', featQuote: 'We left Buzău to learn from the best. We came back as one of them.',
@@ -2209,11 +2422,12 @@ class Component extends DCLogic {
           invK: 'An invitation', invTitle: 'The next chapter, written together.', invText: 'We are looking for partners who believe in performance, technology, education and the generation that will build the future.', invText2: 'Every kind of support matters. Besides funding, contributions in products, services, transport, materials or expertise are just as valuable to us.', invMin: '10 min', invMinText: 'We suggest a short conversation where we introduce the team and how we can create value for both sides.', invCta: 'Suggest a call', prK: 'PR', mentorK: 'Mentor'
         },
         contact: { title: 'Let’s talk.', lead: 'For sponsorships, partnerships or press, write to us here. Your message goes straight to the team by email.', emailK: 'Email', addrK: 'Address', addrV: 'Bogdan Petriceicu Hasdeu National College, 1 Gării Boulevard, Buzău', bankK: 'Bank accounts', callTpl: 'Call {n}, {p}', peopleK: 'Who you will talk to', prK: 'PR', mentorK: 'Mentor', topicsLabel: 'What is it about?', topics: { sponsor: 'Sponsorship', collab: 'Partnership', press: 'Press', other: 'Something else' }, spTitle: 'Company details', company: 'Company name', companyPh: 'Your company', cui: 'Tax ID (CUI)', cuiPh: 'RO12345678', role: 'Your role', rolePh: 'For example, marketing director', phone: 'Phone', phonePh: '+40 7xx xxx xxx', optional: '(optional)', supportLabel: 'What kind of support?', support: { money: 'Financial', goods: 'Products or materials', services: 'Services', mentoring: 'Mentoring or visits' }, amountLabel: 'Estimated amount', amounts: { a1: 'Under 1,000 lei', a2: '1,000-5,000 lei', a3: '5,000-10,000 lei', a4: 'Over 10,000 lei' }, name: 'Name', namePh: 'Your name', emailPh: 'name@company.com', subject: 'Subject', subjectPh: 'What it’s about', msg: 'Message', msgPh: 'Write your message here', send: 'Send message', sendMail: 'Send by email', sending: 'Sending…', copyMsg: 'Copy message', err: 'Add your name, a valid email and a message.', errCompany: 'Add the company name, your name, a valid email and a message.', ok: 'Your email app opens with the message filled in. If it does not open, use Copy message and send it to {email}.', copied: 'Message copied. Paste it into an email to {email}.', copyFail: 'Automatic copy did not work. Select the text below and copy it.', sentTitle: 'Your message reached the team.', sentText: 'We usually reply by email within a few days.', sendAnother: 'Write another message', failNet: 'We could not send your message. Check your internet connection and try again.', failRate: 'You have already sent a few messages. Try again in a few minutes.', failGeneric: 'We could not send your message. Try again or write to us at {email}.', privacy: 'We only use the details in this form to reply to you.', hp: 'Leave this field empty', defaultSubject: 'Message from the website', b: { topic: 'Type', name: 'Name', email: 'Email', company: 'Company', cui: 'Tax ID', role: 'Role', phone: 'Phone', support: 'Support', amount: 'Estimated amount', msg: 'Message' } },
+        join: { badge: 'Recruitment is open. Apply now!', eyebrow: 'Homosapiens recruitment', title: 'Join the team.', lead: 'We are looking for curious students who want to learn programming, engineering, CAD or PR. You do not need to know everything already; you just need to want to grow with us.', tabApply: 'Apply', tabCheck: 'I have a code', howK: 'How it works', steps: [{ t: 'Fill in the form', d: 'It takes a few minutes. Answer honestly; there are no wrong answers.' }, { t: 'Get your code', d: 'It appears right after you send the form. Write it down: without it you cannot see your result.' }, { t: 'See your result', d: 'Come back to this page, choose “I have a code” and enter it.' }], deptK: 'What you can do with us', depts: { prog: { t: 'Programming', d: 'The robot’s code, for the autonomous period and teleop.' }, eng: { t: 'Engineering', d: 'We build, tune and test the robot.' }, cad: { t: 'CAD', d: 'We design the robot’s parts in 3D.' }, pr: { t: 'PR', d: 'Stories, social media, sponsors and community projects.' } }, formTitle: 'Application form', lastName: 'Last name', lastNamePh: 'Popescu', firstName: 'First name', firstNamePh: 'Andrei', phone: 'Phone', phonePh: '+40 7xx xxx xxx', email: 'Email', emailPh: 'name@example.com', school: 'High school', schoolPh: 'Bogdan Petriceicu Hasdeu National College', grade: 'Grade', grades: { g9: 'Grade 9', g10: 'Grade 10', g11: 'Grade 11', g12: 'Grade 12' }, dept: 'Which department would you like to join?', deptHint: '(you can pick more than one)', exp: 'What have you done so far?', expHint: 'Volunteering, projects, competitions, clubs, anything you enjoy. If nothing yet, just say so; that is fine.', why: 'Why do you want to join Homosapiens?', hours: 'How much time can you give each week?', hoursOpts: { h1: 'Under 3 hours', h2: '3-6 hours', h3: '6-10 hours', h4: 'Over 10 hours' }, source: 'How did you hear about recruitment?', sources: { s1: 'From friends or classmates', s2: 'Instagram, Facebook or TikTok', s3: 'At school', s4: 'At an event', s5: 'Some other way' }, other: 'Anything else you would like to tell us?', consent: 'I agree that the Homosapiens team may use the details in this form only for recruitment.', send: 'Send application', sending: 'Sending…', missing: 'Still missing: {f}.', f: { lastName: 'last name', firstName: 'first name', phone: 'phone', email: 'a valid email', school: 'high school', grade: 'grade', dept: 'department', exp: 'what you have done', why: 'why you want to join', hours: 'weekly time', consent: 'consent for your details' }, failNet: 'We could not send your application. Check your internet connection and try again.', failRate: 'You have already sent an application recently. If something was wrong, write to us from the Contact page.', failClosed: 'Applications have just closed.', failGeneric: 'We could not send your application. Try again in a few minutes.', warnTitle: 'Write down your code now!', warnText: 'Without it you cannot see your result. Take a screenshot or copy the code somewhere safe.', codeK: 'Your code', doneTitle: 'Your application reached the team.', doneText: 'After applications close, come back here, choose “I have a code” and enter it to see your result.', checkNow: 'Check now', closedTitle: 'Applications are closed right now.', closedText: 'If you have already applied, choose “I have a code” to see your result.', checkTitle: 'Check your result', checkText: 'Enter the code you got when you applied.', codePh: 'HS-XXXX-XXXX', check: 'Check', checking: 'Checking…', res: { new: { t: 'Your application is being reviewed, {n}.', d: 'Come back later. Your result will show up with the same code.' }, interview: { t: 'We would like to meet you for an interview, {n}!', d: 'The details are below. If you cannot make it, let us know from the Contact page.' }, accepted: { t: 'Congratulations, {n}! Welcome to Homosapiens.', d: 'We will contact you by phone or email with the next steps.' }, rejected: { t: 'Thank you for applying, {n}.', d: 'This time we could not offer you a place on the team. We encourage you to apply again next time.' } }, msgK: 'Message from the team', notFound: 'We could not find this code. Check the letters and numbers and try again.', checkRate: 'Too many attempts. Try again in a few minutes.', checkFail: 'We could not check right now. Try again.', privacy: 'Only the team sees your details, and we use them only for recruitment.', demo: 'Preview: on homosapiens.ro, the real code appears here.' },
         footer: { tagline: 'FIRST Tech Challenge team #19053 of Bogdan Petriceicu Hasdeu National College, Buzău.', cta: 'Write to us', pagesH: 'Pages', socialH: 'Follow us', rights: '© 2026 Homosapiens, FTC #19053, RO109', data: 'Data: FIRST, FTCScout, Agerpres', top: 'Back to top', organizer: 'Organizer', founding: 'Founding partner', partnersAria: 'FIRST Tech Challenge Romania, season 11, 2026-2027' }
       },
       fr: {
         ui: { home: 'Homosapiens, page d’accueil', pages: 'Pages', language: 'Choisir la langue', theme: 'Passer du thème clair au thème sombre', close: 'Fermer le menu', prev: 'Photo précédente', next: 'Photo suivante', copy: 'Copier', copied: 'Copié' },
-        nav: { home: 'Accueil', team: 'Équipe', awards: 'Prix', about: 'À propos', sponsors: 'Sponsors', contact: 'Contact' },
+        nav: { home: 'Accueil', team: 'Équipe', awards: 'Prix', about: 'À propos', sponsors: 'Sponsors', contact: 'Contact', join: 'Recrutement' },
         hero: { badge: 'Inspire Award, 2e place à Long Beach, 2026', l1: 'Nous construisons des robots.', l2: 'Nous représentons Buzău.', sub: 'L’équipe FIRST Tech Challenge du Collège national Bogdan Petriceicu Hasdeu de Buzău, en Roumanie. 7e mondiale de la saison DECODE, sur plus de 8 800 équipes.', ctaSponsor: 'Devenir sponsor', ctaAwards: 'Voir nos prix', videoTitle: 'Regarder le match', videoSub: 'Sur YouTube, à partir de 32:30, dure 2:45', videoCap: 'L’un de nos meilleurs matchs, 32:30-35:15', videoLink: 'YouTube', posterAria: 'Ouvrir le match sur YouTube à 32:30', clipAria: 'Extrait d’un match de Homosapiens, en boucle', posterAlt: 'L’équipe Homosapiens encourage depuis les tribunes lors d’une compétition FTC' },
         ticker: ['7e mondiale, sur plus de 8 800 équipes', '6e record du monde : 577 points', 'Inspire Award, 2e place, Long Beach 2026', '9 victoires sur 9 en qualifications à la Bucharest Twin Cup', 'Reach Award, 1re place, Romania East League', 'Reach Award, 3e place, Championnat de Roumanie', 'Control Award au FTC Italy Championship', 'Motivate Award au Michiana Premier Event', '2 pôles de robotique en milieu rural', 'Saison 2026-2027 : BIOBUZZ'],
         home: {
@@ -2248,7 +2462,7 @@ class Component extends DCLogic {
           { title: 'Romania East League Tournament', text: 'Reach Award, 1re place. Notre premier prix de la saison.', alt: 'L’équipe Homosapiens avec son diplôme devant le panneau de la compétition' },
           { title: 'Avec notre communauté', text: 'Camps d’été gratuits, ateliers et événements pour les enfants.', alt: 'Membres de l’équipe avec un grand groupe d’enfants en plein air' }
         ],
-        team: { title: 'Les personnes derrière le robot.', lead: 'Des élèves du lycée Hasdeu qui conçoivent, construisent, programment et présentent le robot. Les chiffres disent ce que nous avons accompli ; les personnes derrière eux disent qui nous sommes.', photoAlt: 'L’équipe Homosapiens pendant la saison 2025-2026, avec sa mentore et le robot 19053, lors d’une compétition', photoCap: 'L’équipe Homosapiens, saison 2025-2026', mentorK: 'Mentore', mentorName: 'Amalia Voicu', mentorRole: 'Mentore de l’équipe, professeure d’informatique', membersTitle: 'L’équipe.', joinTitle: 'Nous rejoindre ?', joinText: 'Écrivez-nous et nous vous expliquerons comment.', joinCta: 'Nous écrire', soon: 'Photo bientôt', filterAria: 'Filtrer par département', photoOf: 'Photo de', countTpl: '{a} membres et {b} anciens', f: { all: 'Tous', software: 'Software', hardware: 'Hardware', pr: 'RP', alumni: 'Anciens' }, fd: { all: 'Les élèves qui construisent Homosapiens pendant la saison BIOBUZZ, et nos anciens.', software: 'Ils écrivent le code du robot, pour la période autonome et le téléopéré.', hardware: 'Ils conçoivent le robot en CAO, puis le construisent et le testent, du châssis aux mécanismes.', pr: 'Photos, récits, actions locales et relations avec les sponsors.', alumni: 'Merci pour les saisons passées avec nous.' }, roles: { software: 'Software', hardware: 'Hardware', pr: 'RP', prog: 'Software', eng: 'Hardware', cad: 'Hardware', hwcad: 'Hardware', drive: 'Hardware', driveEng: 'Hardware', prLead: 'RP', peer: 'Mentore pair', member: 'Membre de l’équipe' }, classOf: 'Promotion {y}' },
+        team: { title: 'Les personnes derrière le robot.', lead: 'Des élèves du lycée Hasdeu qui conçoivent, construisent, programment et présentent le robot. Les chiffres disent ce que nous avons accompli ; les personnes derrière eux disent qui nous sommes.', photoAlt: 'L’équipe Homosapiens pendant la saison 2025-2026, avec sa mentore et le robot 19053, lors d’une compétition', photoCap: 'L’équipe Homosapiens, saison 2025-2026', mentorK: 'Mentore', mentorName: 'Amalia Voicu', mentorRole: 'Mentore de l’équipe, professeure d’informatique', membersTitle: 'L’équipe.', joinTitle: 'Nous rejoindre ?', joinText: 'Les candidatures sont ouvertes. Remplissez le formulaire et recevez un code pour connaître votre résultat.', joinCta: 'Postuler', soon: 'Photo bientôt', filterAria: 'Filtrer par département', photoOf: 'Photo de', countTpl: '{a} membres et {b} anciens', f: { all: 'Tous', software: 'Software', hardware: 'Hardware', pr: 'RP', alumni: 'Anciens' }, fd: { all: 'Les élèves qui construisent Homosapiens pendant la saison BIOBUZZ, et nos anciens.', software: 'Ils écrivent le code du robot, pour la période autonome et le téléopéré.', hardware: 'Ils conçoivent le robot en CAO, puis le construisent et le testent, du châssis aux mécanismes.', pr: 'Photos, récits, actions locales et relations avec les sponsors.', alumni: 'Merci pour les saisons passées avec nous.' }, roles: { software: 'Software', hardware: 'Hardware', pr: 'RP', prog: 'Software', eng: 'Hardware', cad: 'Hardware', hwcad: 'Hardware', drive: 'Hardware', driveEng: 'Hardware', prLead: 'RP', peer: 'Mentore pair', member: 'Membre de l’équipe' }, classOf: 'Promotion {y}' },
         awards: {
           title: 'Nos prix.', lead: 'Quatre saisons consécutives de distinctions officielles, en Roumanie, en Italie et aux États-Unis.',
           featK: 'Notre plus grand prix', featEvent: 'Western Edge Premier Event, Sea Division, Long Beach, Californie, mai 2026', featLead: 'À plus de 10 500 km de Buzău, parmi les meilleurs du monde.', featText: '88 équipes du monde entier. Des entretiens avec le jury entièrement en anglais. Un cahier technique qui documente une année entière de travail. Et un robot qui devait convaincre sur le terrain.', featDesc: 'Le prix le plus prestigieux de la FIRST Tech Challenge, pour l’excellence sur le terrain et en dehors.', fTeams: 'équipes du monde entier', fWins: 'victoires en qualifications', fDiv: 'classement dans la division', fCapV: 'Capitaine', fCap: 'd’une alliance en playoffs', featAlt: 'L’équipe Homosapiens avec sa bannière et le drapeau roumain au Western Edge Premier Event', featQuote: 'Nous avons quitté Buzău pour apprendre des meilleurs. Nous sommes revenus parmi eux.',
@@ -2315,11 +2529,12 @@ class Component extends DCLogic {
           invK: 'Une invitation', invTitle: 'Le prochain chapitre s’écrit ensemble.', invText: 'Nous cherchons des partenaires qui croient en la performance, la technologie, l’éducation et en la génération qui construira l’avenir.', invText2: 'Toute forme de soutien compte. En plus du financement, les contributions en produits, services, transport, matériel ou expertise ont pour nous la même valeur.', invMin: '10 min', invMinText: 'Nous vous proposons un court échange pour vous présenter l’équipe et la valeur que nous pouvons créer ensemble.', invCta: 'Proposer un échange', prK: 'Relations publiques', mentorK: 'Mentore'
         },
         contact: { title: 'Parlons-en.', lead: 'Pour un sponsoring, un partenariat ou la presse, écrivez-nous ici. Votre message arrive directement à l’équipe, par e-mail.', emailK: 'E-mail', addrK: 'Adresse', addrV: 'Collège national Bogdan Petriceicu Hasdeu, 1 boulevard Gării, Buzău', bankK: 'Comptes bancaires', callTpl: 'Appeler {n}, {p}', peopleK: 'Vos interlocuteurs', prK: 'Relations publiques', mentorK: 'Mentore', topicsLabel: 'À quel sujet ?', topics: { sponsor: 'Sponsoring', collab: 'Partenariat', press: 'Presse', other: 'Autre' }, spTitle: 'Détails sur l’entreprise', company: 'Nom de l’entreprise', companyPh: 'Votre entreprise', cui: 'Numéro fiscal (CUI)', cuiPh: 'RO12345678', role: 'Votre fonction', rolePh: 'Par exemple, directeur marketing', phone: 'Téléphone', phonePh: '+40 7xx xxx xxx', optional: '(facultatif)', supportLabel: 'Quel type de soutien ?', support: { money: 'Financier', goods: 'Produits ou matériel', services: 'Services', mentoring: 'Mentorat ou visites' }, amountLabel: 'Montant estimé', amounts: { a1: 'Moins de 1 000 lei', a2: '1 000-5 000 lei', a3: '5 000-10 000 lei', a4: 'Plus de 10 000 lei' }, name: 'Nom', namePh: 'Votre nom', emailPh: 'nom@entreprise.fr', subject: 'Sujet', subjectPh: 'De quoi s’agit-il', msg: 'Message', msgPh: 'Écrivez votre message ici', send: 'Envoyer le message', sendMail: 'Envoyer par e-mail', sending: 'Envoi…', copyMsg: 'Copier le message', err: 'Indiquez votre nom, un e-mail valide et un message.', errCompany: 'Indiquez le nom de l’entreprise, votre nom, un e-mail valide et un message.', ok: 'Votre application e-mail s’ouvre avec le message rempli. Si elle ne s’ouvre pas, utilisez Copier le message et envoyez-le à {email}.', copied: 'Message copié. Collez-le dans un e-mail à {email}.', copyFail: 'La copie automatique n’a pas fonctionné. Sélectionnez le texte ci-dessous et copiez-le.', sentTitle: 'Votre message est arrivé à l’équipe.', sentText: 'Nous répondons par e-mail, en général sous quelques jours.', sendAnother: 'Écrire un autre message', failNet: 'Nous n’avons pas pu envoyer votre message. Vérifiez votre connexion internet et réessayez.', failRate: 'Vous avez déjà envoyé plusieurs messages. Réessayez dans quelques minutes.', failGeneric: 'Nous n’avons pas pu envoyer votre message. Réessayez ou écrivez-nous à {email}.', privacy: 'Nous utilisons les données du formulaire uniquement pour vous répondre.', hp: 'Laissez ce champ vide', defaultSubject: 'Message depuis le site', b: { topic: 'Type', name: 'Nom', email: 'E-mail', company: 'Entreprise', cui: 'CUI', role: 'Fonction', phone: 'Téléphone', support: 'Soutien', amount: 'Montant estimé', msg: 'Message' } },
+        join: { badge: 'Le recrutement est ouvert. Postulez !', eyebrow: 'Recrutement Homosapiens', title: 'Rejoignez l’équipe.', lead: 'Nous cherchons des élèves curieux qui veulent apprendre la programmation, l’ingénierie, la CAO ou les relations publiques. Pas besoin de tout savoir déjà : il suffit de vouloir progresser avec nous.', tabApply: 'Je postule', tabCheck: 'J’ai déjà un code', howK: 'Comment ça marche', steps: [{ t: 'Remplissez le formulaire', d: 'Cela prend quelques minutes. Répondez sincèrement : il n’y a pas de mauvaise réponse.' }, { t: 'Recevez votre code', d: 'Il s’affiche juste après l’envoi. Notez-le : sans lui, vous ne pourrez pas voir votre résultat.' }, { t: 'Découvrez votre résultat', d: 'Revenez sur cette page, choisissez « J’ai déjà un code » et saisissez-le.' }], deptK: 'Ce que vous pouvez faire chez nous', depts: { prog: { t: 'Programmation', d: 'Le code du robot, pour la période autonome et le téléopéré.' }, eng: { t: 'Ingénierie', d: 'Nous construisons, réglons et testons le robot.' }, cad: { t: 'CAO', d: 'Nous concevons les pièces du robot en 3D.' }, pr: { t: 'RP', d: 'Récits, réseaux sociaux, sponsors et projets locaux.' } }, formTitle: 'Formulaire de candidature', lastName: 'Nom', lastNamePh: 'Popescu', firstName: 'Prénom', firstNamePh: 'Andrei', phone: 'Téléphone', phonePh: '+40 7xx xxx xxx', email: 'E-mail', emailPh: 'nom@exemple.fr', school: 'Lycée', schoolPh: 'Collège national Bogdan Petriceicu Hasdeu', grade: 'Classe', grades: { g9: 'IXe', g10: 'Xe', g11: 'XIe', g12: 'XIIe' }, dept: 'Quel pôle vous intéresse ?', deptHint: '(plusieurs choix possibles)', exp: 'Qu’avez-vous déjà fait ?', expHint: 'Bénévolat, projets, concours, clubs, tout ce que vous aimez faire. Si rien encore, dites-le simplement : c’est très bien.', why: 'Pourquoi voulez-vous rejoindre Homosapiens ?', hours: 'Combien de temps pouvez-vous y consacrer par semaine ?', hoursOpts: { h1: 'Moins de 3 h', h2: '3 à 6 h', h3: '6 à 10 h', h4: 'Plus de 10 h' }, source: 'Comment avez-vous entendu parler du recrutement ?', sources: { s1: 'Par des amis ou camarades', s2: 'Instagram, Facebook ou TikTok', s3: 'Au lycée', s4: 'Lors d’un événement', s5: 'Autrement' }, other: 'Autre chose à nous dire ?', consent: 'J’accepte que l’équipe Homosapiens utilise les données de ce formulaire uniquement pour le recrutement.', send: 'Envoyer ma candidature', sending: 'Envoi…', missing: 'Il manque encore : {f}.', f: { lastName: 'le nom', firstName: 'le prénom', phone: 'le téléphone', email: 'un e-mail valide', school: 'le lycée', grade: 'la classe', dept: 'le pôle', exp: 'votre expérience', why: 'votre motivation', hours: 'le temps par semaine', consent: 'l’accord pour les données' }, failNet: 'Nous n’avons pas pu envoyer votre candidature. Vérifiez votre connexion et réessayez.', failRate: 'Vous avez déjà envoyé une candidature récemment. En cas d’erreur, écrivez-nous depuis la page Contact.', failClosed: 'Les candidatures viennent de fermer.', failGeneric: 'Nous n’avons pas pu envoyer votre candidature. Réessayez dans quelques minutes.', warnTitle: 'Notez votre code maintenant !', warnText: 'Sans lui, vous ne pourrez pas voir votre résultat. Faites une capture d’écran ou copiez le code en lieu sûr.', codeK: 'Votre code', doneTitle: 'Votre candidature est arrivée à l’équipe.', doneText: 'Après la clôture des candidatures, revenez ici, choisissez « J’ai déjà un code » et saisissez-le pour voir votre résultat.', checkNow: 'Vérifier maintenant', closedTitle: 'Les candidatures sont fermées pour le moment.', closedText: 'Si vous avez déjà postulé, choisissez « J’ai déjà un code » pour voir votre résultat.', checkTitle: 'Voir votre résultat', checkText: 'Saisissez le code reçu lors de votre candidature.', codePh: 'HS-XXXX-XXXX', check: 'Vérifier', checking: 'Vérification…', res: { new: { t: 'Votre candidature est en cours d’examen, {n}.', d: 'Revenez plus tard : le résultat s’affichera avec le même code.' }, interview: { t: 'Nous vous invitons à un entretien, {n} !', d: 'Les détails sont ci-dessous. Si vous ne pouvez pas venir, prévenez-nous depuis la page Contact.' }, accepted: { t: 'Félicitations, {n} ! Bienvenue chez Homosapiens.', d: 'Nous vous contacterons par téléphone ou par e-mail pour la suite.' }, rejected: { t: 'Merci pour votre candidature, {n}.', d: 'Cette fois, nous n’avons pas pu vous accueillir dans l’équipe. N’hésitez pas à postuler de nouveau au prochain recrutement.' } }, msgK: 'Message de l’équipe', notFound: 'Code introuvable. Vérifiez les lettres et les chiffres et réessayez.', checkRate: 'Trop de tentatives. Réessayez dans quelques minutes.', checkFail: 'Vérification impossible pour le moment. Réessayez.', privacy: 'Seule l’équipe voit vos données, et nous les utilisons uniquement pour le recrutement.', demo: 'Aperçu : sur homosapiens.ro, le vrai code s’affiche ici.' },
         footer: { tagline: 'L’équipe FIRST Tech Challenge #19053 du Collège national Bogdan Petriceicu Hasdeu, Buzău.', cta: 'Nous écrire', pagesH: 'Pages', socialH: 'Suivez-nous', rights: '© 2026 Homosapiens, FTC #19053, RO109', data: 'Données : FIRST, FTCScout, Agerpres', top: 'Haut de page', organizer: 'Organisateur', founding: 'Partenaire fondateur', partnersAria: 'FIRST Tech Challenge Roumanie, saison 11, 2026-2027' }
       },
       zh: {
         ui: { home: 'Homosapiens 首页', pages: '页面', language: '选择语言', theme: '切换浅色或深色主题', close: '关闭菜单', prev: '上一张照片', next: '下一张照片', copy: '复制', copied: '已复制' },
-        nav: { home: '首页', team: '团队', awards: '荣誉', about: '关于我们', sponsors: '赞助商', contact: '联系我们' },
+        nav: { home: '首页', team: '团队', awards: '荣誉', about: '关于我们', sponsors: '赞助商', contact: '联系我们', join: '招新' },
         hero: { badge: 'Inspire Award 第二名，长滩，2026', l1: '我们制造机器人。', l2: '我们代表布泽乌。', sub: '罗马尼亚布泽乌 Bogdan Petriceicu Hasdeu 国家学院的 FIRST Tech Challenge 战队。DECODE 赛季在 8,800 多支战队中位列全球第 7。', ctaSponsor: '成为赞助商', ctaAwards: '查看荣誉', videoTitle: '观看比赛', videoSub: 'YouTube，从 32:30 开始，时长 2:45', videoCap: '我们最精彩的比赛之一，32:30-35:15', videoLink: 'YouTube', posterAria: '在 YouTube 上从 32:30 打开比赛', clipAria: 'Homosapiens 比赛片段，循环播放', posterAlt: 'Homosapiens 战队在 FTC 比赛看台上加油' },
         ticker: ['8,800 多支战队中全球第 7', '第 6 高世界纪录：577 分', 'Inspire Award 第二名，长滩 2026', 'Bucharest Twin Cup 资格赛 9 战全胜', 'Reach Award 第一名，Romania East League', 'Reach Award 第三名，罗马尼亚全国锦标赛', 'FTC 意大利锦标赛 Control Award', 'Michiana Premier Event Motivate Award', '在乡村建立 2 个机器人中心', '2026-2027 赛季：BIOBUZZ'],
         home: {
@@ -2354,7 +2569,7 @@ class Component extends DCLogic {
           { title: 'Romania East League Tournament', text: 'Reach Award 第一名，本赛季的第一个奖项。', alt: 'Homosapiens 战队手持证书，站在赛事背景板前' },
           { title: '与社区同行', text: '免费夏令营、工作坊和面向孩子们的活动。', alt: '队员们与一大群孩子在户外' }
         ],
-        team: { title: '机器人背后的人。', lead: '来自 Hasdeu 学院的学生们，设计、制造、编程并展示机器人。数字说明我们取得了什么，数字背后的人说明我们是谁。', photoAlt: '2025-2026 赛季的 Homosapiens 战队与指导老师和 19053 号机器人在比赛现场', photoCap: 'Homosapiens 战队，2025-2026 赛季', mentorK: '指导老师', mentorName: 'Amalia Voicu 老师', mentorRole: '战队指导老师，信息技术教师', membersTitle: '团队。', joinTitle: '想加入我们吗？', joinText: '给我们写信，我们会告诉你如何加入。', joinCta: '联系我们', soon: '照片即将上传', filterAria: '按部门筛选', photoOf: '', countTpl: '{a} 名成员，{b} 名毕业生', f: { all: '全部', software: '软件', hardware: '硬件', pr: '公关', alumni: '毕业生' }, fd: { all: 'BIOBUZZ 赛季建设 Homosapiens 的学生们，以及我们的毕业生。', software: '编写机器人的代码，包括自动阶段和手动操控阶段。', hardware: '先用 CAD 设计机器人，再动手制造和测试，从底盘到各个机构。', pr: '照片、故事、社区活动以及与赞助商的联系。', alumni: '感谢你们与我们共度的赛季。' }, roles: { software: '软件', hardware: '硬件', pr: '公关', prog: '软件', eng: '硬件', cad: '硬件', hwcad: '硬件', drive: '硬件', driveEng: '硬件', prLead: '公关', peer: '朋辈导师', member: '战队成员' }, classOf: '{y} 届毕业生' },
+        team: { title: '机器人背后的人。', lead: '来自 Hasdeu 学院的学生们，设计、制造、编程并展示机器人。数字说明我们取得了什么，数字背后的人说明我们是谁。', photoAlt: '2025-2026 赛季的 Homosapiens 战队与指导老师和 19053 号机器人在比赛现场', photoCap: 'Homosapiens 战队，2025-2026 赛季', mentorK: '指导老师', mentorName: 'Amalia Voicu 老师', mentorRole: '战队指导老师，信息技术教师', membersTitle: '团队。', joinTitle: '想加入我们吗？', joinText: '报名已开放。填写表格，即可获得查询结果的代码。', joinCta: '立即报名', soon: '照片即将上传', filterAria: '按部门筛选', photoOf: '', countTpl: '{a} 名成员，{b} 名毕业生', f: { all: '全部', software: '软件', hardware: '硬件', pr: '公关', alumni: '毕业生' }, fd: { all: 'BIOBUZZ 赛季建设 Homosapiens 的学生们，以及我们的毕业生。', software: '编写机器人的代码，包括自动阶段和手动操控阶段。', hardware: '先用 CAD 设计机器人，再动手制造和测试，从底盘到各个机构。', pr: '照片、故事、社区活动以及与赞助商的联系。', alumni: '感谢你们与我们共度的赛季。' }, roles: { software: '软件', hardware: '硬件', pr: '公关', prog: '软件', eng: '硬件', cad: '硬件', hwcad: '硬件', drive: '硬件', driveEng: '硬件', prLead: '公关', peer: '朋辈导师', member: '战队成员' }, classOf: '{y} 届毕业生' },
         awards: {
           title: '我们的荣誉。', lead: '连续四个赛季获得官方奖项，足迹遍及罗马尼亚、意大利和美国。',
           featK: '最重要的荣誉', featEvent: 'Western Edge Premier Event，Sea Division，加州长滩，2026 年 5 月', featLead: '在距布泽乌 10,500 多公里的地方，跻身世界顶尖行列。', featText: '来自世界各地的 88 支战队。全程英文的评委面试。一本记录一整年工作的工程笔记。还有一台必须在赛场上证明自己的机器人。', featDesc: 'FIRST Tech Challenge 最具声望的奖项，表彰赛场内外的卓越表现。', fTeams: '支来自世界各地的战队', fWins: '资格赛胜场', fDiv: '分区排名', fCapV: '队长', fCap: '季后赛联盟队长', featAlt: 'Homosapiens 战队在 Western Edge Premier Event 上手持战队横幅和罗马尼亚国旗', featQuote: '我们离开布泽乌，是为了向最优秀的人学习。回来时，我们已成为他们中的一员。',
@@ -2421,6 +2636,7 @@ class Component extends DCLogic {
           invK: '诚挚邀请', invTitle: '下一章，一起书写。', invText: '我们在寻找相信卓越表现、科技、教育以及将建设未来的这一代人的合作伙伴。', invText2: '任何形式的支持都很重要。除了资金，产品、服务、交通、材料或专业知识方面的贡献对我们同样珍贵。', invMin: '10 分钟', invMinText: '我们希望与您简短交流，介绍团队以及我们如何为双方创造价值。', invCta: '预约交流', prK: '公关', mentorK: '指导老师'
         },
         contact: { title: '与我们联系。', lead: '如需赞助、合作或媒体采访，请在此给我们留言。您的留言会通过邮件直接发送给团队。', emailK: '邮箱', addrK: '地址', addrV: '布泽乌 Gării 大道 1 号，Bogdan Petriceicu Hasdeu 国家学院', bankK: '银行账户', callTpl: '致电 {n}：{p}', peopleK: '联系人', prK: '公关', mentorK: '指导老师', topicsLabel: '关于什么？', topics: { sponsor: '赞助', collab: '合作', press: '媒体', other: '其他' }, spTitle: '公司信息', company: '公司名称', companyPh: '您的公司', cui: '税号（CUI）', cuiPh: 'RO12345678', role: '您的职位', rolePh: '例如：市场总监', phone: '电话', phonePh: '+40 7xx xxx xxx', optional: '（选填）', supportLabel: '支持类型', support: { money: '资金', goods: '产品或材料', services: '服务', mentoring: '指导或参观' }, amountLabel: '预计金额', amounts: { a1: '1,000 列伊以下', a2: '1,000-5,000 列伊', a3: '5,000-10,000 列伊', a4: '10,000 列伊以上' }, name: '姓名', namePh: '您的姓名', emailPh: 'name@company.com', subject: '主题', subjectPh: '主题内容', msg: '留言', msgPh: '在此输入您的留言', send: '发送留言', sendMail: '通过邮件发送', sending: '发送中…', copyMsg: '复制留言', err: '请填写姓名、有效邮箱和留言。', errCompany: '请填写公司名称、您的姓名、有效邮箱和留言。', ok: '您的邮件应用将打开并填好留言。如果没有打开，请使用“复制留言”，然后发送到 {email}。', copied: '留言已复制。请粘贴到发往 {email} 的邮件中。', copyFail: '无法自动复制。请选中下面的文字并复制。', sentTitle: '您的留言已送达团队。', sentText: '我们通常会在几天内通过邮件回复。', sendAnother: '再写一条留言', failNet: '留言未能发送。请检查网络连接后重试。', failRate: '您已经发送了多条留言，请几分钟后再试。', failGeneric: '留言未能发送。请重试，或直接发邮件至 {email}。', privacy: '表单中的信息仅用于回复您。', hp: '请勿填写此栏', defaultSubject: '来自网站的留言', b: { topic: '类型', name: '姓名', email: '邮箱', company: '公司', cui: '税号', role: '职位', phone: '电话', support: '支持类型', amount: '预计金额', msg: '留言' } },
+        join: { badge: '招新已开放，快来报名！', eyebrow: 'Homosapiens 招新', title: '加入我们的战队。', lead: '我们在寻找好奇、想学习编程、工程、CAD 或公关的同学。你不需要什么都会，只要愿意和我们一起成长。', tabApply: '我要报名', tabCheck: '我已有代码', howK: '报名流程', steps: [{ t: '填写报名表', d: '只需几分钟。请如实作答，没有错误答案。' }, { t: '获得你的代码', d: '提交后会立即显示。请记下来：没有它就无法查看结果。' }, { t: '查看结果', d: '回到本页面，选择“我已有代码”并输入代码。' }], deptK: '你可以在这里做什么', depts: { prog: { t: '编程', d: '编写机器人代码，包括自动阶段和手动操控阶段。' }, eng: { t: '工程', d: '制造、调试和测试机器人。' }, cad: { t: 'CAD', d: '用 3D 设计机器人的零件。' }, pr: { t: '公关', d: '故事、社交媒体、赞助商和社区项目。' } }, formTitle: '报名表', lastName: '姓', lastNamePh: 'Popescu', firstName: '名', firstNamePh: 'Andrei', phone: '电话', phonePh: '+40 7xx xxx xxx', email: '邮箱', emailPh: 'name@example.com', school: '高中', schoolPh: 'Bogdan Petriceicu Hasdeu 国家学院', grade: '年级', grades: { g9: '九年级', g10: '十年级', g11: '十一年级', g12: '十二年级' }, dept: '你想加入哪个部门？', deptHint: '（可多选）', exp: '你之前做过什么？', expHint: '志愿活动、项目、比赛、社团，任何你喜欢做的事。如果还没有，直接写“还没有”就好。', why: '你为什么想加入 Homosapiens？', hours: '你每周能投入多少时间？', hoursOpts: { h1: '少于 3 小时', h2: '3-6 小时', h3: '6-10 小时', h4: '10 小时以上' }, source: '你是怎么知道招新的？', sources: { s1: '朋友或同学', s2: 'Instagram、Facebook 或 TikTok', s3: '在学校', s4: '在活动上', s5: '其他途径' }, other: '还有什么想告诉我们的吗？', consent: '我同意 Homosapiens 战队仅将表格中的信息用于招新。', send: '提交报名', sending: '正在提交…', missing: '还需要填写：{f}。', f: { lastName: '姓', firstName: '名', phone: '电话', email: '有效的邮箱', school: '高中', grade: '年级', dept: '部门', exp: '你做过的事', why: '加入的原因', hours: '每周时间', consent: '信息使用同意' }, failNet: '报名未能提交。请检查网络后重试。', failRate: '你最近已经提交过报名。如有错误，请通过“联系我们”页面告诉我们。', failClosed: '报名刚刚截止。', failGeneric: '报名未能提交。请几分钟后再试。', warnTitle: '请立即记下你的代码！', warnText: '没有它就无法查看结果。请截屏，或把代码复制到安全的地方。', codeK: '你的代码', doneTitle: '你的报名已送达战队。', doneText: '报名结束后，回到这里，选择“我已有代码”，输入代码即可查看结果。', checkNow: '立即查看', closedTitle: '目前报名已关闭。', closedText: '如果你已经报名，请选择“我已有代码”查看结果。', checkTitle: '查看结果', checkText: '输入你报名时获得的代码。', codePh: 'HS-XXXX-XXXX', check: '查看', checking: '正在查看…', res: { new: { t: '{n}，你的报名正在评估中。', d: '请稍后再来，用同一个代码即可查看结果。' }, interview: { t: '{n}，我们邀请你参加面试！', d: '详情见下方。如果无法到场，请通过“联系我们”页面告诉我们。' }, accepted: { t: '恭喜你，{n}！欢迎加入 Homosapiens。', d: '我们会通过电话或邮件联系你，告知后续安排。' }, rejected: { t: '{n}，感谢你的报名。', d: '这次我们没能为你提供名额。欢迎下次招新时再来报名。' } }, msgK: '战队留言', notFound: '找不到这个代码。请检查字母和数字后重试。', checkRate: '尝试次数过多，请几分钟后再试。', checkFail: '暂时无法查看，请重试。', privacy: '只有战队能看到你的信息，且仅用于招新。', demo: '预览：在 homosapiens.ro 上，这里会显示真实的代码。' },
         footer: { tagline: '布泽乌 Bogdan Petriceicu Hasdeu 国家学院的 FIRST Tech Challenge #19053 战队。', cta: '联系我们', pagesH: '页面', socialH: '关注我们', rights: '© 2026 Homosapiens，FTC #19053，RO109', data: '数据来源：FIRST、FTCScout、Agerpres', top: '返回顶部', organizer: '主办方', founding: '创始合作伙伴', partnersAria: 'FIRST Tech Challenge 罗马尼亚，第 11 赛季，2026-2027' }
       }
     };
@@ -2438,8 +2654,14 @@ class Component extends DCLogic {
     const tone = this.hsTones(this.hsRgb(bRaw) ? bRaw : '#2D4E8A');
 
     const go = (id) => () => this.hsGo(id);
-    const ids = ['home', 'team', 'awards', 'about', 'sponsors', 'contact'];
-    const tabs = ids.map((id) => ({ label: t.nav[id], go: go(id), cls: s.tab === id ? 'tab on' : 'tab', current: s.tab === id ? 'page' : undefined }));
+    /* Recruitment settings come from /update; the design canvas always shows the page, as a preview. */
+    const C0 = (s.cms && s.cms.v === 1) ? s.cms : this.hsDefault;
+    const ST0 = Object.assign({}, this.hsDefault.settings, (C0.settings && typeof C0.settings === 'object') ? C0.settings : {});
+    const recruitOpen = this.hsStandalone ? ST0.recruiting === true : true;
+    const joinOpen = recruitOpen || (this.hsStandalone && ST0.recruitResults === true);
+    const curTab = (s.tab === 'join' && !joinOpen) ? 'home' : s.tab;
+    const ids = ['home', 'team', 'awards', 'about', 'sponsors', 'contact'].concat(joinOpen ? ['join'] : []);
+    const tabs = ids.map((id) => ({ label: t.nav[id], go: go(id), cls: curTab === id ? 'tab on' : 'tab', current: curTab === id ? 'page' : undefined, dot: id === 'join' && recruitOpen }));
 
     const pick = (l) => () => { this.setState({ lang: l, langOpen: false }); this.hsSave('hs19053-lang', l); };
     const lc = (l) => (s.lang === l ? 'lang-item on' : 'lang-item');
@@ -2593,6 +2815,83 @@ class Component extends DCLogic {
     const sponsorCount = t.sponsors.countTpl.replace('{n}', String(SPN.length));
     const partnerNames = [{ n: 'Consiliul Județean Buzău' }, { n: 'Asociația de Părinți CN „B. P. Hasdeu”' }];
 
+    /* Recruitment page */
+    const JT = t.join;
+    const jMode = s.jMode || (recruitOpen ? 'apply' : 'check');
+    const jDone = s.jStatus === 'done';
+    const jChip = (on, label, pick) => ({ label: label, cls: on ? 'chip on' : 'chip', pressed: on ? 'true' : 'false', pick: pick });
+    const gradeOpts = ['9', '10', '11', '12'].map((g) => jChip(s.jGrade === g, JT.grades['g' + g], () => this.setState({ jGrade: g })));
+    const deptOpts = ['prog', 'eng', 'cad', 'pr'].map((d) => {
+      const on = s.jDept.indexOf(d) >= 0;
+      return jChip(on, JT.depts[d].t, () => { const cur = this.state.jDept; this.setState({ jDept: cur.indexOf(d) >= 0 ? cur.filter((x) => x !== d) : cur.concat([d]) }); });
+    });
+    const hoursOpts = ['h1', 'h2', 'h3', 'h4'].map((k) => jChip(s.jHours === k, JT.hoursOpts[k], () => this.setState({ jHours: k })));
+    const sourceOpts = ['s1', 's2', 's3', 's4', 's5'].map((k) => jChip(s.jSource === k, JT.sources[k], () => this.setState({ jSource: this.state.jSource === k ? '' : k })));
+    const jMiss = [];
+    if (!s.jLast.trim()) jMiss.push('lastName');
+    if (!s.jFirst.trim()) jMiss.push('firstName');
+    if (s.jPhone.replace(/\D/g, '').length < 9) jMiss.push('phone');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s.jEmail.trim())) jMiss.push('email');
+    if (!s.jSchool.trim()) jMiss.push('school');
+    if (!s.jGrade) jMiss.push('grade');
+    if (!s.jDept.length) jMiss.push('dept');
+    if (!s.jExp.trim()) jMiss.push('exp');
+    if (!s.jWhy.trim()) jMiss.push('why');
+    if (!s.jHours) jMiss.push('hours');
+    if (!s.jConsent) jMiss.push('consent');
+    const jSending = s.jStatus === 'sending';
+    const jErrKey = s.jErr === 'rate' ? 'failRate' : (s.jErr === 'closed' ? 'failClosed' : (s.jErr === 'net' ? 'failNet' : 'failGeneric'));
+    const jEdit = (k) => (ev) => this.setState({ [k]: ev.target.value, jStatus: this.state.jStatus === 'error' ? 'idle' : this.state.jStatus });
+    const R = s.chkStatus === 'done' ? s.chkRes : null;
+    const chkKind = R && JT.res[R.status] ? R.status : '';
+    const chkCls = { new: 'res', interview: 'res res-int', accepted: 'res res-ok', rejected: 'res' }[chkKind] || 'res';
+    const chkErrKey = { notfound: 'notFound', rate: 'checkRate', error: 'checkFail' }[s.chkStatus] || '';
+    const JOIN = {
+      recruitOpen: recruitOpen,
+      hasJoinNote: !!tx(ST0.recruitNote), joinNote: tx(ST0.recruitNote),
+      joinSteps: JT.steps.map((x, i) => ({ n: String(i + 1), t: x.t, d: x.d })),
+      joinDepts: ['prog', 'eng', 'cad', 'pr'].map((d) => ({ t: JT.depts[d].t, d: JT.depts[d].d })),
+      jApplyCls: jMode === 'apply' ? 'on' : '', jApplyPressed: jMode === 'apply' ? 'true' : 'false',
+      jCheckCls: jMode === 'check' ? 'on' : '', jCheckPressed: jMode === 'check' ? 'true' : 'false',
+      pickApply: () => this.setState({ jMode: 'apply' }), pickCheck: () => this.setState({ jMode: 'check' }),
+      jShowForm: jMode === 'apply' && recruitOpen && !jDone, jShowDone: jMode === 'apply' && jDone,
+      jShowClosed: jMode === 'apply' && !recruitOpen && !jDone, jShowCheck: jMode === 'check',
+      jLast: s.jLast, jFirst: s.jFirst, jPhone: s.jPhone, jEmail: s.jEmail, jSchool: s.jSchool, jExp: s.jExp, jWhy: s.jWhy, jOther: s.jOther, jHp: s.jHp,
+      setJLast: jEdit('jLast'), setJFirst: jEdit('jFirst'), setJPhone: jEdit('jPhone'), setJEmail: jEdit('jEmail'), setJSchool: jEdit('jSchool'),
+      setJExp: jEdit('jExp'), setJWhy: jEdit('jWhy'), setJOther: jEdit('jOther'), setJHp: (ev) => this.setState({ jHp: ev.target.value }),
+      gradeOpts: gradeOpts, deptOpts: deptOpts, hoursOpts: hoursOpts, sourceOpts: sourceOpts,
+      consentCls: s.jConsent ? 'consent on' : 'consent', consentPressed: s.jConsent ? 'true' : 'false', toggleConsent: () => this.setState({ jConsent: !this.state.jConsent }),
+      jSendCls: 'btn btn-primary btn-block' + (jSending ? ' busy' : ''), jSendingStr: jSending ? 'true' : 'false', jSendLabel: jSending ? JT.sending : JT.send,
+      jShowMiss: s.jTried && jMiss.length > 0, jMissText: JT.missing.replace('{f}', jMiss.map((k) => JT.f[k]).join(', ')),
+      jShowErr: s.jStatus === 'error', jErrText: JT[jErrKey],
+      submitJoin: () => {
+        if (this.state.jStatus === 'sending') return;
+        if (jMiss.length) { this.setState({ jTried: true }); return; }
+        this.hsJoinSend({
+          last: s.jLast.trim(), first: s.jFirst.trim(), phone: s.jPhone.trim(), email: s.jEmail.trim(), school: s.jSchool.trim(), grade: s.jGrade,
+          dept: s.jDept.slice(), exp: s.jExp.trim(), why: s.jWhy.trim(), hours: s.jHours, source: s.jSource, other: s.jOther.trim(),
+          consent: true, lang: L, hp: s.jHp, t: Date.now() - (this.hsJoinT0 || 0)
+        });
+      },
+      jCode: s.jCode, jIsDemo: !this.hsStandalone,
+      codeCopyLabel: s.codeCopied ? t.ui.copied : t.ui.copy,
+      copyCode: () => this.hsCopy(this.state.jCode, () => {
+        this.setState({ codeCopied: true });
+        if (this.hsCodeT) clearTimeout(this.hsCodeT);
+        this.hsCodeT = setTimeout(() => this.setState({ codeCopied: false }), 1800);
+      }, () => {}),
+      goCheckWithCode: () => { this.setState({ jMode: 'check', codeIn: this.state.jCode }); this.hsJoinCheck(this.state.jCode); },
+      codeIn: s.codeIn, setCodeIn: (ev) => this.setState({ codeIn: ev.target.value, chkStatus: this.state.chkStatus === 'checking' ? 'checking' : 'idle' }),
+      checkCode: () => { if (this.state.chkStatus !== 'checking') this.hsJoinCheck(this.state.codeIn); },
+      chkBtnCls: 'btn btn-primary' + (s.chkStatus === 'checking' ? ' busy' : ''), chkBusyStr: s.chkStatus === 'checking' ? 'true' : 'false',
+      chkLabel: s.chkStatus === 'checking' ? JT.checking : JT.check,
+      chkShow: !!chkKind, chkCls: chkCls,
+      chkIsOk: chkKind === 'accepted', chkIsInt: chkKind === 'interview', chkIsWait: chkKind === 'new', chkIsNo: chkKind === 'rejected',
+      chkTitle: chkKind ? JT.res[chkKind].t.replace('{n}', R.first || '') : '', chkText: chkKind ? JT.res[chkKind].d : '',
+      chkHasMsg: !!(R && R.message), chkMsg: R ? R.message : '',
+      chkHasErr: !!chkErrKey, chkErrText: chkErrKey ? JT[chkErrKey] : ''
+    };
+
     const topicIds = ['sponsor', 'collab', 'press', 'other'];
     const topics = topicIds.map((id) => ({ label: t.contact.topics[id], cls: s.topic === id ? 'chip on' : 'chip', pressed: s.topic === id ? 'true' : 'false', pick: () => this.setState({ topic: id, cTried: false }) }));
     const isSponsorTopic = s.topic === 'sponsor';
@@ -2625,13 +2924,13 @@ class Component extends DCLogic {
     const errKey = s.cErr === 'rate' ? 'failRate' : (s.cErr === 'net' ? 'failNet' : 'failGeneric');
     const edit = (k) => (ev) => this.setState({ [k]: ev.target.value, cSent: false, cStatus: this.state.cStatus === 'error' ? 'idle' : this.state.cStatus });
 
-    return {
+    return Object.assign(JOIN, {
       t: t, lang: L, theme: s.theme, isDark: s.theme === 'dark', isLight: s.theme !== 'dark',
       bL: tone.bl, bD: tone.bd, bSL: tone.bsl, bSD: tone.bsd,
 
-      isHome: s.tab === 'home', isTeam: s.tab === 'team', isAwards: s.tab === 'awards', isAbout: s.tab === 'about', isSponsors: s.tab === 'sponsors', isContact: s.tab === 'contact',
+      isHome: curTab === 'home', isTeam: curTab === 'team', isAwards: curTab === 'awards', isAbout: curTab === 'about', isSponsors: curTab === 'sponsors', isContact: curTab === 'contact', isJoin: curTab === 'join',
       tabs: tabs,
-      goHome: go('home'), goAwards: go('awards'), goSponsors: go('sponsors'), goContact: go('contact'), goTeam: go('team'),
+      goHome: go('home'), goAwards: go('awards'), goSponsors: go('sponsors'), goContact: go('contact'), goTeam: go('team'), goJoin: go('join'),
       goSponsorForm: () => this.hsGo('contact', { topic: 'sponsor', cTried: false }),
       toTop: () => this.hsTop(),
 
@@ -2654,7 +2953,7 @@ class Component extends DCLogic {
       momHref: 'https://www.youtube.com/watch?v=BHP8XKtndJU&t=19000s',
 
       teamFilters: teamFilters, people: people, teamCount: teamCount, teamDesc: teamDesc, teamIsAll: curF === 'all',
-      showJoin: curF === 'all' && ST.recruiting === true,
+      showJoin: curF === 'all' && recruitOpen,
       contacts: contacts, bank: bank, hasBank: bank.length > 0, robots: robots, hasRobots: robots.length > 0,
       siteEmail: siteEmail, mailHref: 'mailto:' + siteEmail, cOkText: withMail(t.contact.ok), cCopiedText: withMail(t.contact.copied),
       goCollab: () => this.hsGo('contact', { topic: 'collab', cTried: false }),
@@ -2692,7 +2991,7 @@ class Component extends DCLogic {
       copyOk: s.copyState === 'ok', copyFail: s.copyState === 'fail',
       copyEmail: () => this.hsCopy(siteEmail, () => { this.setState({ emailCopied: true }); setTimeout(() => this.setState({ emailCopied: false }), 1800); }, () => {}),
       emailCopyLabel: s.emailCopied ? t.ui.copied : t.ui.copy
-    };
+    });
   }
 }
 </script>
