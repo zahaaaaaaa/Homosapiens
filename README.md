@@ -5,10 +5,23 @@ Site-ul echipei de robotică FIRST Tech Challenge Homosapiens #19053, Colegiul N
 ## Structura
 
 - `public/`: site-ul (pagina, pozele, logo-urile) și pagina de administrare `public/update/`
-- `worker/index.js`: API-ul pentru administrare; conținutul editat și pozele încărcate stau într-un Durable Object
+- `worker/index.js`: API-ul pentru administrare și pagina `/redirect`; conținutul editat și pozele încărcate stau într-un Durable Object
+- `worker/redirect-page.mjs`: șablonul paginii `/redirect`
 - `wrangler.jsonc`: configurarea Worker-ului
 
 Linkuri directe către taburi: `/#echipa`, `/#premii`, `/#despre`, `/#sponsori`, `/#contact`.
+
+## homosapiens.ro/redirect și codul QR
+
+`/redirect` e pagina cu toate linkurile echipei (site, Instagram, TikTok, YouTube, Facebook, email, sponsorizare, recrutări), în română sau engleză, după limba telefonului (`?lang=en` / `?lang=ro`). `/links` și `/linkuri` duc tot acolo. Linkurile se schimbă din /update, tabul „Linkuri și QR”; butonul de recrutări apare doar cât timp recrutările sunt pornite.
+
+Codul QR duce la `https://homosapiens.ro/redirect` (corecție de erori H, cu logo-ul în mijloc):
+
+- `public/assets/img/qr-homosapiens.svg`: pentru print, la orice mărime
+- `public/assets/img/qr-homosapiens.png`: 2048 × 2048
+- `public/assets/img/qr-homosapiens-afis.png`: afiș cu QR, adresa și numele echipei
+
+Codul nu se schimbă când schimbi linkurile, deci ce e deja printat merge în continuare.
 
 ## Administrare: homosapiens.ro/update
 
@@ -20,6 +33,7 @@ Acolo se editează:
 - **Recrutări**: butoanele pentru formularul de înscriere și pentru verificarea rezultatului, mesajul de sus al paginii, lista înscrierilor cu decizia pentru fiecare (În așteptare, Interviu, Acceptat, Respins), un mesaj pentru candidat și tabelul CSV. Fiecare candidat primește un cod `HS-XXXX-XXXX` cu care își vede rezultatul pe homosapiens.ro/#recrutari.
 - **Sponsori**: logo-urile.
 - **Contact și conturi**: emailul afișat, persoanele de contact cu telefon și conturile bancare (IBAN, titular, bancă).
+- **Linkuri și QR**: linkurile de pe homosapiens.ro/redirect, textul de sub numele echipei și codul QR de descărcat.
 - **Mesaje**: ce trimit vizitatorii prin formularul de contact.
 
 Ce se salvează apare imediat pe site; fiecare salvare intră în „Istoric” și poate fi restaurată.
@@ -49,5 +63,7 @@ Din `/update` → „Mesaje” → „Trimite un email de test” se verifică d
 - **Versiunea 3** (26 septembrie 2026): roboții la Premii (cu buton Pornit/Oprit), persoanele de contact cu telefon, conturile bancare, emailul team@homosapiens.ro, rolurile Software/Hardware/PR, cardul de recrutare cu buton în /update, texte din prezentarea 2026. Salvată în branch-ul `versiunea-3`.
 - **Versiunea 4** (27 septembrie 2026): Versiunea 3 fără pagina /update/parola. Salvată în branch-ul `versiunea-4` („revert 4”).
 - **Versiunea 5** (27 septembrie 2026): recrutările, cu formular de înscriere, cod pentru rezultat și tabul Recrutări în /update.
+- **Versiunea 6** (28 septembrie 2026): ecranul de după înscriere refăcut ca un bilet cu codul. Salvată în branch-ul `versiunea-6` („revert 6”, commit `45f1ee3`).
+- **Versiunea 7** (29 septembrie 2026): pagina homosapiens.ro/redirect cu linkurile echipei, codul QR și tabul „Linkuri și QR” în /update.
 
-Pentru a reveni la o versiune („revert 2”, „revert 4”): fișierele din `public/`, `worker/`, `src/` și `wrangler.jsonc` se readuc din branch-ul `versiunea-N` și se face push pe `main`. Conținutul salvat din /update rămâne în Durable Object.
+Pentru a reveni la o versiune („revert 2”, „revert 4”, „revert 6”): fișierele din `public/`, `worker/`, `src/` și `wrangler.jsonc` se readuc din branch-ul `versiunea-N` și se face push pe `main`. Conținutul salvat din /update rămâne în Durable Object.

@@ -16,11 +16,16 @@
  * application (table apps) and returns a code (HS-XXXX-XXXX); POST /api/recruit/status tells the
  * applicant their status by that code. The team decides on /update ("Recrutări" tab).
  *
+ * Link page: GET /redirect (no file in ./public, so it reaches the worker) renders the team's
+ * links saved on /update ("Linkuri și QR" tab), in Romanian or English. The QR codes in
+ * /assets/img/qr-homosapiens* point to it.
+ *
  * Contact form email: the MAILER binding (send_email in wrangler.jsonc) sends each message
  * to the team inbox. It works once Email Routing is on for homosapiens.ro and the inbox is a
  * verified destination address. Until then messages are still saved and shown on /update.
  */
 import { DurableObject } from 'cloudflare:workers';
+import LINK_PAGE from './redirect-page.mjs';
 
 const COOKIE = 'hs_admin';
 const SESSION_MS = 12 * 60 * 60 * 1000;
@@ -35,6 +40,7 @@ const ROLES = ['software', 'hardware', 'pr', 'peer', 'member', 'prog', 'eng', 'c
 const CURRENCIES = ['RON', 'EUR', 'USD', 'GBP'];
 const SITE_EMAIL = 'team@homosapiens.ro';
 const LANGS = ['ro', 'en', 'fr', 'zh'];
+const LINK_KINDS = ['site', 'instagram', 'tiktok', 'youtube', 'facebook', 'linkedin', 'email', 'sponsor', 'join', 'link'];
 const MSG_KEEP = 1000;
 const HIT_WINDOW_MS = 24 * 3600 * 1000;
 const MAIL_TO = 'thehomosapiens123@gmail.com';
@@ -390,7 +396,8 @@ function cleanContent(c) {
     recruitResults: bool(set.recruitResults),
     recruitNote: ml(set.recruitNote, 400),
     showRobots: set.showRobots !== false,
-    email: EMAIL_RE.test(mail) ? mail : SITE_EMAIL
+    email: EMAIL_RE.test(mail) ? mail : SITE_EMAIL,
+    linksBadge: set.linksBadge === undefined ? undefined : ml(set.linksBadge, 120)
   };
   const contacts = arr(c.contacts, 12).map((p) => ({
     id: idOf(p && p.id),
@@ -408,6 +415,11 @@ function cleanContent(c) {
     iban: str(b && b.iban, 60).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 34),
     bank: str(b && b.bank, 60)
   }));
+  // Content without a links list (saved before they existed) keeps none; migrate() adds the built-in ones.
+  const links = !Array.isArray(c.links) ? undefined : arr(c.links, 24).map((l) => {
+    const kind = LINK_KINDS.includes(l && l.kind) ? l.kind : 'link';
+    return { id: idOf(l && l.id), active: bool(l && l.active), kind, label: str(l && l.label, 60), url: cleanLinkUrl(kind, str(l && l.url, 300)) };
+  });
   const robots = arr(c.robots, 24).map((r) => ({
     id: idOf(r && r.id),
     active: bool(r && r.active),
@@ -417,7 +429,23 @@ function cleanContent(c) {
     photo: img(r && r.photo)
   }));
   const mig = arr(c.mig, 20).filter((x) => typeof x === 'string' && /^[\w.-]{1,40}$/.test(x));
-  return { v: 1, seasons, team, sponsors, settings, contacts, bank, robots, mig };
+  return { v: 1, seasons, team, sponsors, settings, contacts, bank, robots, links, mig };
+}
+
+/* A link on /redirect: https address (http is upgraded, a bare "instagram.com/x" gets https://),
+ * a path on this site ("/#contact"), or for kind "email" an email address. Anything else is dropped. */
+function cleanLinkUrl(kind, u) {
+  let s = String(u || '').trim();
+  if (!s) return '';
+  if (kind === 'email') { s = s.replace(/^mailto:/i, ''); return EMAIL_RE.test(s) ? s : ''; }
+  if (/^\/(?!\/)[^\s<>"'`\\]*$/.test(s)) return s;
+  if (/^http:\/\//i.test(s)) s = 'https://' + s.slice(7);
+  if (!/^[a-z][a-z0-9+.-]*:/i.test(s) && /^[a-z0-9-]+(\.[a-z0-9-]+)+([/?#].*)?$/i.test(s)) s = 'https://' + s;
+  try {
+    const x = new URL(s);
+    if (x.protocol !== 'https:' || !x.hostname.includes('.') || /[\s<>"'`\\]/.test(s)) return '';
+    return x.href;
+  } catch { return ''; }
 }
 
 /* ---------- one-time content update (September 2026 partnership proposal) ----------
@@ -487,19 +515,35 @@ async function migrateProposal(c, env, url) {
 const MIG3 = '2026-09-v3';
 const OLD_ROLES = { prog: 'software', eng: 'hardware', cad: 'hardware', hwcad: 'hardware', drive: 'hardware', driveEng: 'hardware', prLead: 'pr' };
 
+/* Links page (September 2026): the built-in links and the line under the team name. */
+const MIG7 = '2026-09-links';
+
 async function migrate(c, env, url) {
   if (!c || c.v !== 1) return false;
   let changed = await migrateProposal(c, env, url);
-  const done = Array.isArray(c.mig) ? c.mig : [];
-  if (done.includes(MIG3)) return changed;
-  const def = await builtInContent(env, url);
-  if (!def) return changed;
-  for (const m of c.team || []) if (m && OLD_ROLES[m.role]) m.role = OLD_ROLES[m.role];
-  for (const k of ['settings', 'contacts', 'bank', 'robots']) {
-    if (c[k] === undefined && def[k] !== undefined) c[k] = def[k];
+  let done = Array.isArray(c.mig) ? c.mig : [];
+  if (!done.includes(MIG3)) {
+    const def = await builtInContent(env, url);
+    if (!def) return changed;
+    for (const m of c.team || []) if (m && OLD_ROLES[m.role]) m.role = OLD_ROLES[m.role];
+    for (const k of ['settings', 'contacts', 'bank', 'robots']) {
+      if (c[k] === undefined && def[k] !== undefined) c[k] = def[k];
+    }
+    c.mig = done = done.concat([MIG3]);
+    changed = true;
   }
-  c.mig = done.concat([MIG3]);
-  return true;
+  if (!Array.isArray(c.links)) {
+    const def = await builtInContent(env, url);
+    if (def && Array.isArray(def.links)) { c.links = def.links; changed = true; }
+  }
+  if (!done.includes(MIG7)) {
+    const def = await builtInContent(env, url);
+    if (!def) return changed;
+    if (c.settings && typeof c.settings === 'object' && c.settings.linksBadge === undefined && def.settings) c.settings.linksBadge = def.settings.linksBadge || {};
+    c.mig = done.concat([MIG7]);
+    changed = true;
+  }
+  return changed;
 }
 
 /* ---------- contact form ---------- */
@@ -920,9 +964,128 @@ async function api(request, env, url) {
   return err(404, 'not_found', 'Adresă necunoscută.');
 }
 
+/* ---------- /redirect: every link of the team on one page (the QR codes point here) ---------- */
+
+const LINK_TXT = {
+  ro: {
+    title: 'Homosapiens #19053 · Linkuri',
+    desc: 'Toate linkurile echipei de robotică Homosapiens #19053, într-un singur loc.',
+    tag: 'Echipa de robotică FIRST Tech Challenge a Colegiului Național „B. P. Hasdeu” din Buzău.',
+    share: 'Distribuie', copied: 'Link copiat', other: 'English', otherLang: 'en',
+    empty: 'Linkurile apar aici în curând.',
+    label: { site: 'Site-ul echipei', instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', facebook: 'Facebook', linkedin: 'LinkedIn', email: 'Scrie-ne un email', sponsor: 'Devino sponsor', join: 'Intră în echipă', link: 'Link' },
+    sub: { sponsor: 'Susține echipa în noul sezon', join: 'Recrutările sunt deschise' }
+  },
+  en: {
+    title: 'Homosapiens #19053 · Links',
+    desc: 'All the links of the Homosapiens #19053 robotics team, in one place.',
+    tag: 'FIRST Tech Challenge robotics team of Colegiul Național „B. P. Hasdeu”, Buzău, Romania.',
+    share: 'Share', copied: 'Link copied', other: 'Română', otherLang: 'ro',
+    empty: 'Our links will be here soon.',
+    label: { site: 'Team website', instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', facebook: 'Facebook', linkedin: 'LinkedIn', email: 'Email us', sponsor: 'Become a sponsor', join: 'Join the team', link: 'Link' },
+    sub: { sponsor: 'Support us this season', join: 'Recruitment is open' }
+  }
+};
+const SVG_ATTR = 'viewBox="0 0 24 24" aria-hidden="true"';
+const STROKE = SVG_ATTR + ' fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"';
+const FILL = SVG_ATTR + ' fill="currentColor"';
+const LINK_ICONS = {
+  site: `<svg ${STROKE}><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>`,
+  instagram: `<svg ${STROKE}><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>`,
+  tiktok: `<svg ${FILL}><path d="M14.6 3h3.1c.2 1.9 1.6 3.4 3.5 3.6v3.1c-1.3 0-2.5-.4-3.5-1.1v6.2a5.6 5.6 0 1 1-5.6-5.6c.3 0 .6 0 .9.1v3.2a2.5 2.5 0 1 0 1.6 2.3z"/></svg>`,
+  youtube: `<svg ${FILL}><path fill-rule="evenodd" d="M21.6 7.2a2.7 2.7 0 0 0-1.9-1.9C18 4.8 12 4.8 12 4.8s-6 0-7.7.5a2.7 2.7 0 0 0-1.9 1.9C2 8.9 2 12 2 12s0 3.1.4 4.8a2.7 2.7 0 0 0 1.9 1.9c1.7.5 7.7.5 7.7.5s6 0 7.7-.5a2.7 2.7 0 0 0 1.9-1.9c.4-1.7.4-4.8.4-4.8s0-3.1-.4-4.8zM10 15.1V8.9l5.2 3.1z"/></svg>`,
+  facebook: `<svg ${FILL}><path d="M12 2a10 10 0 0 0-1.6 19.9v-7h-2.5V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 12 2z"/></svg>`,
+  linkedin: `<svg ${FILL}><path fill-rule="evenodd" d="M4.5 3h15A1.5 1.5 0 0 1 21 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19.5v-15A1.5 1.5 0 0 1 4.5 3zM7 10v7.5h2.4V10zm1.2-3.9a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8zM11 10v7.5h2.4v-4c0-1.1.4-1.8 1.3-1.8s1.2.7 1.2 1.8v4h2.4v-4.6c0-2.2-1.2-3.1-2.8-3.1-1.2 0-1.8.6-2.1 1.1V10z"/></svg>`,
+  email: `<svg ${STROKE}><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>`,
+  sponsor: `<svg ${STROKE}><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>`,
+  join: `<svg ${STROKE}><circle cx="10" cy="8" r="3.5"/><path d="M3.5 19.5c.8-3.2 3.4-5 6.5-5s5.7 1.8 6.5 5M18.5 8v6M15.5 11h6"/></svg>`,
+  link: `<svg ${STROKE}><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>`
+};
+const GO_ICON = `<svg class="go" ${STROKE}><path d="M7 17 17 7M9 7h8v8"/></svg>`;
+const TROPHY = `<svg ${STROKE}><path d="M8 4h8v4a4 4 0 0 1-8 0zM8 5.5H5v1a3 3 0 0 0 3 3M16 5.5h3v1a3 3 0 0 1-3 3M12 12v4M8.5 20h7M10 16h4v4h-4z"/></svg>`;
+const escHtml = (s) => String(s).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+
+function linkLang(request, url) {
+  const q = url.searchParams.get('lang');
+  if (q === 'ro' || q === 'en') return q;
+  const first = (request.headers.get('accept-language') || '').split(',')[0].trim().toLowerCase();
+  return !first || first.startsWith('ro') || first.startsWith('mo') ? 'ro' : 'en';
+}
+
+function linkItem(l, lang, email) {
+  const T = LINK_TXT[lang];
+  const kind = LINK_KINDS.includes(l.kind) ? l.kind : 'link';
+  const clean = cleanLinkUrl(kind, l.url);
+  let href, sub;
+  if (kind === 'email') {
+    const a = clean || email;
+    href = 'mailto:' + a; sub = a;
+  } else if (!clean) {
+    return '';
+  } else if (clean.startsWith('/')) {
+    href = clean;
+    sub = 'homosapiens.ro' + (clean === '/' ? '' : clean.replace(/^\/#/, '/'));
+  } else {
+    href = clean;
+    const u = new URL(clean);
+    const seg = u.pathname.split('/').filter(Boolean);
+    const host = u.hostname.replace(/^(www|m)\./, '');
+    let path = u.pathname.replace(/\/$/, '');
+    try { path = decodeURIComponent(path); } catch { /* keep encoded */ }
+    sub = ['instagram', 'tiktok', 'youtube'].includes(kind) && seg[0] && !['channel', 'c', 'user', 'watch', 'playlist', 'p', 'reel', 'video'].includes(seg[0])
+      ? '@' + seg[0].replace(/^@/, '') : host + path;
+  }
+  if (kind === 'sponsor' || kind === 'join') sub = T.sub[kind];
+  const label = l.label || T.label[kind];
+  const live = kind === 'join' ? '<span class="live" aria-hidden="true"></span>' : '';
+  return `    <li><a class="lk k-${kind}${kind === 'site' ? ' main' : ''}" href="${escHtml(href)}"><span class="ic">${LINK_ICONS[kind]}</span>`
+    + `<span class="tx"><b>${escHtml(label)}${live}</b><small>${escHtml(sub.slice(0, 80))}</small></span>${GO_ICON}</a></li>`;
+}
+
+async function linkPage(request, env, url) {
+  const store = env.STORE.get(env.STORE.idFromName('main'));
+  let c = null;
+  try {
+    const cur = await store.getContent();
+    if (cur) { c = JSON.parse(cur.content); await migrate(c, env, url); }
+  } catch { c = null; }
+  if (!c || typeof c !== 'object') c = (await builtInContent(env, url)) || {};
+  const lang = linkLang(request, url);
+  const T = LINK_TXT[lang];
+  const set = c.settings && typeof c.settings === 'object' ? c.settings : {};
+  const email = typeof set.email === 'string' && EMAIL_RE.test(set.email) ? set.email : SITE_EMAIL;
+  const items = (Array.isArray(c.links) ? c.links : [])
+    .filter((l) => l && typeof l === 'object' && l.active === true && (l.kind !== 'join' || set.recruiting === true))
+    .map((l) => linkItem({ kind: l.kind, label: typeof l.label === 'string' ? l.label.trim() : '', url: typeof l.url === 'string' ? l.url : '' }, lang, email))
+    .filter(Boolean);
+  const b = set.linksBadge && typeof set.linksBadge === 'object' ? set.linksBadge : {};
+  const badgeText = typeof b[lang] === 'string' && b[lang].trim() ? b[lang] : (typeof b.ro === 'string' ? b.ro : '');
+  const map = {
+    lang, title: escHtml(T.title), desc: escHtml(T.desc), tag: escHtml(T.tag), share: escHtml(T.share), copied: escHtml(T.copied),
+    other: escHtml(T.other), otherLang: T.otherLang, otherHref: '/redirect?lang=' + T.otherLang,
+    badge: badgeText.trim() ? `<p class="badge">${TROPHY}<span>${escHtml(badgeText.trim())}</span></p>` : '',
+    links: items.length ? items.join('\n') : `    <li class="empty">${escHtml(T.empty)}</li>`
+  };
+  const html = LINK_PAGE.replace(/\{\{(\w+)\}\}/g, (m, k) => (Object.hasOwn(map, k) ? map[k] : m));
+  return new Response(request.method === 'HEAD' ? null : html, {
+    headers: {
+      'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-cache', 'content-language': lang, vary: 'Accept-Language',
+      'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin',
+      'content-security-policy': "default-src 'none'; img-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+    }
+  });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const p = url.pathname;
+    if ((p === '/redirect' || p === '/redirect/') && (request.method === 'GET' || request.method === 'HEAD')) {
+      try { return await linkPage(request, env, url); } catch { return new Response('Eroare pe server. Încearcă din nou.', { status: 500 }); }
+    }
+    if (p === '/links' || p === '/linkuri' || p === '/links/' || p === '/linkuri/') {
+      return Response.redirect(new URL('/redirect' + url.search, url).toString(), 301);
+    }
     if (url.pathname.startsWith('/api/')) {
       try {
         return await api(request, env, url);

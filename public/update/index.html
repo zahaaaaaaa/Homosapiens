@@ -193,6 +193,16 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
 .sw input:checked + .sw-track::after{transform:translateX(22px)}
 .sw input:focus-visible + .sw-track{outline:2px solid var(--blue);outline-offset:3px}
 .sw-state{min-width:44px}
+/* v7: links page and QR */
+.lrow{display:grid;gap:10px;align-items:end;padding:14px;border-radius:16px;background:var(--bg);border:1px solid var(--line);grid-template-columns:minmax(0,.8fr) minmax(0,1fr) minmax(0,1.7fr)}
+.lrow.off{opacity:.6}
+.qrbox{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.qrbox img{width:150px;height:150px;border-radius:14px;border:1px solid var(--line);background:#fff;flex:none}
+.qrbox .acts{display:flex;gap:8px;flex-wrap:wrap}
+.qrbox .txt{flex:1;min-width:240px;display:flex;flex-direction:column;gap:10px}
+.qrbox code{font:700 15px ui-monospace,Menlo,Consolas,monospace;padding:2px 6px;border-radius:6px;background:var(--surface-2)}
+@media(max-width:760px){.lrow{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.lrow .wide{grid-column:1/-1}}
+@media(max-width:560px){.lrow{grid-template-columns:1fr}}
 /* v5: recruitment */
 .trow{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--bg)}
 .trow.on{border-color:transparent;background:var(--ok-soft)}
@@ -229,19 +239,22 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
   const OLD_ROLES = { prog: 'software', eng: 'hardware', cad: 'hardware', hwcad: 'hardware', drive: 'hardware', driveEng: 'hardware', prLead: 'pr' };
   const CURS = [['RON', 'Lei (RON)'], ['EUR', 'Euro (EUR)'], ['USD', 'Dolari (USD)'], ['GBP', 'Lire (GBP)']];
   const BANKS = { BTRL: 'Banca Transilvania', REVO: 'Revolut', BRDE: 'BRD', RNCB: 'BCR', INGB: 'ING Bank', RZBR: 'Raiffeisen Bank', CECE: 'CEC Bank', BACX: 'UniCredit Bank', OTPV: 'OTP Bank', BREL: 'Libra Internet Bank', UGBI: 'Garanti BBVA', PIRB: 'First Bank', CARP: 'Patria Bank', TREZ: 'Trezoreria Statului' };
-  const DEF_SETTINGS = { recruiting: false, recruitResults: false, recruitNote: {}, showRobots: true, email: 'team@homosapiens.ro' };
+  const DEF_SETTINGS = { recruiting: false, recruitResults: false, recruitNote: {}, showRobots: true, email: 'team@homosapiens.ro', linksBadge: { ro: 'Locul 7 în lume în sezonul DECODE', en: '7th in the world in the DECODE season' } };
+  const LINK_KINDS = [['site', 'Site'], ['instagram', 'Instagram'], ['tiktok', 'TikTok'], ['youtube', 'YouTube'], ['facebook', 'Facebook'], ['linkedin', 'LinkedIn'], ['email', 'Email'], ['sponsor', 'Devino sponsor'], ['join', 'Recrutări'], ['link', 'Alt link']];
+  const LINK_DEF = { site: 'Site-ul echipei', instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', facebook: 'Facebook', linkedin: 'LinkedIn', email: 'Scrie-ne un email', sponsor: 'Devino sponsor', join: 'Intră în echipă', link: 'Scrie un nume' };
+  const LINK_PH = { site: '/', instagram: 'https://www.instagram.com/…', tiktok: 'https://www.tiktok.com/@…', youtube: 'https://www.youtube.com/@…', facebook: 'https://www.facebook.com/…', linkedin: 'https://www.linkedin.com/company/…', email: 'gol = emailul echipei', sponsor: '/#sponsori', join: '/#recrutari', link: 'https://…' };
   const APP_ST = [['new', 'În așteptare'], ['interview', 'Interviu'], ['accepted', 'Acceptat'], ['rejected', 'Respins']];
   const DEPT_RO = { prog: 'Programare', eng: 'Inginerie', cad: 'CAD', pr: 'PR' };
   const GRADE_RO = { 9: 'a IX-a', 10: 'a X-a', 11: 'a XI-a', 12: 'a XII-a' };
   const HOURS_RO = { h1: 'Sub 3 ore', h2: '3-6 ore', h3: '6-10 ore', h4: 'Peste 10 ore' };
   const SOURCE_RO = { s1: 'De la prieteni sau colegi', s2: 'Instagram, Facebook sau TikTok', s3: 'La școală', s4: 'La un eveniment', s5: 'Altfel' };
-  const V3_KEYS = ['settings', 'contacts', 'bank', 'robots'];
+  const V3_KEYS = ['settings', 'contacts', 'bank', 'robots', 'links'];
   const COUNTRIES = [
     ['ro', 'România'], ['us', 'SUA'], ['it', 'Italia'], ['de', 'Germania'], ['fr', 'Franța'], ['es', 'Spania'], ['gb', 'Marea Britanie'],
     ['gr', 'Grecia'], ['hu', 'Ungaria'], ['pl', 'Polonia'], ['tr', 'Turcia'], ['md', 'Republica Moldova'], ['bg', 'Bulgaria'], ['nl', 'Țările de Jos'], ['', 'Fără țară']
   ];
   const PLACES = [[0, 'Fără loc'], [1, 'Locul 1'], [2, 'Locul 2'], [3, 'Locul 3']];
-  const TABS = [['premii', 'Premii'], ['roboti', 'Roboți'], ['echipa', 'Echipa'], ['recrutari', 'Recrutări'], ['sponsori', 'Sponsori'], ['contact', 'Contact și conturi'], ['mesaje', 'Mesaje'], ['istoric', 'Istoric']];
+  const TABS = [['premii', 'Premii'], ['roboti', 'Roboți'], ['echipa', 'Echipa'], ['recrutari', 'Recrutări'], ['sponsori', 'Sponsori'], ['contact', 'Contact și conturi'], ['linkuri', 'Linkuri și QR'], ['mesaje', 'Mesaje'], ['istoric', 'Istoric']];
   const TOPIC_RO = { sponsor: 'Sponsorizare', collab: 'Colaborare', press: 'Presă', other: 'Altceva' };
   const SUPPORT_RO = { money: 'Financiar', goods: 'Produse sau materiale', services: 'Servicii', mentoring: 'Mentorat sau vizite' };
   const AMOUNT_RO = { a1: 'Sub 1.000 lei', a2: '1.000-5.000 lei', a3: '5.000-10.000 lei', a4: 'Peste 10.000 lei' };
@@ -349,7 +362,8 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
     for (const s of d.seasons) { s.awards = s.awards || []; for (const a of s.awards) { a.name = a.name || {}; a.event = a.event || {}; a.note = a.note || {}; } }
     d.settings = Object.assign({}, DEF_SETTINGS, d.settings && typeof d.settings === 'object' ? d.settings : {});
     if (!d.settings.recruitNote || typeof d.settings.recruitNote !== 'object') d.settings.recruitNote = {};
-    for (const k of ['contacts', 'bank', 'robots']) if (!Array.isArray(d[k])) d[k] = [];
+    for (const k of ['contacts', 'bank', 'robots', 'links']) if (!Array.isArray(d[k])) d[k] = [];
+    if (!d.settings.linksBadge || typeof d.settings.linksBadge !== 'object') d.settings.linksBadge = {};
     for (const m of d.team) if (OLD_ROLES[m.role]) m.role = OLD_ROLES[m.role];
     for (const c of d.contacts) c.role = c.role && typeof c.role === 'object' ? c.role : {};
     for (const r of d.robots) { r.name = r.name || {}; r.text = r.text || {}; }
@@ -807,6 +821,75 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
     return box;
   }
 
+  /* Same rules as the server (cleanLinkUrl in worker/index.js). */
+  function linkInfo(kind, raw) {
+    let v = String(raw || '').trim();
+    if (kind === 'email') {
+      if (!v) return { cls: 'ok', msg: 'Se folosește emailul echipei (' + (S.data.settings.email || 'team@homosapiens.ro') + ').' };
+      return /^[^\s@<>()",;:]+@[^\s@<>()",;:]+\.[^\s@<>()",;:]{2,}$/.test(v.replace(/^mailto:/i, '')) ? { cls: 'ok', msg: 'Email corect.' } : { cls: 'bad', msg: 'Emailul nu pare corect.' };
+    }
+    if (!v) return { cls: 'bad', msg: 'Pune linkul. Fără link, butonul nu apare pe pagină.' };
+    if (/^\/(?!\/)[^\s<>"'`\\]*$/.test(v)) return { cls: 'ok', msg: 'Pagină de pe site: homosapiens.ro' + (v === '/' ? '' : v) + '.' };
+    if (/^http:\/\//i.test(v)) v = 'https://' + v.slice(7);
+    if (!/^[a-z][a-z0-9+.-]*:/i.test(v) && /^[a-z0-9-]+(\.[a-z0-9-]+)+([/?#].*)?$/i.test(v)) v = 'https://' + v;
+    try { const u = new URL(v); if (u.protocol === 'https:' && u.hostname.includes('.') && !/[\s<>"'`\\]/.test(v)) return { cls: 'ok', msg: 'Link corect: ' + u.hostname.replace(/^www\./, '') + '.' }; } catch { /* below */ }
+    return { cls: 'bad', msg: 'Linkul nu pare corect. Copiază-l din browser (începe cu https://).' };
+  }
+
+  function viewLinks() {
+    const d = S.data;
+    const box = h('div');
+    box.append(h('div', { class: 'head' }, h('div', null, h('h2', null, 'Linkuri și QR'),
+      h('p', null, 'Pagina homosapiens.ro/redirect adună toate linkurile echipei, iar codul QR de mai jos duce acolo. Ordinea de aici e ordinea de pe pagină.'))));
+
+    const qr = '/assets/img/qr-homosapiens';
+    box.append(h('section', { class: 'card sect' },
+      h('div', { class: 'qrbox' },
+        h('img', { src: qr + '.png', alt: 'Codul QR pentru homosapiens.ro/redirect' }),
+        h('div', { class: 'txt' },
+          h('h3', null, 'Codul QR'),
+          h('p', { class: 'hint' }, 'Duce la ', h('code', null, 'homosapiens.ro/redirect'), '. Poți schimba oricând linkurile de aici: codul rămâne același, deci afișele deja printate merg în continuare.'),
+          h('div', { class: 'acts' },
+            h('a', { class: 'btn btn-soft btn-sm', href: '/redirect', target: '_blank', rel: 'noopener' }, 'Deschide pagina'),
+            h('a', { class: 'btn btn-soft btn-sm', href: qr + '.png', download: 'qr-homosapiens.png' }, 'QR (PNG)'),
+            h('a', { class: 'btn btn-soft btn-sm', href: qr + '.svg', download: 'qr-homosapiens.svg' }, 'QR pentru print (SVG)'),
+            h('a', { class: 'btn btn-soft btn-sm', href: qr + '-afis.png', download: 'qr-homosapiens-afis.png' }, 'Afiș cu QR'))))));
+
+    const lb = d.settings.linksBadge;
+    const enIn = h('input', { class: 'in', value: lb.en || '', maxlength: 120, placeholder: 'gol = ca în română', 'aria-label': 'Textul în engleză', oninput: (e) => { const v = e.target.value; if (v) lb.en = v; else delete lb.en; changed(); } });
+    box.append(h('section', { class: 'card sect' },
+      h('h3', null, 'Textul de sub nume'),
+      h('div', { style: 'display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))' },
+        mlText('În română', d.settings, 'linksBadge', { ph: 'Locul 7 în lume în sezonul DECODE', max: 120 }),
+        h('div', { class: 'field' }, h('span', { class: 'lbl' }, 'În engleză'), enIn)),
+      h('p', { class: 'hint' }, 'Apare sus pe pagină, lângă o cupă. Gol = nu apare. Pagina e în engleză pentru vizitatorii cu telefonul în altă limbă.')));
+
+    const rows = h('div', { class: 'rows' });
+    if (!d.links.length) rows.append(h('p', { class: 'empty-note' }, 'Niciun link. Apasă „Adaugă link”.'));
+    d.links.forEach((l, i) => {
+      const status = h('p', { class: 'hint' });
+      const urlIn = h('input', { class: 'in', value: l.url || '', maxlength: 300, placeholder: LINK_PH[l.kind] || 'https://…', 'aria-label': 'Link', spellcheck: 'false', autocapitalize: 'off',
+        oninput: (e) => { l.url = e.target.value.trim(); upd(); changed(); } });
+      const note = l.kind === 'join' ? ' Apare doar cât timp recrutările sunt pornite (tabul Recrutări).' : '';
+      const upd = () => { const v = linkInfo(l.kind, l.url); status.textContent = v.msg + note; status.className = 'hint ' + v.cls; };
+      upd();
+      const row = h('div', { class: 'lrow' + (l.active ? '' : ' off') },
+        select('Tip', LINK_KINDS, l.kind, (v) => { l.kind = v; render(); }),
+        text('Nume pe buton (opțional)', l, 'label', { ph: LINK_DEF[l.kind] || '', max: 60 }),
+        h('div', { class: 'field wide' }, h('span', { class: 'lbl' }, l.kind === 'email' ? 'Email' : 'Link'), urlIn),
+        h('div', { class: 'rfoot' },
+          status,
+          h('div', { class: 'row2', style: 'align-items:center' }, check('Activ', l, 'active', (v) => row.classList.toggle('off', !v)),
+            h('div', { class: 'acts' }, moveBtns(d.links, i), delBtn('linkul', () => d.links.splice(i, 1))))));
+      rows.append(row);
+    });
+    box.append(h('section', { class: 'card sect' },
+      h('div', { class: 'shead' }, h('div', null, h('h3', null, 'Linkuri'), h('p', { class: 'hint', style: 'margin-top:4px' }, 'Numele pe buton e opțional: gol = numele obișnuit (Instagram, TikTok…). Linkurile nebifate la „Activ” nu apar pe pagină.')),
+        h('button', { class: 'btn btn-soft btn-sm', type: 'button', onclick: () => { d.links.push({ id: uid(), active: true, kind: 'link', label: '', url: '' }); render(); focusLast('.lrow input[aria-label="Link"]'); } }, icon(I.plus), 'Adaugă link')),
+      rows));
+    return box;
+  }
+
   function setRecruitCount(n) {
     S.recNew = n;
     const b = document.querySelector('.tab[data-tab="recrutari"]');
@@ -1081,7 +1164,7 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
 
   function render() {
     const y = window.scrollY;
-    const view = S.tab === 'echipa' ? viewTeam() : S.tab === 'roboti' ? viewRobots() : S.tab === 'contact' ? viewContact() : S.tab === 'recrutari' ? viewRecruit() : S.tab === 'sponsori' ? viewSponsors() : S.tab === 'mesaje' ? viewMessages() : S.tab === 'istoric' ? viewHistory() : viewAwards();
+    const view = S.tab === 'echipa' ? viewTeam() : S.tab === 'roboti' ? viewRobots() : S.tab === 'contact' ? viewContact() : S.tab === 'linkuri' ? viewLinks() : S.tab === 'recrutari' ? viewRecruit() : S.tab === 'sponsori' ? viewSponsors() : S.tab === 'mesaje' ? viewMessages() : S.tab === 'istoric' ? viewHistory() : viewAwards();
     const fmt = new Intl.DateTimeFormat('ro-RO', { dateStyle: 'medium', timeStyle: 'short' });
     app.replaceChildren(
       h('header', { class: 'top' }, h('div', { class: 'wrap top-in' },
