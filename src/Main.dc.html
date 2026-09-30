@@ -724,42 +724,53 @@ figure{margin:0}
 .prog-cta:hover .prog-go svg{transform:translateX(4px)}
 .prog-go svg{transition:transform .3s var(--ease)}
 .tr-text + .tr-text{margin-top:-4px}
-/* v8: living brain. A dark stage in both themes, so the pulses glow. */
-.brain-sec{position:relative;isolation:isolate;overflow:hidden;padding-block:clamp(76px,10vw,128px);background:#0A0E17;color:#EEF1F6;border-block:1px solid rgba(255,255,255,.06)}
-.brain-sec::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(34% 48% at 40% 58%,rgba(247,128,30,.17),transparent 72%),radial-gradient(34% 48% at 60% 56%,rgba(111,162,255,.17),transparent 72%)}
-.brain-sec::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.5;background-image:radial-gradient(rgba(255,255,255,.09) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask:radial-gradient(60% 70% at 50% 55%,#000,transparent 75%);mask:radial-gradient(60% 70% at 50% 55%,#000,transparent 75%)}
+/* v8: living brain, on the page background of each theme (no band); the colours that change with the
+   theme (pulses, glows, rings) are variables. */
+.brain-sec{
+  --bz-bg:var(--bg);--bz-ink:var(--ink);--bz-text:var(--ink-2);--bz-mut:var(--muted);--bz-edge:transparent;
+  --bz-glow-o:rgba(247,128,30,.14);--bz-glow-b:rgba(47,107,255,.11);--bz-dots:rgba(17,19,23,.09);
+  --bz-circ:#5775BF;--bz-blue:#3563D9;--bz-core:#0F52FF;--bz-halo:#6F9BFF;--bz-halo-a:.55;--bz-cg:#2F6BFF;--bz-ring:#2F6BFF;--bz-off:grayscale(1) opacity(.42);
+  position:relative;isolation:isolate;overflow:hidden;padding-block:clamp(64px,8vw,104px) clamp(0px,1vw,12px);background:var(--bz-bg);color:var(--bz-ink);border-block:1px solid var(--bz-edge);transition:background-color .4s var(--ease),border-color .4s var(--ease)}
+.root[data-theme="dark"] .brain-sec{
+  --bz-bg:var(--bg);--bz-ink:#F5F6F8;--bz-text:rgba(238,241,246,.7);--bz-mut:rgba(238,241,246,.6);--bz-edge:transparent;
+  --bz-glow-o:rgba(247,128,30,.17);--bz-glow-b:rgba(111,162,255,.17);--bz-dots:rgba(255,255,255,.09);
+  --bz-circ:#6B87C6;--bz-blue:#8FB2FF;--bz-core:#FFFFFF;--bz-halo:#9CC4FF;--bz-halo-a:.55;--bz-cg:#E6F0FF;--bz-ring:#E6F0FF;--bz-off:brightness(.3) saturate(.5)}
+.brain-sec::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(34% 48% at 40% 58%,var(--bz-glow-o),transparent 72%),radial-gradient(34% 48% at 60% 56%,var(--bz-glow-b),transparent 72%)}
+.brain-sec::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.5;background-image:radial-gradient(var(--bz-dots) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask:radial-gradient(60% 70% at 50% 55%,#000,transparent 75%);mask:radial-gradient(60% 70% at 50% 55%,#000,transparent 75%)}
 .brain-head{max-width:760px;margin:0 auto clamp(26px,4vw,44px);text-align:center}
-.brain-head .eyebrow{color:rgba(238,241,246,.6)}
-.brain-head .h2{margin-top:12px;color:#F5F6F8}
+.brain-head .eyebrow{color:var(--bz-mut)}
+.brain-head .h2{margin-top:12px;color:var(--bz-ink)}
 .brain-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.9fr) minmax(0,1fr);align-items:center;gap:clamp(18px,3.5vw,52px)}
 .brain-side{display:flex;flex-direction:column;gap:10px}
 .brain-side.l{align-items:flex-end;text-align:right}
-.brain-k{display:inline-flex;align-items:center;gap:10px;font:800 12px var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:rgba(238,241,246,.62)}
+.brain-k{display:inline-flex;align-items:center;gap:10px;font:800 12px var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--bz-mut)}
 .brain-k i{width:24px;height:3px;border-radius:3px;background:#F7801E}
-.brain-side.r .brain-k i{background:#8FB2FF}
-.brain-h{font:700 clamp(26px,2.8vw,36px)/1.05 var(--f-display);letter-spacing:-.035em;color:#F5F6F8}
-.brain-p{max-width:30ch;font-size:15.5px;line-height:1.55;color:rgba(238,241,246,.7)}
+.brain-side.r .brain-k i{background:var(--bz-blue)}
+.brain-h{font:700 clamp(26px,2.8vw,36px)/1.05 var(--f-display);letter-spacing:-.035em;color:var(--bz-ink)}
+.brain-p{max-width:30ch;font-size:15.5px;line-height:1.55;color:var(--bz-text)}
 .brain-box{position:relative;width:100%;max-width:600px;margin-inline:auto;aspect-ratio:480/478;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;border-radius:30px;outline:none}
-.brain-box:focus-visible{box-shadow:0 0 0 3px rgba(143,178,255,.7)}
+.brain-box:focus-visible{box-shadow:0 0 0 3px color-mix(in srgb,var(--bz-blue) 70%,transparent)}
 .brain-box svg{display:block;width:100%;height:100%;overflow:visible}
-.brain-hint{margin-top:clamp(18px,3vw,30px);text-align:center;font:700 13.5px var(--f-body);color:rgba(238,241,246,.5)}
+.brain-hint{margin-top:clamp(18px,3vw,30px);text-align:center;font:700 13.5px var(--f-body);color:var(--bz-mut)}
 .brain-hint .touch{display:none}
 @media (hover:none){.brain-hint .mouse{display:none}.brain-hint .touch{display:inline}}
 @media(max-width:860px){.brain-in{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.brain-mid{grid-column:1/-1;grid-row:1}.brain-box{max-width:460px}.brain-side.l{align-items:flex-start;text-align:left}}
 @media(max-width:520px){.brain-in{grid-template-columns:minmax(0,1fr)}.brain-p{max-width:none}}
 .bz-org{fill:#F7801E}
-.bz-circ{fill:#6B87C6}
+.bz-circ{fill:var(--bz-circ);transition:fill .4s}
+.bz-cg{stop-color:var(--bz-cg)}
+.bz-fc1{stop-color:var(--bz-halo)}
 .brain-box svg{transition:filter 1.6s cubic-bezier(.16,1,.3,1)}
-.brain-box svg.bz-off{filter:brightness(.3) saturate(.5)}
+.brain-box svg.bz-off{filter:var(--bz-off)}
 .bz-br{transform-box:fill-box;transform-origin:center;animation:bzBr 5.5s ease-in-out infinite}
 @keyframes bzBr{50%{transform:scale(1.014)}}
 .bz-p{fill:none;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
-.bz-p.ch{stroke:#9CC4FF;stroke-width:7;opacity:.55}
-.bz-p.cc{stroke:#FFFFFF;stroke-width:2.2}
+.bz-p.ch{stroke:var(--bz-halo);stroke-width:7;opacity:var(--bz-halo-a)}
+.bz-p.cc{stroke:var(--bz-core);stroke-width:2.4}
 .bz-p.nh{stroke:#FFE08A;stroke-width:13;opacity:.55}
 .bz-p.nc{stroke:#FFFBEA;stroke-width:3.8}
 .bz-fl{transform-box:fill-box;transform-origin:center;pointer-events:none}
-.bz-ring{fill:none;stroke:#E6F0FF;stroke-width:1.6;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center;pointer-events:none}
+.bz-ring{fill:none;stroke:var(--bz-ring);stroke-width:1.6;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center;pointer-events:none}
 @media (prefers-reduced-motion:reduce){.bz-br{animation:none}.brain-box svg.bz-off{filter:none}}
 /* v8: who is who in the team photo. The photo sits in a stage with its own aspect ratio, cropped by
    the frame like object-fit: cover, so the face markers (percent of the photo) stay on the faces. */
@@ -2263,8 +2274,8 @@ class Component extends DCLogic {
       + '<clipPath id="bzOC"><path clip-rule="evenodd" d="' + D.org + '"/></clipPath>'
       + '<clipPath id="bzCC"><path clip-rule="evenodd" d="' + D.circ + '"/></clipPath>'
       + '<radialGradient id="bzW"><stop offset="0" stop-color="#FFE9C7" stop-opacity=".9"/><stop offset="1" stop-color="#FFE9C7" stop-opacity="0"/></radialGradient>'
-      + '<radialGradient id="bzC"><stop offset="0" stop-color="#E6F0FF" stop-opacity=".95"/><stop offset="1" stop-color="#E6F0FF" stop-opacity="0"/></radialGradient>'
-      + '<radialGradient id="bzFc"><stop offset=".25" stop-color="#FFFFFF"/><stop offset="1" stop-color="#9CC4FF" stop-opacity="0"/></radialGradient>'
+      + '<radialGradient id="bzC"><stop class="bz-cg" offset="0" stop-color="#E6F0FF" stop-opacity=".95"/><stop class="bz-cg" offset="1" stop-color="#E6F0FF" stop-opacity="0"/></radialGradient>'
+      + '<radialGradient id="bzFc"><stop offset=".25" stop-color="#FFFFFF"/><stop class="bz-fc1" offset="1" stop-color="#9CC4FF" stop-opacity="0"/></radialGradient>'
       + '<radialGradient id="bzFn"><stop offset=".25" stop-color="#FFFBEA"/><stop offset="1" stop-color="#FFD27A" stop-opacity="0"/></radialGradient>'
       + '</defs><g class="bz-br"><path class="bz-org" fill-rule="evenodd" d="' + D.org + '"/>'
       + '<g clip-path="url(#bzOC)"><circle class="bz-gw" cx="-300" cy="-300" r="95" fill="url(#bzW)"/></g><g class="bz-nl"></g></g>'
