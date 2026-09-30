@@ -193,6 +193,25 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
 .sw input:checked + .sw-track::after{transform:translateX(22px)}
 .sw input:focus-visible + .sw-track{outline:2px solid var(--blue);outline-offset:3px}
 .sw-state{min-width:44px}
+/* v8: who is who in the team photo */
+.who-ed{position:relative;overflow:hidden;border-radius:14px;background:#000;user-select:none;-webkit-user-select:none;touch-action:none;cursor:crosshair}
+.who-ed img{display:block;width:100%;height:auto;pointer-events:none}
+.who-frame{position:absolute;border:2px dashed rgba(255,255,255,.85);border-radius:8px;box-shadow:0 0 0 9999px rgba(0,0,0,.38);pointer-events:none}
+.who-m{position:absolute;aspect-ratio:1;min-width:16px;border:2px dashed #FFD166;border-radius:50%;transform:translate(-50%,-50%);cursor:grab;touch-action:none}
+.who-m.ok{border:2px solid #4ADE80}
+.who-m.cur{border-color:#60A5FA;box-shadow:0 0 0 3px rgba(96,165,250,.5)}
+.who-m b{position:absolute;left:50%;top:-3px;min-width:20px;padding:1px 5px;border-radius:999px;background:#111317;color:#fff;font:800 11px/1.4 var(--f-body);text-align:center;transform:translate(-50%,-100%);pointer-events:none}
+.who-m.ok b{background:#15803D}
+.who-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:8px}
+.who-row{display:flex;align-items:center;gap:8px;padding:8px;border-radius:12px;border:1px solid var(--line);background:var(--bg)}
+.who-row.cur{border-color:var(--blue);box-shadow:0 0 0 2px color-mix(in srgb,var(--blue) 25%,transparent)}
+.who-row .n{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:999px;background:var(--surface-2);font:800 12px var(--f-body);cursor:pointer}
+.who-row.ok .n{background:var(--ok);color:#fff}
+.who-row select{flex:1;min-width:0}
+.who-row input[type=range]{width:58px;flex:none}
+.who-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.who-tools label{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px}
+.who-count{display:inline-flex;align-items:center;min-height:30px;padding:0 12px;border-radius:999px;background:var(--surface-2);font-weight:800;font-size:13px}
 /* v7: links page and QR */
 .lrow{display:grid;gap:10px;align-items:end;padding:14px;border-radius:16px;background:var(--bg);border:1px solid var(--line);grid-template-columns:minmax(0,.8fr) minmax(0,1fr) minmax(0,1.7fr)}
 .lrow.off{opacity:.6}
@@ -248,7 +267,8 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
   const GRADE_RO = { 9: 'a IX-a', 10: 'a X-a', 11: 'a XI-a', 12: 'a XII-a' };
   const HOURS_RO = { h1: 'Sub 3 ore', h2: '3-6 ore', h3: '6-10 ore', h4: 'Peste 10 ore' };
   const SOURCE_RO = { s1: 'De la prieteni sau colegi', s2: 'Instagram, Facebook sau TikTok', s3: 'La școală', s4: 'La un eveniment', s5: 'Altfel' };
-  const V3_KEYS = ['settings', 'contacts', 'bank', 'robots', 'links'];
+  const V3_KEYS = ['settings', 'contacts', 'bank', 'robots', 'links', 'teamPhoto'];
+  const TP_PHOTO = '/assets/img/echipa-2026.jpg';   // built-in photo at the top of the Team page
   const COUNTRIES = [
     ['ro', 'România'], ['us', 'SUA'], ['it', 'Italia'], ['de', 'Germania'], ['fr', 'Franța'], ['es', 'Spania'], ['gb', 'Marea Britanie'],
     ['gr', 'Grecia'], ['hu', 'Ungaria'], ['pl', 'Polonia'], ['tr', 'Turcia'], ['md', 'Republica Moldova'], ['bg', 'Bulgaria'], ['nl', 'Țările de Jos'], ['', 'Fără țară']
@@ -260,7 +280,7 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
   const AMOUNT_RO = { a1: 'Sub 1.000 lei', a2: '1.000-5.000 lei', a3: '5.000-10.000 lei', a4: 'Peste 10.000 lei' };
   const LANGS = [['en', 'English'], ['fr', 'Français'], ['zh', '中文']];
 
-  const S = { user: null, data: null, saved: '', meta: null, tab: 'premii', fromDefault: false, originals: {}, busy: {}, msgNew: 0, cut: {}, recNew: 0, rf: 'all', rq: '' };
+  const S = { user: null, data: null, saved: '', meta: null, tab: 'premii', fromDefault: false, originals: {}, busy: {}, msgNew: 0, cut: {}, recNew: 0, rf: 'all', rq: '', whoSel: -1 };
   const app = document.getElementById('app');
 
   /* ---------- tiny DOM helper ---------- */
@@ -364,6 +384,8 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
     if (!d.settings.recruitNote || typeof d.settings.recruitNote !== 'object') d.settings.recruitNote = {};
     for (const k of ['contacts', 'bank', 'robots', 'links']) if (!Array.isArray(d[k])) d[k] = [];
     if (!d.settings.linksBadge || typeof d.settings.linksBadge !== 'object') d.settings.linksBadge = {};
+    if (!d.teamPhoto || typeof d.teamPhoto !== 'object') d.teamPhoto = { photo: '', w: 1512, h: 1134, py: 74, tags: [] };
+    if (!Array.isArray(d.teamPhoto.tags)) d.teamPhoto.tags = [];
     for (const m of d.team) if (OLD_ROLES[m.role]) m.role = OLD_ROLES[m.role];
     for (const c of d.contacts) c.role = c.role && typeof c.role === 'object' ? c.role : {};
     for (const r of d.robots) { r.name = r.name || {}; r.text = r.text || {}; }
@@ -635,6 +657,120 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
     return box;
   }
 
+  /* The photo at the top of the Team page: which member is each face. */
+  function viewWho(d) {
+    const tp = d.teamPhoto;
+    const ar = (tp.w > 0 && tp.h > 0) ? tp.w / tp.h : 4 / 3;
+    const valid = (g) => g.m && d.team.some((m) => m.id === g.m);
+    const sec = h('section', { class: 'card sect' });
+    const count = h('span', { class: 'who-count' });
+    const updCount = () => { count.textContent = tp.tags.filter(valid).length + ' din ' + tp.tags.length + ' fețe au nume'; };
+    updCount();
+    sec.append(h('div', { class: 'shead' },
+      h('div', null, h('h3', null, 'Cine e cine în poza de sus'),
+        h('p', { class: 'hint', style: 'margin-top:4px;max-width:78ch' }, 'Pe site, când cineva trece cu mouse-ul peste o față (sau o atinge pe telefon), restul pozei se estompează și apare numele. Cercurile sunt fețele găsite automat: alege cine e fiecare. Cercurile fără nume nu apar pe site. Apasă pe poză ca să adaugi un cerc și trage de un cerc ca să-l muți.')),
+      count));
+
+    const ed = h('div', { class: 'who-ed' }, h('img', { src: tp.photo || TP_PHOTO, alt: '', draggable: 'false' }));
+    // the part visible on a computer (16:9 frame, cropped like on the site)
+    const frame = h('div', { class: 'who-frame' });
+    const placeFrame = () => {
+      const fa = 16 / 9;
+      if (ar >= fa) { const w = fa / ar * 100; Object.assign(frame.style, { left: (100 - w) / 2 + '%', width: w + '%', top: '0', height: '100%' }); }
+      else { const hh = ar / fa * 100; Object.assign(frame.style, { left: '0', width: '100%', top: (100 - hh) * (tp.py / 100) + '%', height: hh + '%' }); }
+    };
+    placeFrame();
+    ed.append(frame);
+
+    const rows = h('div', { class: 'who-list' });
+    const marks = [];
+    const pick = (i) => {
+      S.whoSel = i;
+      marks.forEach((mk, j) => mk.classList.toggle('cur', j === i));
+      rows.querySelectorAll('.who-row').forEach((r, j) => r.classList.toggle('cur', j === i));
+    };
+    const byName = d.team.filter((m) => m.name).slice().sort((a, b) => (a.alumni === b.alumni ? 0 : a.alumni ? 1 : -1) || a.name.localeCompare(b.name, 'ro'));
+    tp.tags.forEach((g, i) => {
+      const mk = h('div', { class: 'who-m' + (valid(g) ? ' ok' : '') + (S.whoSel === i ? ' cur' : ''), style: 'left:' + g.x + '%;top:' + g.y + '%;width:' + (g.r * 2) + '%' }, h('b', null, String(i + 1)));
+      let drag = null;
+      mk.addEventListener('pointerdown', (e) => {
+        e.preventDefault(); e.stopPropagation();
+        pick(i);
+        drag = { x0: e.clientX, y0: e.clientY, gx: g.x, gy: g.y, moved: false };
+        mk.setPointerCapture(e.pointerId);
+      });
+      mk.addEventListener('pointermove', (e) => {
+        if (!drag) return;
+        const b = ed.getBoundingClientRect();
+        const dx = (e.clientX - drag.x0) / b.width * 100, dy = (e.clientY - drag.y0) / b.height * 100;
+        if (!drag.moved && Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) < 3) return;
+        drag.moved = true;
+        g.x = Math.round(Math.min(100, Math.max(0, drag.gx + dx)) * 100) / 100;
+        g.y = Math.round(Math.min(100, Math.max(0, drag.gy + dy)) * 100) / 100;
+        mk.style.left = g.x + '%'; mk.style.top = g.y + '%';
+      });
+      const end = () => { if (drag && drag.moved) changed(); drag = null; };
+      mk.addEventListener('pointerup', end); mk.addEventListener('pointercancel', end);
+      marks.push(mk); ed.append(mk);
+
+      const opts = [['', '— alege persoana —']].concat(byName.map((m) => {
+        const used = tp.tags.some((o) => o !== g && o.m === m.id);
+        return [m.id, m.name + (m.alumni ? ' (absolvent)' : '') + (used ? ' · deja pe un cerc' : '')];
+      }));
+      const sel = h('select', { class: 'sel', 'aria-label': 'Persoana de pe cercul ' + (i + 1), onfocus: () => pick(i),
+        onchange: (e) => { g.m = e.target.value; const ok = valid(g); mk.classList.toggle('ok', ok); row.classList.toggle('ok', ok); updCount(); changed(); } },
+        opts.map(([v, t]) => h('option', { value: v, selected: v === (valid(g) ? g.m : '') ? true : null }, t)));
+      const size = h('input', { type: 'range', min: '0.8', max: '8', step: '0.1', value: String(g.r), 'aria-label': 'Mărimea cercului ' + (i + 1), title: 'Mărimea cercului',
+        oninput: (e) => { g.r = Number(e.target.value); mk.style.width = (g.r * 2) + '%'; changed(); } });
+      const row = h('div', { class: 'who-row' + (valid(g) ? ' ok' : '') + (S.whoSel === i ? ' cur' : '') },
+        h('span', { class: 'n', title: 'Arată cercul', onclick: () => { pick(i); mk.scrollIntoView({ block: 'center', behavior: 'smooth' }); } }, String(i + 1)),
+        sel, size,
+        h('button', { class: 'ib del', type: 'button', 'aria-label': 'Șterge cercul ' + (i + 1), title: 'Șterge cercul', onclick: () => { tp.tags.splice(i, 1); S.whoSel = -1; render(); } }, icon(I.del)));
+      rows.append(row);
+    });
+    ed.addEventListener('pointerdown', (e) => {
+      if (e.target !== ed && e.target.tagName !== 'IMG' && e.target !== frame) return;
+      const b = ed.getBoundingClientRect();
+      const rs = tp.tags.map((g) => g.r).sort((a, b2) => a - b2);
+      const r = rs.length ? rs[Math.floor(rs.length / 2)] : 2.5;
+      tp.tags.push({ id: uid(), m: '', x: Math.round((e.clientX - b.left) / b.width * 10000) / 100, y: Math.round((e.clientY - b.top) / b.height * 10000) / 100, r: r });
+      S.whoSel = tp.tags.length - 1;
+      render();
+    });
+    sec.append(ed);
+
+    const py = h('input', { type: 'range', min: '0', max: '100', step: '1', value: String(tp.py), 'aria-label': 'Încadrarea pe calculator',
+      oninput: (e) => { tp.py = Number(e.target.value); placeFrame(); changed(); } });
+    const busy = h('span', { class: 'hint' });
+    sec.append(h('div', { class: 'who-tools' },
+      h('label', null, 'Încadrare pe calculator', py),
+      h('p', { class: 'hint', style: 'flex:1;min-width:220px' }, 'Pe calculator se vede doar zona din chenar; pe telefon, toată poza.'),
+      h('button', { class: 'btn btn-soft btn-sm', type: 'button', onclick: () => pickFile(async (f) => {
+        if (tp.tags.length && !confirm('Pe poza nouă cercurile de acum nu se mai potrivesc, așa că se șterg. Continui?')) return;
+        busy.textContent = 'Se încarcă…';
+        try {
+          const img = await decode(f);
+          const sc = Math.min(1, 2000 / Math.max(img.width, img.height));
+          const w = Math.max(1, Math.round(img.width * sc)), hh = Math.max(1, Math.round(img.height * sc));
+          const c = document.createElement('canvas'); c.width = w; c.height = hh;
+          c.getContext('2d').drawImage(img, 0, 0, w, hh);
+          const url = await upload(await toBlob(c, 'image/jpeg', 0.86));
+          Object.assign(tp, { photo: url, w: w, h: hh, py: 50, tags: [] });
+          S.whoSel = -1;
+          toast('Poza e încărcată. Adaugă cercurile pe fețe și nu uita să salvezi.'); render();
+        } catch (e) { busy.textContent = ''; if (e.message !== 'auth') toast(e.message === 'decode' ? 'Nu pot citi imaginea. Folosește JPG sau PNG.' : (e.message || 'Încărcarea a eșuat.'), 'err'); }
+      }) }, 'Schimbă poza'),
+      tp.photo ? h('button', { class: 'btn btn-soft btn-sm', type: 'button', onclick: async () => {
+        if (!confirm('Revii la poza de la început, cu fețele găsite automat? Numele puse pe poza de acum se pierd.')) return;
+        try { const def = await (await fetch('/content-default.json', { cache: 'no-store' })).json(); d.teamPhoto = JSON.parse(JSON.stringify(def.teamPhoto)); }
+        catch { d.teamPhoto = { photo: '', w: 1512, h: 1134, py: 74, tags: [] }; }
+        S.whoSel = -1; render();
+      } }, 'Poza de la început') : null,
+      busy));
+    sec.append(rows);
+    return sec;
+  }
+
   function viewTeam() {
     const d = S.data;
     const box = h('div');
@@ -647,6 +783,7 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
         : 'Formularul de înscriere e oprit. Când îl pornești din tabul Recrutări, pe pagina Echipa apare și cardul „Vrei în echipă?”.')),
       h('button', { class: 'btn btn-soft btn-sm', type: 'button', onclick: () => { S.tab = 'recrutari'; window.scrollTo(0, 0); render(); } }, 'Deschide Recrutări'));
     box.append(rec);
+    box.append(viewWho(d));
     const grid = h('div', { class: 'grid' });
     d.team.forEach((m, i) => {
       const ph = h('div', { class: 'ph' + (S.busy[m.id] ? ' busy' : '') },

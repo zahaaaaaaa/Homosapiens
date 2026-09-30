@@ -29,7 +29,7 @@ Acolo se editează:
 
 - **Premii**: sezoanele și premiile.
 - **Roboți**: roboții de pe pagina Premii („Evoluția roboților”), cu poză (fundalul alb se scoate automat la încărcare).
-- **Echipa**: membrii, cu poze și rol (Software, Hardware, PR).
+- **Echipa**: membrii, cu poze și rol (Software, Hardware, PR), și „Cine e cine în poza de sus”: pe fiecare față din poza mare alegi persoana; pe site, la mouse sau atingere, restul pozei se estompează și apare numele. Tot acolo se poate schimba poza și încadrarea ei pe calculator.
 - **Recrutări**: butoanele pentru formularul de înscriere și pentru verificarea rezultatului, mesajul de sus al paginii, lista înscrierilor cu decizia pentru fiecare (În așteptare, Interviu, Acceptat, Respins), un mesaj pentru candidat și tabelul CSV. Fiecare candidat primește un cod `HS-XXXX-XXXX` cu care își vede rezultatul pe homosapiens.ro/#recrutari.
 - **Sponsori**: logo-urile.
 - **Contact și conturi**: emailul afișat, persoanele de contact cu telefon și conturile bancare (IBAN, titular, bancă).
@@ -64,6 +64,7 @@ Din `/update` → „Mesaje” → „Trimite un email de test” se verifică d
 - **Versiunea 4** (27 septembrie 2026): Versiunea 3 fără pagina /update/parola. Salvată în branch-ul `versiunea-4` („revert 4”).
 - **Versiunea 5** (27 septembrie 2026): recrutările, cu formular de înscriere, cod pentru rezultat și tabul Recrutări în /update.
 - **Versiunea 6** (28 septembrie 2026): ecranul de după înscriere refăcut ca un bilet cu codul. Salvată în branch-ul `versiunea-6` („revert 6”, commit `45f1ee3`).
-- **Versiunea 7** (29 septembrie 2026): pagina homosapiens.ro/redirect cu linkurile echipei, codul QR și tabul „Linkuri și QR” în /update.
+- **Versiunea 7** (29 septembrie 2026): pagina homosapiens.ro/redirect cu linkurile echipei, codul QR și tabul „Linkuri și QR” în /update. Salvată în branch-ul `versiunea-7` („revert 7”, commit `b376d9f`).
+- **Versiunea 8** (30 septembrie 2026): poza nouă sus la Echipa, cu „cine e cine” pe fețe; pe prima pagină, creierul animat („Jumătate creier. Jumătate circuit.”), desenat din logo, cu impulsuri de lumină care răspund la mouse și la atingere.
 
-Pentru a reveni la o versiune („revert 2”, „revert 4”, „revert 6”): fișierele din `public/`, `worker/`, `src/` și `wrangler.jsonc` se readuc din branch-ul `versiunea-N` și se face push pe `main`. Conținutul salvat din /update rămâne în Durable Object.
+Pentru a reveni la o versiune („revert 2”, „revert 4”, „revert 6”, „revert 7”): fișierele din `public/`, `worker/`, `src/` și `wrangler.jsonc` se readuc din branch-ul `versiunea-N` și se face push pe `main`. Conținutul salvat din /update rămâne în Durable Object.

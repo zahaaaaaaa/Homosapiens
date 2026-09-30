@@ -428,8 +428,23 @@ function cleanContent(c) {
     text: ml(r && r.text, 320),
     photo: img(r && r.photo)
   }));
+  // The photo at the top of the Team page and who is where in it (percent of the photo; m = member id).
+  const tpIn = c.teamPhoto && typeof c.teamPhoto === 'object' ? c.teamPhoto : null;
+  const teamPhoto = !tpIn ? undefined : {
+    photo: img(tpIn.photo),
+    w: Math.round(num(tpIn.w, 0, 20000)),
+    h: Math.round(num(tpIn.h, 0, 20000)),
+    py: num(tpIn.py, 0, 100),
+    tags: arr(tpIn.tags, 80).map((g) => ({
+      id: idOf(g && g.id),
+      m: typeof (g && g.m) === 'string' && /^[A-Za-z0-9_-]{0,40}$/.test(g.m) ? g.m : '',
+      x: num(g && g.x, 0, 100),
+      y: num(g && g.y, 0, 100),
+      r: num(g && g.r, 0.3, 20)
+    }))
+  };
   const mig = arr(c.mig, 20).filter((x) => typeof x === 'string' && /^[\w.-]{1,40}$/.test(x));
-  return { v: 1, seasons, team, sponsors, settings, contacts, bank, robots, links, mig };
+  return { v: 1, seasons, team, sponsors, settings, contacts, bank, robots, links, teamPhoto, mig };
 }
 
 /* A link on /redirect: https address (http is upgraded, a bare "instagram.com/x" gets https://),
@@ -517,6 +532,8 @@ const OLD_ROLES = { prog: 'software', eng: 'hardware', cad: 'hardware', hwcad: '
 
 /* Links page (September 2026): the built-in links and the line under the team name. */
 const MIG7 = '2026-09-links';
+/* Version 8: the team photo and the faces found in it, for "who is who" (names are chosen on /update). */
+const MIG8 = '2026-09-poza-echipei';
 
 async function migrate(c, env, url) {
   if (!c || c.v !== 1) return false;
@@ -540,7 +557,14 @@ async function migrate(c, env, url) {
     const def = await builtInContent(env, url);
     if (!def) return changed;
     if (c.settings && typeof c.settings === 'object' && c.settings.linksBadge === undefined && def.settings) c.settings.linksBadge = def.settings.linksBadge || {};
-    c.mig = done.concat([MIG7]);
+    c.mig = done = done.concat([MIG7]);
+    changed = true;
+  }
+  if (!done.includes(MIG8)) {
+    const def = await builtInContent(env, url);
+    if (!def) return changed;
+    if (c.teamPhoto === undefined && def.teamPhoto) c.teamPhoto = def.teamPhoto;
+    c.mig = done.concat([MIG8]);
     changed = true;
   }
   return changed;
