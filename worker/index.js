@@ -397,7 +397,9 @@ function cleanContent(c) {
     recruitNote: ml(set.recruitNote, 400),
     showRobots: set.showRobots !== false,
     email: EMAIL_RE.test(mail) ? mail : SITE_EMAIL,
-    linksBadge: set.linksBadge === undefined ? undefined : ml(set.linksBadge, 120)
+    linksBadge: set.linksBadge === undefined ? undefined : ml(set.linksBadge, 120),
+    // where the names on the team photo are: About page, top of the Team page, or nowhere
+    whoAt: ['about', 'team', 'off'].includes(set.whoAt) ? set.whoAt : 'about'
   };
   const contacts = arr(c.contacts, 12).map((p) => ({
     id: idOf(p && p.id),

@@ -65,6 +65,7 @@ Din `/update` → „Mesaje” → „Trimite un email de test” se verifică d
 - **Versiunea 5** (27 septembrie 2026): recrutările, cu formular de înscriere, cod pentru rezultat și tabul Recrutări în /update.
 - **Versiunea 6** (28 septembrie 2026): ecranul de după înscriere refăcut ca un bilet cu codul. Salvată în branch-ul `versiunea-6` („revert 6”, commit `45f1ee3`).
 - **Versiunea 7** (29 septembrie 2026): pagina homosapiens.ro/redirect cu linkurile echipei, codul QR și tabul „Linkuri și QR” în /update. Salvată în branch-ul `versiunea-7` („revert 7”, commit `b376d9f`).
-- **Versiunea 8** (30 septembrie 2026): poza nouă sus la Echipa, cu „cine e cine” pe fețe; pe prima pagină, creierul animat („Jumătate creier. Jumătate circuit.”), desenat din logo, cu impulsuri de lumină care răspund la mouse și la atingere.
+- **Versiunea 8** (30 septembrie 2026): poza nouă sus la Echipa, cu „cine e cine” pe fețe; pe prima pagină, creierul animat („Jumătate creier. Jumătate circuit.”), desenat din logo, cu impulsuri de lumină care răspund la mouse și la atingere. Salvată în branch-ul `versiunea-8` („revert 8”, commit `a9f0436`).
+- **Versiunea 9** (2 octombrie 2026): „Cine e cine” (poza cu nume pe fețe) mutat pe pagina Despre; sus la Echipa, aceeași poză apare simplă. În /update → Echipa se alege unde apare poza cu nume: pe Despre, sus la Echipa (ca în Versiunea 8) sau nicăieri.
 
-Pentru a reveni la o versiune („revert 2”, „revert 4”, „revert 6”, „revert 7”): fișierele din `public/`, `worker/`, `src/` și `wrangler.jsonc` se readuc din branch-ul `versiunea-N` și se face push pe `main`. Conținutul salvat din /update rămâne în Durable Object.
+Pentru a reveni la o versiune („revert 2”, „revert 4”, „revert 6”, „revert 7”, „revert 8”): fișierele din `public/`, `worker/`, `src/` și `wrangler.jsonc` se readuc din branch-ul `versiunea-N` și se face push pe `main`. Conținutul salvat din /update rămâne în Durable Object.

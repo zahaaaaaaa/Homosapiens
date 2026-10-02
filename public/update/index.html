@@ -246,6 +246,10 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
 .segb.on.s-interview{background:var(--warn-soft);color:var(--warn)}
 .segb.on.s-accepted{background:var(--ok);color:#fff}
 .segb.on.s-rejected{background:var(--danger);color:#fff}
+.segb.on.s-pick{background:var(--ink);color:var(--bg)}
+.who-at{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.who-at .lbl2{font-weight:800;font-size:14px}
+.who-at .hint{flex:1 1 260px;margin:0}
 .overlay{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(6px);padding:16px}
 </style>
 </head>
@@ -258,7 +262,7 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
   const OLD_ROLES = { prog: 'software', eng: 'hardware', cad: 'hardware', hwcad: 'hardware', drive: 'hardware', driveEng: 'hardware', prLead: 'pr' };
   const CURS = [['RON', 'Lei (RON)'], ['EUR', 'Euro (EUR)'], ['USD', 'Dolari (USD)'], ['GBP', 'Lire (GBP)']];
   const BANKS = { BTRL: 'Banca Transilvania', REVO: 'Revolut', BRDE: 'BRD', RNCB: 'BCR', INGB: 'ING Bank', RZBR: 'Raiffeisen Bank', CECE: 'CEC Bank', BACX: 'UniCredit Bank', OTPV: 'OTP Bank', BREL: 'Libra Internet Bank', UGBI: 'Garanti BBVA', PIRB: 'First Bank', CARP: 'Patria Bank', TREZ: 'Trezoreria Statului' };
-  const DEF_SETTINGS = { recruiting: false, recruitResults: false, recruitNote: {}, showRobots: true, email: 'team@homosapiens.ro', linksBadge: { ro: 'Locul 7 în lume în sezonul DECODE', en: '7th in the world in the DECODE season' } };
+  const DEF_SETTINGS = { recruiting: false, recruitResults: false, recruitNote: {}, showRobots: true, email: 'team@homosapiens.ro', whoAt: 'about', linksBadge: { ro: 'Locul 7 în lume în sezonul DECODE', en: '7th in the world in the DECODE season' } };
   const LINK_KINDS = [['site', 'Site'], ['instagram', 'Instagram'], ['tiktok', 'TikTok'], ['youtube', 'YouTube'], ['facebook', 'Facebook'], ['linkedin', 'LinkedIn'], ['email', 'Email'], ['sponsor', 'Devino sponsor'], ['join', 'Recrutări'], ['link', 'Alt link']];
   const LINK_DEF = { site: 'Site-ul echipei', instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', facebook: 'Facebook', linkedin: 'LinkedIn', email: 'Scrie-ne un email', sponsor: 'Devino sponsor', join: 'Intră în echipă', link: 'Scrie un nume' };
   const LINK_PH = { site: '/', instagram: 'https://www.instagram.com/…', tiktok: 'https://www.tiktok.com/@…', youtube: 'https://www.youtube.com/@…', facebook: 'https://www.facebook.com/…', linkedin: 'https://www.linkedin.com/company/…', email: 'gol = emailul echipei', sponsor: '/#sponsori', join: '/#recrutari', link: 'https://…' };
@@ -667,9 +671,29 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
     const updCount = () => { count.textContent = tp.tags.filter(valid).length + ' din ' + tp.tags.length + ' fețe au nume'; };
     updCount();
     sec.append(h('div', { class: 'shead' },
-      h('div', null, h('h3', null, 'Cine e cine în poza de sus'),
+      h('div', null, h('h3', null, 'Poza echipei și „Cine e cine”'),
         h('p', { class: 'hint', style: 'margin-top:4px;max-width:78ch' }, 'Pe site, când cineva trece cu mouse-ul peste o față (sau o atinge pe telefon), restul pozei se estompează și apare numele. Cercurile sunt fețele găsite automat: alege cine e fiecare. Cercurile fără nume nu apar pe site. Apasă pe poză ca să adaugi un cerc și trage de un cerc ca să-l muți.')),
       count));
+
+    // where the photo with names appears; the top of the Team page always shows the same photo
+    const AT = [
+      ['about', 'Pe pagina Despre', 'Poza cu nume e pe pagina Despre, la „Cine e cine”. Sus la Echipa, aceeași poză apare simplă.'],
+      ['team', 'Sus la Echipa', 'Poza cu nume e sus pe pagina Echipa, ca înainte. Pe Despre nu mai apare.'],
+      ['off', 'Nicăieri', 'Versiunea veche: sus la Echipa poza apare simplă, fără nume, iar pe Despre nu apare.']
+    ];
+    const cur = AT.some((a) => a[0] === d.settings.whoAt) ? d.settings.whoAt : 'about';
+    const atHint = h('p', { class: 'hint' }, AT.find((a) => a[0] === cur)[2]);
+    const seg = h('div', { class: 'seg', role: 'radiogroup', 'aria-label': 'Unde apare poza cu nume' });
+    AT.forEach(([v, label, txt]) => {
+      seg.append(h('button', { class: 'segb s-pick' + (v === cur ? ' on' : ''), type: 'button', role: 'radio', 'aria-checked': v === cur ? 'true' : 'false',
+        onclick: (e) => {
+          d.settings.whoAt = v;
+          seg.querySelectorAll('.segb').forEach((b) => { const on = b === e.currentTarget; b.classList.toggle('on', on); b.setAttribute('aria-checked', on ? 'true' : 'false'); });
+          atHint.textContent = txt;
+          changed();
+        } }, label));
+    });
+    sec.append(h('div', { class: 'who-at' }, h('span', { class: 'lbl2' }, 'Unde apare poza cu nume:'), seg, atHint));
 
     const ed = h('div', { class: 'who-ed' }, h('img', { src: tp.photo || TP_PHOTO, alt: '', draggable: 'false' }));
     // the part visible on a computer (16:9 frame, cropped like on the site)

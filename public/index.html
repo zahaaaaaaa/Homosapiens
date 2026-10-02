@@ -825,6 +825,7 @@ figure{margin:0}
 .tp-hint .touch{display:none}
 @media (hover:none){.tp-hint .mouse{display:none}.tp-hint .touch{display:inline}}
 @media (prefers-reduced-motion:reduce){.tp{transition:none}.tp-card,.tp.intro .tp-dot{animation:none}}
+.who-more{display:flex;justify-content:flex-end;margin:10px 0 0}
 /* v5: recruitment */
 .badge-join{margin:0 8px 8px 0;border-color:transparent;background:var(--blue-soft);color:var(--blue)}
 .badge-join:hover{border-color:color-mix(in srgb,var(--blue) 40%,transparent)}
@@ -1174,30 +1175,35 @@ figure{margin:0}
       <p class="lead up d2">{{t.team.lead}}</p>
     </section>
     <section class="wrap">
-      <figure class="wide-photo tp up d3{{tpCls}}" ref="{{tpRef}}" style="--tp-ar: {{tpAr}}; --tp-py: {{tpPy}}; --sx: {{tpSx}}px; --sy: {{tpSy}}px; --sr: {{tpSr}}px" onPointerLeave="{{tpLeave}}" onKeyDown="{{tpKey}}">
-        <div class="tp-stage" onClick="{{tpPick}}">
-          <img src="{{tpSrc}}" alt="{{t.team.photoAlt}}">
-          <sc-for list="{{tpTags}}" as="tg" hint-placeholder-count="0">
-            <button class="{{tg.cls}}" type="button" style="left: {{tg.x}}%; top: {{tg.y}}%; width: {{tg.d}}%" aria-label="{{tg.label}}" onPointerEnter="{{tg.enter}}" onFocus="{{tg.focus}}"></button>
-          </sc-for>
-        </div>
-        <span class="tp-dim" aria-hidden="true"></span>
-        <sc-if value="{{tpHasCard}}" hint-placeholder-val="{{false}}">
-          <div class="{{tpCardCls}}" style="left: {{tpCardX}}px; top: {{tpCardY}}px" role="status" aria-live="polite">
-            <sc-if value="{{tpCardPhoto}}" hint-placeholder-val="{{false}}"><img class="tp-av" src="{{tpCardPhoto}}" alt=""></sc-if>
-            <sc-if value="{{tpCardNoPhoto}}" hint-placeholder-val="{{true}}"><span class="tp-av tp-ini" aria-hidden="true">{{tpCardIni}}</span></sc-if>
-            <span class="tp-txt"><b>{{tpCardName}}</b><small>{{tpCardRole}}</small></span>
-            <span class="tp-nav">
-              <button class="tp-nb" type="button" aria-label="{{t.team.tpPrev}}" onClick="{{tpPrev}}"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
-              <button class="tp-nb" type="button" aria-label="{{t.team.tpNext}}" onClick="{{tpNext}}"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
-            </span>
+      <sc-if value="{{tpTeam}}" hint-placeholder-val="{{false}}">
+        <figure class="wide-photo tp up d3{{tpCls}}" ref="{{tpRef}}" style="--tp-ar: {{tpAr}}; --tp-py: {{tpPy}}; --sx: {{tpSx}}px; --sy: {{tpSy}}px; --sr: {{tpSr}}px" onPointerLeave="{{tpLeave}}" onKeyDown="{{tpKey}}">
+          <div class="tp-stage" onClick="{{tpPick}}">
+            <img src="{{tpSrc}}" alt="{{t.team.photoAlt}}">
+            <sc-for list="{{tpTags}}" as="tg" hint-placeholder-count="0">
+              <button class="{{tg.cls}}" type="button" style="left: {{tg.x}}%; top: {{tg.y}}%; width: {{tg.d}}%" aria-label="{{tg.label}}" onPointerEnter="{{tg.enter}}" onFocus="{{tg.focus}}"></button>
+            </sc-for>
           </div>
-        </sc-if>
-        <sc-if value="{{tpHintOn}}" hint-placeholder-val="{{false}}">
-          <span class="tp-hint"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="4"/><path d="M5 20c1.2-3.4 3.8-5 7-5s5.8 1.6 7 5"/></svg><span class="mouse">{{t.team.tpHintMouse}}</span><span class="touch">{{t.team.tpHintTouch}}</span></span>
-        </sc-if>
-        <figcaption class="cap">{{t.team.photoCap}}</figcaption>
-      </figure>
+          <span class="tp-dim" aria-hidden="true"></span>
+          <sc-if value="{{tpHasCard}}" hint-placeholder-val="{{false}}">
+            <div class="{{tpCardCls}}" style="left: {{tpCardX}}px; top: {{tpCardY}}px" role="status" aria-live="polite">
+              <sc-if value="{{tpCardPhoto}}" hint-placeholder-val="{{false}}"><img class="tp-av" src="{{tpCardPhoto}}" alt=""></sc-if>
+              <sc-if value="{{tpCardNoPhoto}}" hint-placeholder-val="{{true}}"><span class="tp-av tp-ini" aria-hidden="true">{{tpCardIni}}</span></sc-if>
+              <span class="tp-txt"><b>{{tpCardName}}</b><small>{{tpCardRole}}</small></span>
+              <span class="tp-nav">
+                <button class="tp-nb" type="button" aria-label="{{t.team.tpPrev}}" onClick="{{tpPrev}}"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+                <button class="tp-nb" type="button" aria-label="{{t.team.tpNext}}" onClick="{{tpNext}}"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+              </span>
+            </div>
+          </sc-if>
+          <sc-if value="{{tpHintOn}}" hint-placeholder-val="{{false}}">
+            <span class="tp-hint"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="4"/><path d="M5 20c1.2-3.4 3.8-5 7-5s5.8 1.6 7 5"/></svg><span class="mouse">{{t.team.tpHintMouse}}</span><span class="touch">{{t.team.tpHintTouch}}</span></span>
+          </sc-if>
+          <figcaption class="cap">{{t.team.photoCap}}</figcaption>
+        </figure>
+      </sc-if>
+      <sc-if value="{{tpPlain}}" hint-placeholder-val="{{true}}">
+        <figure class="wide-photo up d3"><img src="{{tpSrc}}" alt="{{t.team.photoAlt}}" style="object-position: center {{tpPyPct}}%"><figcaption class="cap">{{t.team.photoCap}}</figcaption></figure>
+      </sc-if>
       <div class="mentor sr">
         <span class="mono">AV</span>
         <div>
@@ -1394,6 +1400,39 @@ figure{margin:0}
         <div class="fact spot sr"><b>3</b><span>{{t.about.fCountries}}</span></div>
       </div>
     </section>
+    <sc-if value="{{tpAbout}}" hint-placeholder-val="{{true}}">
+    <section class="wrap sec who">
+      <div class="sec-head sr">
+        <p class="eyebrow">{{t.about.whoK}}</p>
+        <h2 class="h2">{{t.about.whoTitle}}</h2>
+      </div>
+      <figure class="wide-photo tp sr{{tpCls}}" ref="{{tpRef}}" style="--tp-ar: {{tpAr}}; --tp-py: {{tpPy}}; --sx: {{tpSx}}px; --sy: {{tpSy}}px; --sr: {{tpSr}}px" onPointerLeave="{{tpLeave}}" onKeyDown="{{tpKey}}">
+        <div class="tp-stage" onClick="{{tpPick}}">
+          <img src="{{tpSrc}}" alt="{{t.team.photoAlt}}">
+          <sc-for list="{{tpTags}}" as="tg" hint-placeholder-count="0">
+            <button class="{{tg.cls}}" type="button" style="left: {{tg.x}}%; top: {{tg.y}}%; width: {{tg.d}}%" aria-label="{{tg.label}}" onPointerEnter="{{tg.enter}}" onFocus="{{tg.focus}}"></button>
+          </sc-for>
+        </div>
+        <span class="tp-dim" aria-hidden="true"></span>
+        <sc-if value="{{tpHasCard}}" hint-placeholder-val="{{false}}">
+          <div class="{{tpCardCls}}" style="left: {{tpCardX}}px; top: {{tpCardY}}px" role="status" aria-live="polite">
+            <sc-if value="{{tpCardPhoto}}" hint-placeholder-val="{{false}}"><img class="tp-av" src="{{tpCardPhoto}}" alt=""></sc-if>
+            <sc-if value="{{tpCardNoPhoto}}" hint-placeholder-val="{{true}}"><span class="tp-av tp-ini" aria-hidden="true">{{tpCardIni}}</span></sc-if>
+            <span class="tp-txt"><b>{{tpCardName}}</b><small>{{tpCardRole}}</small></span>
+            <span class="tp-nav">
+              <button class="tp-nb" type="button" aria-label="{{t.team.tpPrev}}" onClick="{{tpPrev}}"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+              <button class="tp-nb" type="button" aria-label="{{t.team.tpNext}}" onClick="{{tpNext}}"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+            </span>
+          </div>
+        </sc-if>
+        <sc-if value="{{tpHintOn}}" hint-placeholder-val="{{false}}">
+          <span class="tp-hint"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="4"/><path d="M5 20c1.2-3.4 3.8-5 7-5s5.8 1.6 7 5"/></svg><span class="mouse">{{t.team.tpHintMouse}}</span><span class="touch">{{t.team.tpHintTouch}}</span></span>
+        </sc-if>
+        <figcaption class="cap">{{t.team.photoCap}}</figcaption>
+      </figure>
+      <p class="who-more sr"><button class="link-btn" onClick="{{goTeam}}">{{t.about.whoGo}}<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></p>
+    </section>
+    </sc-if>
     <section class="wrap sec">
       <div class="tr">
         <div class="tr-copy sr">
@@ -2072,7 +2111,7 @@ class Component extends DCLogic {
         S('sp-razedent', 'Razedent', '', ''),
         S('sp-eurolia', 'Eurolia', '', '')
       ],
-      settings: { recruiting: false, recruitResults: false, recruitNote: {}, showRobots: true, email: 'team@homosapiens.ro' },
+      settings: { recruiting: false, recruitResults: false, recruitNote: {}, showRobots: true, email: 'team@homosapiens.ro', whoAt: 'about' },
       contacts: [
         { id: 'c-voicu', active: true, name: 'Prof. Amalia Voicu', role: ML((d) => d.contact.mentorK), phone: '+40745503291', photo: '' },
         { id: 'c-beldimanescu', active: true, name: 'Ioana Beldimănescu', role: PR, phone: '+40747855654', photo: '/assets/echipa/beldimanescu.jpg' },
@@ -2250,6 +2289,8 @@ class Component extends DCLogic {
     if (this.hsTpKill) { this.hsTpKill(); this.hsTpKill = null; }
     this.hsTpFig = el || null;
     if (!el) return;
+    // the ref comes again after every render with the same photo; a new photo (back on the page) starts with no card
+    if (el !== this.hsTpEl) { this.hsTpEl = el; if (this.state.tpOn >= 0) this.setState({ tpOn: -1 }); }
     let io = null, t = 0;
     const onResize = () => { if (this.state.tpOn >= 0) this.setState({ tpOn: -1 }); };
     try {
@@ -2270,7 +2311,9 @@ class Component extends DCLogic {
     const dot = fig ? fig.querySelectorAll('.tp-dot')[i] : null;
     if (!dot) { if (this.state.tpOn !== -1) this.setState({ tpOn: -1 }); return; }
     const fr = fig.getBoundingClientRect(), br = dot.getBoundingClientRect();
-    const g = { cx: br.left + br.width / 2 - fr.left, cy: br.top + br.height / 2 - fr.top, r: Math.max(br.width / 2, 12), fw: fr.width, fh: fr.height };
+    // in the photo's own pixels, so a scroll-in animation that is still scaling it does not shift the spotlight
+    const k = fr.width && fig.offsetWidth ? fig.offsetWidth / fr.width : 1;
+    const g = { cx: (br.left + br.width / 2 - fr.left) * k, cy: (br.top + br.height / 2 - fr.top) * k, r: Math.max(br.width / 2 * k, 12), fw: fig.offsetWidth || fr.width, fh: fig.offsetHeight || fr.height };
     this.hsTpT = Date.now();
     this.setState({ tpOn: i, tpG: g, tpUsed: true });
   }
@@ -2635,7 +2678,7 @@ class Component extends DCLogic {
           emptySeason: 'Sezonul abia a început. Premiile din acest sezon vor apărea aici.', source: 'Surse: FIRST (ftc-events.firstinspires.org), propunerea de parteneriat Homosapiens 2026-2027 și Agerpres.'
         },
         about: {
-          title: 'De la Buzău, spre lume.', lead: 'Prima echipă de robotică din județul Buzău, pornită în 2018 la Colegiul Național „B. P. Hasdeu”.',
+          whoK: 'Cine e cine', whoTitle: 'Fă cunoștință cu echipa.', whoGo: 'Vezi toți membrii', title: 'De la Buzău, spre lume.', lead: 'Prima echipă de robotică din județul Buzău, pornită în 2018 la Colegiul Național „B. P. Hasdeu”.',
           p0: 'Fondată în 2018, Homosapiens este prima echipă FTC din Buzău. După o schimbare importantă de generație, ne-am reconstruit prin perseverență, încredere și pasiune pentru robotică.',
           p1: 'La începutul fiecărui sezon ne propunem un singur lucru: să devenim mai buni decât am fost ieri. Este ideea din spatele motto-ului care ne definește, „We keep evolving”.',
           p2: 'Sezonul DECODE ne-a purtat mai departe decât ne-am fi imaginat. Am ajuns în California, unde juriul ne-a acordat locul 2 la cel mai prestigios premiu FIRST. Într-un singur meci i-am învins pe campionii și vicecampionii lumii. Am urcat, pentru o vreme, pe primul loc mondial și am încheiat pe locul 7, din peste 8.800 de echipe.',
@@ -2743,7 +2786,7 @@ class Component extends DCLogic {
           emptySeason: 'The season has just started. This season’s awards will appear here.', source: 'Sources: FIRST (ftc-events.firstinspires.org), the Homosapiens 2026-2027 partnership proposal and Agerpres.'
         },
         about: {
-          title: 'From Buzău, to the world.', lead: 'The first robotics team in Buzău County, started in 2018 at Bogdan Petriceicu Hasdeu National College.',
+          whoK: 'Who is who', whoTitle: 'Meet the team.', whoGo: 'See all members', title: 'From Buzău, to the world.', lead: 'The first robotics team in Buzău County, started in 2018 at Bogdan Petriceicu Hasdeu National College.',
           p0: 'Founded in 2018, Homosapiens is the first FTC team from Buzău. After a major generational change, we rebuilt ourselves through perseverance, trust and a passion for robotics.',
           p1: 'At the start of every season we set ourselves one goal: to be better than we were yesterday. That is the idea behind the motto that defines us, “We keep evolving”.',
           p2: 'The DECODE season took us further than we ever imagined. We made it to California, where the judges gave us 2nd place for the most prestigious FIRST award. In a single match we beat the world champions and runners-up. For a while we were ranked 1st in the world, and we finished 7th out of more than 8,800 teams.',
@@ -2851,7 +2894,7 @@ class Component extends DCLogic {
           emptySeason: 'La saison vient de commencer. Les prix de cette saison apparaîtront ici.', source: 'Sources : FIRST (ftc-events.firstinspires.org), la proposition de partenariat Homosapiens 2026-2027 et Agerpres.'
         },
         about: {
-          title: 'De Buzău, vers le monde.', lead: 'La première équipe de robotique du département de Buzău, créée en 2018 au Collège national Bogdan Petriceicu Hasdeu.',
+          whoK: 'Qui est qui', whoTitle: 'Faites connaissance avec l’équipe.', whoGo: 'Voir tous les membres', title: 'De Buzău, vers le monde.', lead: 'La première équipe de robotique du département de Buzău, créée en 2018 au Collège national Bogdan Petriceicu Hasdeu.',
           p0: 'Fondée en 2018, Homosapiens est la première équipe FTC de Buzău. Après un important changement de génération, nous nous sommes reconstruits grâce à la persévérance, à la confiance et à la passion de la robotique.',
           p1: 'Au début de chaque saison, nous nous fixons un seul objectif : devenir meilleurs que la veille. C’est l’idée derrière la devise qui nous définit, « We keep evolving ».',
           p2: 'La saison DECODE nous a menés plus loin que nous ne l’aurions imaginé. Nous sommes allés en Californie, où le jury nous a décerné la 2e place du prix FIRST le plus prestigieux. En un seul match, nous avons battu les champions et vice-champions du monde. Nous avons été un temps 1ers mondiaux et avons terminé 7es, sur plus de 8 800 équipes.',
@@ -2959,7 +3002,7 @@ class Component extends DCLogic {
           emptySeason: '赛季刚刚开始，本赛季的奖项将显示在这里。', source: '来源：FIRST（ftc-events.firstinspires.org）、Homosapiens 2026-2027 合作方案与 Agerpres。'
         },
         about: {
-          title: '从布泽乌，走向世界。', lead: '布泽乌县第一支机器人战队，2018 年在 Bogdan Petriceicu Hasdeu 国家学院成立。',
+          whoK: '谁是谁', whoTitle: '认识我们的团队。', whoGo: '查看全部成员', title: '从布泽乌，走向世界。', lead: '布泽乌县第一支机器人战队，2018 年在 Bogdan Petriceicu Hasdeu 国家学院成立。',
           p0: 'Homosapiens 成立于 2018 年，是布泽乌的第一支 FTC 战队。在经历了一次重要的新老交替之后，我们凭借坚持、信任和对机器人的热爱重新成长起来。',
           p1: '每个赛季开始时，我们只给自己定一个目标：比昨天的自己更好。这正是定义我们的口号“We keep evolving”背后的理念。',
           p2: 'DECODE 赛季带我们走得比想象中更远。我们来到加州，评委授予我们 FIRST 最具声望奖项的第二名。在一场比赛中，我们击败了世界冠军和亚军。我们一度排名世界第一，最终在 8,800 多支战队中位列第 7。',
@@ -3107,6 +3150,11 @@ class Component extends DCLogic {
       .filter((g) => g && tpById[g.m] && Number.isFinite(+g.x) && Number.isFinite(+g.y))
       .slice().sort((a, b) => a.x - b.x);
     const tpN = tpList.length;
+    /* Where the names are (/update, Team tab): 'about' = About page (default), 'team' = top of the Team page
+       (like Version 8), 'off' = nowhere (the Team photo is plain, as before Version 8). */
+    const tpAt0 = (C.settings && typeof C.settings === 'object' && C.settings.whoAt) || (D0.settings && D0.settings.whoAt);
+    const tpAt = ['about', 'team', 'off'].includes(tpAt0) ? tpAt0 : 'about';
+    const tpTeam = tpAt === 'team' && tpN > 0, tpAbout = tpAt === 'about' && (tpN > 0 || !this.hsStandalone);
     const tpOn = s.tpOn >= 0 && s.tpOn < tpN ? s.tpOn : -1;
     const tpPerson = (g) => {
       const m = tpById[g.m];
@@ -3362,6 +3410,7 @@ class Component extends DCLogic {
       gallery: gallery, galPrev: () => this.hsScrollGal(-1), galNext: () => this.hsScrollGal(1),
       numsRef: this.hsNumsRef, numsSeason: numsSeason, numsSince: numsSince, brainRef: this.hsBrainRef,
       tpRef: this.hsTpRef, tpSrc: tpSrc, tpAr: (tpW / tpH).toFixed(4), tpPy: tpPy.toFixed(3), tpTags: tpTags,
+      tpTeam: tpTeam, tpPlain: !tpTeam, tpAbout: tpAbout, tpPyPct: (tpPy * 100).toFixed(1),
       tpCls: (tpN ? '' : ' tp-none') + (tpOn >= 0 ? ' on' : '') + (s.tpIntro && tpN ? ' intro' : ''),
       ...tpCard, tpSx: Math.round(tpG.cx), tpSy: Math.round(tpG.cy), tpSr: Math.round(tpG.r), tpHintOn: tpN > 0 && !s.tpUsed,
       tpLeave: (e) => { const pt = e && (e.pointerType || (e.nativeEvent && e.nativeEvent.pointerType)); if (pt === 'mouse' && this.state.tpOn >= 0) this.setState({ tpOn: -1 }); },
