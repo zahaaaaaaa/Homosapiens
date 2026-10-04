@@ -876,6 +876,7 @@ figure{margin:0}
 @media (max-width:760px){.sup-cta{grid-template-columns:minmax(0,1fr)}.sup-cta .btn{justify-self:start}}
 @media (max-width:520px){.calc{grid-template-columns:minmax(0,1fr)}.sup-act .btn{width:100%}.sup-act .btn small{display:none}}
 @media (prefers-reduced-motion:reduce){.sup-due.open .sup-dot{animation:none}}
+@media (min-width:1061px) and (max-width:1240px){.tab{padding:0 11px}}
 /* v5: recruitment */
 .badge-join{margin:0 8px 8px 0;border-color:transparent;background:var(--blue-soft);color:var(--blue)}
 .badge-join:hover{border-color:color-mix(in srgb,var(--blue) 40%,transparent)}
@@ -2073,7 +2074,6 @@ figure{margin:0}
               <sc-for list="{{tabs}}" as="ft" hint-placeholder-count="6">
                 <button class="flink" onClick="{{ft.go}}">{{ft.label}}</button>
               </sc-for>
-              <sc-if value="{{supOn}}" hint-placeholder-val="{{true}}"><button class="flink" onClick="{{goSupport}}">{{t.support.foot}}</button></sc-if>
             </div>
           </div>
           <div>
@@ -2285,8 +2285,8 @@ class Component extends DCLogic {
       /* The photo at the top of the Team page ('' = the built-in one) and who is where in it: x, y = centre
          of the face, r = radius, all in percent of the photo width/height; m = member id ('' = not shown). */
       teamPhoto: { photo: '', w: 1512, h: 1134, py: 74, tags: [{"id":"f1","m":"","x":2.81,"y":29.41,"r":2.32},{"id":"f2","m":"","x":8.27,"y":34.83,"r":2.66},{"id":"f3","m":"","x":12.73,"y":31.7,"r":2.4},{"id":"f4","m":"","x":16.14,"y":36.07,"r":2.43},{"id":"f5","m":"","x":20.54,"y":64.33,"r":3.16},{"id":"f6","m":"","x":27.94,"y":37.26,"r":2.32},{"id":"f7","m":"","x":31.42,"y":32.45,"r":2.28},{"id":"f8","m":"","x":33.23,"y":37.08,"r":2.62},{"id":"f9","m":"","x":36.67,"y":37.52,"r":2.09},{"id":"f10","m":"","x":37.67,"y":33.2,"r":1.94},{"id":"f11","m":"","x":40.64,"y":36.02,"r":2.24},{"id":"f12","m":"","x":45.14,"y":33.29,"r":1.9},{"id":"f13","m":"","x":48.15,"y":32.8,"r":2.43},{"id":"f14","m":"","x":55.49,"y":32.54,"r":2.21},{"id":"f15","m":"","x":57.34,"y":41.18,"r":2.13},{"id":"f16","m":"","x":59.46,"y":36.51,"r":2.28},{"id":"f17","m":"","x":65.15,"y":33.42,"r":2.36},{"id":"f18","m":"","x":69.15,"y":35.14,"r":1.9},{"id":"f19","m":"","x":71.49,"y":65.96,"r":2.81},{"id":"f20","m":"","x":74.27,"y":34.57,"r":2.59},{"id":"f21","m":"","x":78.24,"y":32.28,"r":2.81},{"id":"f22","m":"","x":87.83,"y":30.07,"r":3.42},{"id":"f23","m":"","x":95.57,"y":29.89,"r":2.89}] },
-      /* Support page (/update, tab "Susține"): off until turned on; the NGO's data fills in Formular 230. */
-      support: { on: false, ngo: { name: '', cif: '', iban: '', bank: '', addr: '', rub: false }, where: {}, docs: [] }
+      /* Support page (/update, tab "Susține"): on/off there, with its own item in the menu; the NGO's data fills in Formular 230. */
+      support: { on: true, ngo: { name: '', cif: '', iban: '', bank: '', addr: '', rub: false }, where: {}, docs: [] }
     };
   }
   componentDidUpdate() {
@@ -2783,7 +2783,7 @@ class Component extends DCLogic {
     return {
       ro: {
         ui: { home: 'Homosapiens, pagina principală', pages: 'Pagini', language: 'Alege limba', theme: 'Schimbă tema, luminos sau întunecat', close: 'Închide meniul', prev: 'Fotografia anterioară', next: 'Fotografia următoare', copy: 'Copiază', copied: 'Copiat' },
-        nav: { home: 'Acasă', team: 'Echipa', awards: 'Premii', about: 'Despre', sponsors: 'Sponsori', contact: 'Contact', join: 'Recrutări' },
+        nav: { home: 'Acasă', team: 'Echipa', awards: 'Premii', about: 'Despre', sponsors: 'Sponsori', contact: 'Contact', join: 'Recrutări', support: 'Susține' },
         hero: { badge: 'Inspire Award, locul 2 la Long Beach, 2026', l1: 'Construim roboți.', l2: 'Reprezentăm Buzăul.', sub: 'Echipa FIRST Tech Challenge a Colegiului Național „B. P. Hasdeu” din Buzău. Locul 7 în lume în sezonul DECODE, din peste 8.800 de echipe.', ctaSponsor: 'Devino sponsor', ctaAwards: 'Vezi premiile', videoTitle: 'Urmărește meciul', videoSub: 'Pe YouTube, de la minutul 32:30, durează 2:45', videoCap: 'Unul dintre cele mai bune meciuri ale noastre, 32:30-35:15', videoLink: 'YouTube', posterAria: 'Deschide meciul pe YouTube, de la minutul 32:30', clipAria: 'Clip dintr-un meci Homosapiens, rulează în buclă', posterAlt: 'Echipa Homosapiens încurajează din tribună, la o competiție FTC' },
         ticker: ['Locul 7 mondial, din peste 8.800 de echipe', 'Al 6-lea record mondial: 577 de puncte', 'Inspire Award, locul 2, Long Beach 2026', '9 din 9 victorii în calificări la Bucharest Twin Cup', 'Reach Award, locul 1, Romania East League', 'Reach Award, locul 3, Campionatul Național', 'Control Award la FTC Italy Championship', 'Motivate Award la Michiana Premier Event', '2 huburi de robotică în mediul rural', 'Sezonul 2026-2027: BIOBUZZ'],
         home: {
@@ -2892,7 +2892,7 @@ class Component extends DCLogic {
       },
       en: {
         ui: { home: 'Homosapiens home page', pages: 'Pages', language: 'Choose language', theme: 'Switch between light and dark theme', close: 'Close menu', prev: 'Previous photo', next: 'Next photo', copy: 'Copy', copied: 'Copied' },
-        nav: { home: 'Home', team: 'Team', awards: 'Awards', about: 'About', sponsors: 'Sponsors', contact: 'Contact', join: 'Join us' },
+        nav: { home: 'Home', team: 'Team', awards: 'Awards', about: 'About', sponsors: 'Sponsors', contact: 'Contact', join: 'Join us', support: 'Support us' },
         hero: { badge: 'Inspire Award, 2nd place at Long Beach, 2026', l1: 'We build robots.', l2: 'We represent Buzău.', sub: 'The FIRST Tech Challenge team of Bogdan Petriceicu Hasdeu National College in Buzău, Romania. 7th in the world in the DECODE season, out of more than 8,800 teams.', ctaSponsor: 'Become a sponsor', ctaAwards: 'See our awards', videoTitle: 'Watch the match', videoSub: 'On YouTube, from 32:30, runs 2:45', videoCap: 'One of our best matches, 32:30-35:15', videoLink: 'YouTube', posterAria: 'Open the match on YouTube at 32:30', clipAria: 'Clip from a Homosapiens match, playing on loop', posterAlt: 'The Homosapiens team cheering in the stands at an FTC event' },
         ticker: ['7th in the world, out of 8,800+ teams', '6th world record: 577 points', 'Inspire Award, 2nd place, Long Beach 2026', '9 out of 9 qualification wins at the Bucharest Twin Cup', 'Reach Award, 1st place, Romania East League', 'Reach Award, 3rd place, Romania Championship', 'Control Award at the FTC Italy Championship', 'Motivate Award at the Michiana Premier Event', '2 robotics hubs in rural communities', '2026-2027 season: BIOBUZZ'],
         home: {
@@ -3001,7 +3001,7 @@ class Component extends DCLogic {
       },
       fr: {
         ui: { home: 'Homosapiens, page d’accueil', pages: 'Pages', language: 'Choisir la langue', theme: 'Passer du thème clair au thème sombre', close: 'Fermer le menu', prev: 'Photo précédente', next: 'Photo suivante', copy: 'Copier', copied: 'Copié' },
-        nav: { home: 'Accueil', team: 'Équipe', awards: 'Prix', about: 'À propos', sponsors: 'Sponsors', contact: 'Contact', join: 'Recrutement' },
+        nav: { home: 'Accueil', team: 'Équipe', awards: 'Prix', about: 'À propos', sponsors: 'Sponsors', contact: 'Contact', join: 'Recrutement', support: 'Nous soutenir' },
         hero: { badge: 'Inspire Award, 2e place à Long Beach, 2026', l1: 'Nous construisons des robots.', l2: 'Nous représentons Buzău.', sub: 'L’équipe FIRST Tech Challenge du Collège national Bogdan Petriceicu Hasdeu de Buzău, en Roumanie. 7e mondiale de la saison DECODE, sur plus de 8 800 équipes.', ctaSponsor: 'Devenir sponsor', ctaAwards: 'Voir nos prix', videoTitle: 'Regarder le match', videoSub: 'Sur YouTube, à partir de 32:30, dure 2:45', videoCap: 'L’un de nos meilleurs matchs, 32:30-35:15', videoLink: 'YouTube', posterAria: 'Ouvrir le match sur YouTube à 32:30', clipAria: 'Extrait d’un match de Homosapiens, en boucle', posterAlt: 'L’équipe Homosapiens encourage depuis les tribunes lors d’une compétition FTC' },
         ticker: ['7e mondiale, sur plus de 8 800 équipes', '6e record du monde : 577 points', 'Inspire Award, 2e place, Long Beach 2026', '9 victoires sur 9 en qualifications à la Bucharest Twin Cup', 'Reach Award, 1re place, Romania East League', 'Reach Award, 3e place, Championnat de Roumanie', 'Control Award au FTC Italy Championship', 'Motivate Award au Michiana Premier Event', '2 pôles de robotique en milieu rural', 'Saison 2026-2027 : BIOBUZZ'],
         home: {
@@ -3110,7 +3110,7 @@ class Component extends DCLogic {
       },
       zh: {
         ui: { home: 'Homosapiens 首页', pages: '页面', language: '选择语言', theme: '切换浅色或深色主题', close: '关闭菜单', prev: '上一张照片', next: '下一张照片', copy: '复制', copied: '已复制' },
-        nav: { home: '首页', team: '团队', awards: '荣誉', about: '关于我们', sponsors: '赞助商', contact: '联系我们', join: '招新' },
+        nav: { home: '首页', team: '团队', awards: '荣誉', about: '关于我们', sponsors: '赞助商', contact: '联系我们', join: '招新', support: '支持我们' },
         hero: { badge: 'Inspire Award 第二名，长滩，2026', l1: '我们制造机器人。', l2: '我们代表布泽乌。', sub: '罗马尼亚布泽乌 Bogdan Petriceicu Hasdeu 国家学院的 FIRST Tech Challenge 战队。DECODE 赛季在 8,800 多支战队中位列全球第 7。', ctaSponsor: '成为赞助商', ctaAwards: '查看荣誉', videoTitle: '观看比赛', videoSub: 'YouTube，从 32:30 开始，时长 2:45', videoCap: '我们最精彩的比赛之一，32:30-35:15', videoLink: 'YouTube', posterAria: '在 YouTube 上从 32:30 打开比赛', clipAria: 'Homosapiens 比赛片段，循环播放', posterAlt: 'Homosapiens 战队在 FTC 比赛看台上加油' },
         ticker: ['8,800 多支战队中全球第 7', '第 6 高世界纪录：577 分', 'Inspire Award 第二名，长滩 2026', 'Bucharest Twin Cup 资格赛 9 战全胜', 'Reach Award 第一名，Romania East League', 'Reach Award 第三名，罗马尼亚全国锦标赛', 'FTC 意大利锦标赛 Control Award', 'Michiana Premier Event Motivate Award', '在乡村建立 2 个机器人中心', '2026-2027 赛季：BIOBUZZ'],
         home: {
@@ -3240,7 +3240,7 @@ class Component extends DCLogic {
     const SP0 = (C0.support && typeof C0.support === 'object') ? C0.support : {};
     const supOn = this.hsStandalone ? SP0.on === true : true;
     const curTab = ((s.tab === 'join' && !joinOpen) || (s.tab === 'support' && !supOn)) ? 'home' : s.tab;
-    const ids = ['home', 'team', 'awards', 'about', 'sponsors', 'contact'].concat(joinOpen ? ['join'] : []);
+    const ids = ['home', 'team', 'awards', 'about', 'sponsors'].concat(supOn ? ['support'] : [], ['contact'], joinOpen ? ['join'] : []);
     const tabs = ids.map((id) => ({ label: t.nav[id], go: go(id), cls: curTab === id ? 'tab on' : 'tab', current: curTab === id ? 'page' : undefined, dot: id === 'join' && recruitOpen }));
 
     const pick = (l) => () => { this.setState({ lang: l, langOpen: false }); this.hsSave('hs19053-lang', l); };

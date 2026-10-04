@@ -405,7 +405,7 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
     for (const c of d.contacts) c.role = c.role && typeof c.role === 'object' ? c.role : {};
     for (const r of d.robots) { r.name = r.name || {}; r.text = r.text || {}; }
     const sp = d.support && typeof d.support === 'object' ? d.support : {};
-    d.support = Object.assign({ on: false, where: {}, docs: [] }, sp);
+    d.support = Object.assign({ on: true, where: {}, docs: [] }, sp);
     d.support.ngo = Object.assign({ name: '', cif: '', iban: '', bank: '', addr: '', rub: false }, sp.ngo && typeof sp.ngo === 'object' ? sp.ngo : {});
     if (!d.support.where || typeof d.support.where !== 'object') d.support.where = {};
     if (!Array.isArray(d.support.docs)) d.support.docs = [];
@@ -1100,14 +1100,14 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
 
     // on / off
     const ready = supportReady(sp);
-    const stateHint = () => !sp.on ? 'Pagina e ascunsă. Când o pornești, apare cu link din pagina Sponsori și din subsolul site-ului.'
-      : supportReady(sp) ? 'Pagina e pe site. Formularul 230 se face singur, cu datele de mai jos, la homosapiens.ro/formular-230.pdf.'
-      : 'Pagina e pornită, dar formularul nu apare până nu completezi denumirea, CIF-ul și IBAN-ul asociației.';
+    const stateHint = () => !sp.on ? 'Oprit: pagina și categoria „Susține” din meniul site-ului sunt ascunse.'
+      : supportReady(sp) ? 'Pornit: „Susține” e în meniul site-ului, iar formularul 230 se face singur, cu datele de mai jos (homosapiens.ro/formular-230.pdf).'
+      : 'Pornit: „Susține” e în meniul site-ului. Butonul pentru formularul 230 apare după ce completezi denumirea, CIF-ul și IBAN-ul asociației.';
     const hintEl = h('p', { class: 'hint' }, stateHint());
     const st = h('section', { class: 'card sect sup-state' + (sp.on ? ' on' : '') },
-      h('div', null, h('h3', null, 'Pagina Susține'), hintEl),
+      h('div', null, h('h3', null, 'Categoria „Susține” pe site'), hintEl),
       h('div', { class: 'row2', style: 'align-items:center' },
-        toggle(sp, 'on', 'Pagina Susține', (v) => { st.classList.toggle('on', v); hintEl.textContent = stateHint(); }),
+        toggle(sp, 'on', 'Categoria Susține pe site', (v) => { st.classList.toggle('on', v); hintEl.textContent = stateHint(); }),
         h('a', { class: 'btn btn-soft btn-sm', href: '/#sustine', target: '_blank', rel: 'noopener' }, 'Deschide pagina'),
         h('a', { class: 'btn btn-soft btn-sm', href: '/formular-230.pdf', target: '_blank', rel: 'noopener' }, 'Vezi formularul 230')));
     box.append(st);
