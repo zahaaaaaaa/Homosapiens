@@ -1,0 +1,3 @@
+formular-230-2025.jpg: formularul oficial ANAF 230 (Anexa nr. 2, cod 14.13.04.13), A4 la 300 dpi.
+Imaginea provine din proiectul open-source redirectioneaza (Code for Romania), https://github.com/code4romania/redirectioneaza,
+publicat sub Mozilla Public License 2.0 (https://mozilla.org/MPL/2.0/); aici e doar recomprimată ca JPEG.

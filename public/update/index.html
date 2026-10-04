@@ -247,6 +247,16 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
 .segb.on.s-accepted{background:var(--ok);color:#fff}
 .segb.on.s-rejected{background:var(--danger);color:#fff}
 .segb.on.s-pick{background:var(--ink);color:var(--bg)}
+.sup-g{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.sup-state{flex-direction:row;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.sup-state.on{border-color:transparent;background:var(--ok-soft)}
+.sup-state .hint{max-width:72ch;margin-top:4px}
+.sup-note{padding:14px 16px;border-radius:14px;background:var(--warn-soft);color:var(--ink);font-size:14px;line-height:1.55}
+.sup-note b{display:block;margin-bottom:4px}
+.sup-note ol{margin:6px 0 0;padding-left:20px}
+.drow{display:grid;gap:10px;align-items:end;padding:14px;border-radius:16px;background:var(--bg);border:1px solid var(--line);grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+.dfile{display:flex;align-items:center;gap:10px;min-height:42px;font-size:14px;font-weight:700;overflow-wrap:anywhere}
+.dfile .ext{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:10px;background:var(--surface-2);font:800 10.5px var(--f-body);letter-spacing:.05em}
 .who-at{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
 .who-at .lbl2{font-weight:800;font-size:14px}
 .who-at .hint{flex:1 1 260px;margin:0}
@@ -263,22 +273,23 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
   const CURS = [['RON', 'Lei (RON)'], ['EUR', 'Euro (EUR)'], ['USD', 'Dolari (USD)'], ['GBP', 'Lire (GBP)']];
   const BANKS = { BTRL: 'Banca Transilvania', REVO: 'Revolut', BRDE: 'BRD', RNCB: 'BCR', INGB: 'ING Bank', RZBR: 'Raiffeisen Bank', CECE: 'CEC Bank', BACX: 'UniCredit Bank', OTPV: 'OTP Bank', BREL: 'Libra Internet Bank', UGBI: 'Garanti BBVA', PIRB: 'First Bank', CARP: 'Patria Bank', TREZ: 'Trezoreria Statului' };
   const DEF_SETTINGS = { recruiting: false, recruitResults: false, recruitNote: {}, showRobots: true, email: 'team@homosapiens.ro', whoAt: 'about', linksBadge: { ro: 'Locul 7 în lume în sezonul DECODE', en: '7th in the world in the DECODE season' } };
-  const LINK_KINDS = [['site', 'Site'], ['instagram', 'Instagram'], ['tiktok', 'TikTok'], ['youtube', 'YouTube'], ['facebook', 'Facebook'], ['linkedin', 'LinkedIn'], ['email', 'Email'], ['sponsor', 'Devino sponsor'], ['join', 'Recrutări'], ['link', 'Alt link']];
-  const LINK_DEF = { site: 'Site-ul echipei', instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', facebook: 'Facebook', linkedin: 'LinkedIn', email: 'Scrie-ne un email', sponsor: 'Devino sponsor', join: 'Intră în echipă', link: 'Scrie un nume' };
-  const LINK_PH = { site: '/', instagram: 'https://www.instagram.com/…', tiktok: 'https://www.tiktok.com/@…', youtube: 'https://www.youtube.com/@…', facebook: 'https://www.facebook.com/…', linkedin: 'https://www.linkedin.com/company/…', email: 'gol = emailul echipei', sponsor: '/#sponsori', join: '/#recrutari', link: 'https://…' };
+  const LINK_KINDS = [['site', 'Site'], ['instagram', 'Instagram'], ['tiktok', 'TikTok'], ['youtube', 'YouTube'], ['facebook', 'Facebook'], ['linkedin', 'LinkedIn'], ['email', 'Email'], ['sponsor', 'Devino sponsor'], ['join', 'Recrutări'], ['tax', 'Redirecționează 3,5%'], ['link', 'Alt link']];
+  const LINK_DEF = { site: 'Site-ul echipei', instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', facebook: 'Facebook', linkedin: 'LinkedIn', email: 'Scrie-ne un email', sponsor: 'Devino sponsor', join: 'Intră în echipă', tax: 'Redirecționează 3,5%', link: 'Scrie un nume' };
+  const LINK_PH = { site: '/', instagram: 'https://www.instagram.com/…', tiktok: 'https://www.tiktok.com/@…', youtube: 'https://www.youtube.com/@…', facebook: 'https://www.facebook.com/…', linkedin: 'https://www.linkedin.com/company/…', email: 'gol = emailul echipei', sponsor: '/#sponsori', join: '/#recrutari', tax: '/sustine', link: 'https://…' };
   const APP_ST = [['new', 'În așteptare'], ['interview', 'Interviu'], ['accepted', 'Acceptat'], ['rejected', 'Respins']];
   const DEPT_RO = { prog: 'Programare', eng: 'Inginerie', cad: 'CAD', pr: 'PR' };
   const GRADE_RO = { 9: 'a IX-a', 10: 'a X-a', 11: 'a XI-a', 12: 'a XII-a' };
   const HOURS_RO = { h1: 'Sub 3 ore', h2: '3-6 ore', h3: '6-10 ore', h4: 'Peste 10 ore' };
   const SOURCE_RO = { s1: 'De la prieteni sau colegi', s2: 'Instagram, Facebook sau TikTok', s3: 'La școală', s4: 'La un eveniment', s5: 'Altfel' };
-  const V3_KEYS = ['settings', 'contacts', 'bank', 'robots', 'links', 'teamPhoto'];
+  const V3_KEYS = ['settings', 'contacts', 'bank', 'robots', 'links', 'teamPhoto', 'support'];
+  const DOC_TYPES = { pdf: 'application/pdf', doc: 'application/msword', docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', odt: 'application/vnd.oasis.opendocument.text' };
   const TP_PHOTO = '/assets/img/echipa-2026.jpg';   // built-in photo at the top of the Team page
   const COUNTRIES = [
     ['ro', 'România'], ['us', 'SUA'], ['it', 'Italia'], ['de', 'Germania'], ['fr', 'Franța'], ['es', 'Spania'], ['gb', 'Marea Britanie'],
     ['gr', 'Grecia'], ['hu', 'Ungaria'], ['pl', 'Polonia'], ['tr', 'Turcia'], ['md', 'Republica Moldova'], ['bg', 'Bulgaria'], ['nl', 'Țările de Jos'], ['', 'Fără țară']
   ];
   const PLACES = [[0, 'Fără loc'], [1, 'Locul 1'], [2, 'Locul 2'], [3, 'Locul 3']];
-  const TABS = [['premii', 'Premii'], ['roboti', 'Roboți'], ['echipa', 'Echipa'], ['recrutari', 'Recrutări'], ['sponsori', 'Sponsori'], ['contact', 'Contact și conturi'], ['linkuri', 'Linkuri și QR'], ['mesaje', 'Mesaje'], ['istoric', 'Istoric']];
+  const TABS = [['premii', 'Premii'], ['roboti', 'Roboți'], ['echipa', 'Echipa'], ['recrutari', 'Recrutări'], ['sponsori', 'Sponsori'], ['sustine', 'Susține (3,5%)'], ['contact', 'Contact și conturi'], ['linkuri', 'Linkuri și QR'], ['mesaje', 'Mesaje'], ['istoric', 'Istoric']];
   const TOPIC_RO = { sponsor: 'Sponsorizare', collab: 'Colaborare', press: 'Presă', other: 'Altceva' };
   const SUPPORT_RO = { money: 'Financiar', goods: 'Produse sau materiale', services: 'Servicii', mentoring: 'Mentorat sau vizite' };
   const AMOUNT_RO = { a1: 'Sub 1.000 lei', a2: '1.000-5.000 lei', a3: '5.000-10.000 lei', a4: 'Peste 10.000 lei' };
@@ -393,6 +404,12 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
     for (const m of d.team) if (OLD_ROLES[m.role]) m.role = OLD_ROLES[m.role];
     for (const c of d.contacts) c.role = c.role && typeof c.role === 'object' ? c.role : {};
     for (const r of d.robots) { r.name = r.name || {}; r.text = r.text || {}; }
+    const sp = d.support && typeof d.support === 'object' ? d.support : {};
+    d.support = Object.assign({ on: false, where: {}, docs: [] }, sp);
+    d.support.ngo = Object.assign({ name: '', cif: '', iban: '', bank: '', addr: '', rub: false }, sp.ngo && typeof sp.ngo === 'object' ? sp.ngo : {});
+    if (!d.support.where || typeof d.support.where !== 'object') d.support.where = {};
+    if (!Array.isArray(d.support.docs)) d.support.docs = [];
+    for (const x of d.support.docs) x.title = x.title && typeof x.title === 'object' ? x.title : {};
   }
 
   /* ---------- state ---------- */
@@ -1031,7 +1048,8 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
       const status = h('p', { class: 'hint' });
       const urlIn = h('input', { class: 'in', value: l.url || '', maxlength: 300, placeholder: LINK_PH[l.kind] || 'https://…', 'aria-label': 'Link', spellcheck: 'false', autocapitalize: 'off',
         oninput: (e) => { l.url = e.target.value.trim(); upd(); changed(); } });
-      const note = l.kind === 'join' ? ' Apare doar cât timp recrutările sunt pornite (tabul Recrutări).' : '';
+      const note = l.kind === 'join' ? ' Apare doar cât timp recrutările sunt pornite (tabul Recrutări).'
+        : l.kind === 'tax' ? ' Apare doar cât timp pagina Susține e pornită și are datele asociației (tabul Susține).' : '';
       const upd = () => { const v = linkInfo(l.kind, l.url); status.textContent = v.msg + note; status.className = 'hint ' + v.cls; };
       upd();
       const row = h('div', { class: 'lrow' + (l.active ? '' : ' off') },
@@ -1047,6 +1065,125 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
     box.append(h('section', { class: 'card sect' },
       h('div', { class: 'shead' }, h('div', null, h('h3', null, 'Linkuri'), h('p', { class: 'hint', style: 'margin-top:4px' }, 'Numele pe buton e opțional: gol = numele obișnuit (Instagram, TikTok…). Linkurile nebifate la „Activ” nu apar pe pagină.')),
         h('button', { class: 'btn btn-soft btn-sm', type: 'button', onclick: () => { d.links.push({ id: uid(), active: true, kind: 'link', label: '', url: '' }); render(); focusLast('.lrow input[aria-label="Link"]'); } }, icon(I.plus), 'Adaugă link')),
+      rows));
+    return box;
+  }
+
+  /* ---------- Support page: 3.5% (Formular 230) and sponsorship ---------- */
+  const cifOk = (v) => /^(RO)?\d{2,10}$/.test(String(v || '').toUpperCase().replace(/\s+/g, ''));
+  function supportReady(sp) {
+    const n = sp.ngo;
+    return !!(String(n.name || '').trim() && cifOk(n.cif) && /^RO\d{2}[A-Z]{4}[A-Z0-9]{16}$/.test(String(n.iban || '').toUpperCase().replace(/\s+/g, '')) && ibanInfo(n.iban).cls === 'ok');
+  }
+  function pickDoc(onFile) {
+    const inp = h('input', { type: 'file', accept: '.pdf,.doc,.docx,.odt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.oasis.opendocument.text', class: 'hidden',
+      onchange: () => { if (inp.files && inp.files[0]) onFile(inp.files[0]); inp.remove(); } });
+    document.body.append(inp); inp.click();
+  }
+  async function uploadDoc(file) {
+    const ext = (String(file.name || '').toLowerCase().match(/\.(pdf|docx?|odt)$/) || [])[1];
+    const type = Object.values(DOC_TYPES).includes(file.type) ? file.type : DOC_TYPES[ext];
+    if (!type) throw new Error('Folosește un document PDF, Word (DOC sau DOCX) sau ODT.');
+    if (file.size > 1900 * 1024) throw new Error('Documentul e prea mare: cel mult 1,9 MB. Salvează-l ca PDF sau micșorează pozele din el.');
+    const res = await api('/api/admin/upload?name=' + encodeURIComponent(file.name || 'document'), { method: 'POST', headers: { 'content-type': type }, body: file });
+    if (!res.ok) throw new Error(await readErr(res));
+    return res.json();
+  }
+  const docTitle = (name) => String(name || '').replace(/\.[a-z0-9]{2,4}$/i, '').replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const sizeTxt = (n) => (n >= 1048576 ? (n / 1048576).toFixed(1).replace('.', ',') + ' MB' : Math.max(1, Math.round((n || 0) / 1024)) + ' KB');
+
+  function viewSupport() {
+    const d = S.data, sp = d.support, n = sp.ngo;
+    const box = h('div');
+    box.append(h('div', { class: 'head' }, h('div', null, h('h2', null, 'Susține: 3,5% și sponsorizări'),
+      h('p', null, 'Pagina homosapiens.ro/sustine: formularul 230 (3,5% din impozitul pe salariu), deja completat cu datele asociației, și sponsorizarea din impozitul pe profit, cu contractul și alte documente pentru firme.'))));
+
+    // on / off
+    const ready = supportReady(sp);
+    const stateHint = () => !sp.on ? 'Pagina e ascunsă. Când o pornești, apare cu link din pagina Sponsori și din subsolul site-ului.'
+      : supportReady(sp) ? 'Pagina e pe site. Formularul 230 se face singur, cu datele de mai jos, la homosapiens.ro/formular-230.pdf.'
+      : 'Pagina e pornită, dar formularul nu apare până nu completezi denumirea, CIF-ul și IBAN-ul asociației.';
+    const hintEl = h('p', { class: 'hint' }, stateHint());
+    const st = h('section', { class: 'card sect sup-state' + (sp.on ? ' on' : '') },
+      h('div', null, h('h3', null, 'Pagina Susține'), hintEl),
+      h('div', { class: 'row2', style: 'align-items:center' },
+        toggle(sp, 'on', 'Pagina Susține', (v) => { st.classList.toggle('on', v); hintEl.textContent = stateHint(); }),
+        h('a', { class: 'btn btn-soft btn-sm', href: '/#sustine', target: '_blank', rel: 'noopener' }, 'Deschide pagina'),
+        h('a', { class: 'btn btn-soft btn-sm', href: '/formular-230.pdf', target: '_blank', rel: 'noopener' }, 'Vezi formularul 230')));
+    box.append(st);
+
+    // the NGO
+    const ibanStatus = h('p', { class: 'hint' });
+    const cifStatus = h('p', { class: 'hint' });
+    const bankField = h('input', { class: 'in', value: n.bank || '', maxlength: 60, 'aria-label': 'Banca', oninput: (e) => { n.bank = e.target.value; changed(); } });
+    const updIban = () => {
+      const v = n.iban ? ibanInfo(n.iban) : { cls: 'bad', msg: 'Scrie IBAN-ul asociației.' };
+      const ro = !n.iban || /^RO/.test(n.iban);
+      ibanStatus.textContent = ro ? v.msg : 'Formularul 230 cere un cont dintr-o bancă din România (IBAN care începe cu RO).';
+      ibanStatus.className = 'hint ' + (ro ? v.cls : 'bad');
+      bankField.placeholder = v.bank || 'numele băncii';
+      hintEl.textContent = stateHint();
+    };
+    const updCif = () => {
+      const ok = cifOk(n.cif);
+      cifStatus.textContent = !n.cif ? 'Scrie codul fiscal al asociației (doar cifrele).' : ok ? 'Cod fiscal în regulă.' : 'Codul fiscal are doar cifre (2-10), eventual cu RO în față.';
+      cifStatus.className = 'hint ' + (n.cif && ok ? 'ok' : 'bad');
+      hintEl.textContent = stateHint();
+    };
+    const ibanIn = h('input', { class: 'in', value: n.iban || '', maxlength: 42, placeholder: 'RO00 XXXX 0000 0000 0000 0000', 'aria-label': 'IBAN-ul asociației', spellcheck: 'false', autocapitalize: 'characters',
+      style: 'font-family:ui-monospace,Menlo,Consolas,monospace', oninput: (e) => { n.iban = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); updIban(); changed(); } });
+    const cifIn = h('input', { class: 'in', value: n.cif || '', maxlength: 16, placeholder: '12345678', 'aria-label': 'Codul fiscal al asociației', inputmode: 'numeric', spellcheck: 'false',
+      oninput: (e) => { n.cif = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); updCif(); changed(); } });
+    updIban(); updCif();
+    box.append(h('section', { class: 'card sect' },
+      h('div', null, h('h3', null, 'Datele asociației (ONG-ul echipei)'),
+        h('p', { class: 'hint', style: 'margin-top:4px;max-width:78ch' }, 'Apar exact așa pe formularul 230 și, pentru firme, pe pagină. Denumirea, CIF-ul și IBAN-ul sunt obligatorii; contul trebuie să fie pe numele asociației.')),
+      h('div', { class: 'sup-g' },
+        text('Denumirea asociației', n, 'name', { ph: 'Asociația …', max: 120, required: true, onChange: () => { hintEl.textContent = stateHint(); } }),
+        h('div', { class: 'field' }, h('span', { class: 'lbl' }, 'Cod fiscal (CIF)'), cifIn, cifStatus)),
+      h('div', { class: 'sup-g' },
+        h('div', { class: 'field' }, h('span', { class: 'lbl' }, 'IBAN'), ibanIn, ibanStatus),
+        h('div', { class: 'field' }, h('span', { class: 'lbl' }, 'Banca (opțional)'), bankField)),
+      text('Sediul (opțional)', n, 'addr', { ph: 'Str. …, nr. …, Buzău', max: 200 }),
+      h('div', null, check('E înscrisă în Registrul entităților/unităților de cult pentru care se acordă deduceri fiscale (ANAF)', n, 'rub'),
+        h('p', { class: 'hint', style: 'margin-top:6px;max-width:78ch' }, 'Bifează doar dacă asociația apare în registru. Pe pagină apare atunci un semn de încredere pentru firme.')),
+      h('div', { class: 'sup-note' }, h('b', null, 'Ca banii să ajungă la echipă'),
+        h('ol', null,
+          h('li', null, 'Asociația trebuie să fie în Registrul entităților al ANAF. Fără el, ANAF nu virează cei 3,5%, iar firmele nu pot scădea sponsorizarea din impozit.'),
+          h('li', null, 'Formularele primite de la oameni le depune asociația până pe 25 mai, online, împreună cu situația centralizatoare a formularelor 230. Originalele se păstrează.')))));
+
+    // where people hand in the form
+    box.append(h('section', { class: 'card sect' },
+      h('div', null, h('h3', null, 'Unde ne dau oamenii formularul'),
+        h('p', { class: 'hint', style: 'margin-top:4px;max-width:78ch' }, 'Pasul 3 de pe pagină. Gol = textul obișnuit: „Dă-l unui membru al echipei sau trimite-ni-l scanat la ' + (d.settings.email || 'team@homosapiens.ro') + '. Îl poți depune și singur: online, în SPV, ori la ghișeul ANAF sau prin poștă.”')),
+      mlArea('În română', sp, 'where', { max: 400, ph: 'De exemplu: la secretariatul Colegiului Hasdeu, într-un plic pentru echipa de robotică.' }),
+      h('div', { class: 'sup-g' }, trInputs('Traducere', sp, 'where', true))));
+
+    // documents for sponsors
+    const rows = h('div', { class: 'rows' });
+    if (!sp.docs.length) rows.append(h('p', { class: 'empty-note' }, 'Niciun document încă. Apasă „Adaugă document” și alege contractul de sponsorizare (PDF sau Word).'));
+    sp.docs.forEach((x, i) => {
+      const ext = String(x.type || 'pdf').toUpperCase();
+      rows.append(h('div', { class: 'drow' },
+        mlText('Numele de pe site', x, 'title', { ph: docTitle(x.name) || 'Contract de sponsorizare', max: 100 }),
+        h('div', { class: 'dfile' }, h('span', { class: 'ext' }, ext), h('span', null, h('a', { href: x.url, target: '_blank', rel: 'noopener' }, x.name || 'document'), ' · ' + sizeTxt(x.size))),
+        h('div', { class: 'rfoot' }, h('div', { class: 'sup-g', style: 'flex:1' }, trInputs('Nume', x, 'title')),
+          h('div', { class: 'acts' }, moveBtns(sp.docs, i), delBtn('documentul', () => sp.docs.splice(i, 1))))));
+    });
+    const busy = h('span', { class: 'hint' });
+    box.append(h('section', { class: 'card sect' },
+      h('div', { class: 'shead' }, h('div', null, h('h3', null, 'Documente pentru firme'),
+        h('p', { class: 'hint', style: 'margin-top:4px;max-width:72ch' }, 'Contractul de sponsorizare și ce mai vrei să poată descărca firmele (dosarul de prezentare, de exemplu). PDF, Word sau ODT, cel mult 1,9 MB fiecare. Apar pe pagină în ordinea de aici.')),
+        h('div', { class: 'row2', style: 'align-items:center' }, busy,
+          h('button', { class: 'btn btn-soft btn-sm', type: 'button', onclick: () => pickDoc(async (f) => {
+            busy.textContent = 'Se încarcă…';
+            try {
+              const r = await uploadDoc(f);
+              const t0 = docTitle(r.name);
+              sp.docs.push({ id: uid(), title: t0 ? { ro: t0 } : {}, url: r.url, name: r.name, size: r.size, type: r.type });
+              toast('Documentul e încărcat. Nu uita să salvezi.'); render();
+            } catch (e) { busy.textContent = ''; if (e.message !== 'auth') toast(e.message || 'Încărcarea a eșuat.', 'err'); }
+          }) }, icon(I.plus), 'Adaugă document'))),
       rows));
     return box;
   }
@@ -1325,7 +1462,7 @@ textarea.in{min-height:88px;resize:vertical;line-height:1.45;padding-top:10px}
 
   function render() {
     const y = window.scrollY;
-    const view = S.tab === 'echipa' ? viewTeam() : S.tab === 'roboti' ? viewRobots() : S.tab === 'contact' ? viewContact() : S.tab === 'linkuri' ? viewLinks() : S.tab === 'recrutari' ? viewRecruit() : S.tab === 'sponsori' ? viewSponsors() : S.tab === 'mesaje' ? viewMessages() : S.tab === 'istoric' ? viewHistory() : viewAwards();
+    const view = S.tab === 'echipa' ? viewTeam() : S.tab === 'roboti' ? viewRobots() : S.tab === 'contact' ? viewContact() : S.tab === 'linkuri' ? viewLinks() : S.tab === 'recrutari' ? viewRecruit() : S.tab === 'sponsori' ? viewSponsors() : S.tab === 'sustine' ? viewSupport() : S.tab === 'mesaje' ? viewMessages() : S.tab === 'istoric' ? viewHistory() : viewAwards();
     const fmt = new Intl.DateTimeFormat('ro-RO', { dateStyle: 'medium', timeStyle: 'short' });
     app.replaceChildren(
       h('header', { class: 'top' }, h('div', { class: 'wrap top-in' },

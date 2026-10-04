@@ -7,9 +7,19 @@ Site-ul echipei de robotică FIRST Tech Challenge Homosapiens #19053, Colegiul N
 - `public/`: site-ul (pagina, pozele, logo-urile) și pagina de administrare `public/update/`
 - `worker/index.js`: API-ul pentru administrare și pagina `/redirect`; conținutul editat și pozele încărcate stau într-un Durable Object
 - `worker/redirect-page.mjs`: șablonul paginii `/redirect`
+- `worker/f230.mjs` și `worker/f230-font.mjs`: formularul 230 completat cu datele asociației, la `/formular-230.pdf`
 - `wrangler.jsonc`: configurarea Worker-ului
 
-Linkuri directe către taburi: `/#echipa`, `/#premii`, `/#despre`, `/#sponsori`, `/#contact`.
+Linkuri directe către taburi: `/#echipa`, `/#premii`, `/#despre`, `/#sponsori`, `/#contact`, `/#sustine`.
+
+## Susține: 3,5% din impozit și sponsorizări
+
+Pagina `/#sustine` (adrese scurte de dat mai departe: `homosapiens.ro/sustine`, `/230`, `/3-5`) are două părți:
+
+- **3,5% din impozitul pe salariu**: pașii și termenul (25 mai) pentru formularul 230. Butonul descarcă `/formular-230.pdf`: formularul oficial ANAF, generat pe loc de Worker, cu anul veniturilor, bifa la „Susținerea unei entități nonprofit”, CIF-ul, denumirea și IBAN-ul asociației și 3,5 la procent, deja completate. Omul își scrie datele, semnează și dă formularul echipei sau îl depune singur.
+- **Sponsorizare din impozitul pe profit**: limitele (20% din impozitul pe profit, cel mult 0,75% din cifra de afaceri), un calculator și documentele pentru firme (contractul de sponsorizare și altele), încărcate din /update.
+
+Totul se setează din /update, tabul „Susține (3,5%)”: pagina pornită sau oprită, datele asociației, unde se predau formularele și documentele. Pagina e oprită până o pornești; formularul apare doar când asociația are denumire, CIF și IBAN din România. Pentru ca banii să ajungă, asociația trebuie să fie în Registrul entităților/unităților de cult pentru care se acordă deduceri fiscale (ANAF), iar formularele primite de la oameni le depune asociația până pe 25 mai, cu situația centralizatoare. Imaginea formularului (`public/assets/f230/`) provine din proiectul open-source redirectioneaza (Code for Romania, MPL-2.0); scriptul `cms/f230/make_f230.py` din sesiunea de lucru o pregătește împreună cu fontul.
 
 ## homosapiens.ro/redirect și codul QR
 
@@ -32,8 +42,9 @@ Acolo se editează:
 - **Echipa**: membrii, cu poze și rol (Software, Hardware, PR), și „Cine e cine în poza de sus”: pe fiecare față din poza mare alegi persoana; pe site, la mouse sau atingere, restul pozei se estompează și apare numele. Tot acolo se poate schimba poza și încadrarea ei pe calculator.
 - **Recrutări**: butoanele pentru formularul de înscriere și pentru verificarea rezultatului, mesajul de sus al paginii, lista înscrierilor cu decizia pentru fiecare (În așteptare, Interviu, Acceptat, Respins), un mesaj pentru candidat și tabelul CSV. Fiecare candidat primește un cod `HS-XXXX-XXXX` cu care își vede rezultatul pe homosapiens.ro/#recrutari.
 - **Sponsori**: logo-urile.
+- **Susține (3,5%)**: pagina cu formularul 230 și sponsorizările: pornită sau oprită, datele asociației (denumire, CIF, IBAN, sediu), unde se predau formularele și documentele pentru firme (contractul de sponsorizare).
 - **Contact și conturi**: emailul afișat, persoanele de contact cu telefon și conturile bancare (IBAN, titular, bancă).
-- **Linkuri și QR**: linkurile de pe homosapiens.ro/redirect, textul de sub numele echipei și codul QR de descărcat.
+- **Linkuri și QR**: linkurile de pe homosapiens.ro/redirect, textul de sub numele echipei și codul QR de descărcat. Tipul „Redirecționează 3,5%” duce la pagina Susține și apare doar cât timp ea e pornită.
 - **Mesaje**: ce trimit vizitatorii prin formularul de contact.
 
 Ce se salvează apare imediat pe site; fiecare salvare intră în „Istoric” și poate fi restaurată.
@@ -66,6 +77,7 @@ Din `/update` → „Mesaje” → „Trimite un email de test” se verifică d
 - **Versiunea 6** (28 septembrie 2026): ecranul de după înscriere refăcut ca un bilet cu codul. Salvată în branch-ul `versiunea-6` („revert 6”, commit `45f1ee3`).
 - **Versiunea 7** (29 septembrie 2026): pagina homosapiens.ro/redirect cu linkurile echipei, codul QR și tabul „Linkuri și QR” în /update. Salvată în branch-ul `versiunea-7` („revert 7”, commit `b376d9f`).
 - **Versiunea 8** (30 septembrie 2026): poza nouă sus la Echipa, cu „cine e cine” pe fețe; pe prima pagină, creierul animat („Jumătate creier. Jumătate circuit.”), desenat din logo, cu impulsuri de lumină care răspund la mouse și la atingere. Salvată în branch-ul `versiunea-8` („revert 8”, commit `a9f0436`).
-- **Versiunea 9** (2 octombrie 2026): „Cine e cine” (poza cu nume pe fețe) mutat pe pagina Despre; sus la Echipa, aceeași poză apare simplă. În /update → Echipa se alege unde apare poza cu nume: pe Despre, sus la Echipa (ca în Versiunea 8) sau nicăieri.
+- **Versiunea 9** (2 octombrie 2026): „Cine e cine” (poza cu nume pe fețe) mutat pe pagina Despre; sus la Echipa, aceeași poză apare simplă. În /update → Echipa se alege unde apare poza cu nume: pe Despre, sus la Echipa (ca în Versiunea 8) sau nicăieri. Salvată în branch-ul `versiunea-10` („revert 10”, commit `c5d46d0`).
+- **Versiunea 10** (4 octombrie 2026): pagina Susține (`/#sustine`): formularul 230 pentru 3,5% din impozit, precompletat cu datele asociației, și sponsorizarea din impozitul pe profit, cu calculator și documente pentru firme; tabul „Susține (3,5%)” în /update.
 
-Pentru a reveni la o versiune („revert 2”, „revert 4”, „revert 6”, „revert 7”, „revert 8”): fișierele din `public/`, `worker/`, `src/` și `wrangler.jsonc` se readuc din branch-ul `versiunea-N` și se face push pe `main`. Conținutul salvat din /update rămâne în Durable Object.
+Pentru a reveni la o versiune („revert 2”, „revert 4”, „revert 6”, „revert 7”, „revert 8”, „revert 10”): fișierele din `public/`, `worker/`, `src/` și `wrangler.jsonc` se readuc din branch-ul `versiunea-N` și se face push pe `main`. Conținutul salvat din /update rămâne în Durable Object.

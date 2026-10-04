@@ -26,12 +26,19 @@
  */
 import { DurableObject } from 'cloudflare:workers';
 import LINK_PAGE from './redirect-page.mjs';
+import { formular230, incomeYear } from './f230.mjs';
 
 const COOKIE = 'hs_admin';
 const SESSION_MS = 12 * 60 * 60 * 1000;
 const MAX_CONTENT = 900 * 1024;
 const MAX_IMAGE = 1500 * 1024;
 const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+// Documents for sponsors (the sponsorship contract and the like), uploaded on /update.
+const DOC_TYPES = {
+  'application/pdf': 'pdf', 'application/msword': 'doc', 'application/vnd.oasis.opendocument.text': 'odt',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx'
+};
+const MAX_DOC = 1900 * 1024;
 const FAIL_WINDOW_MS = 15 * 60 * 1000;
 const MAX_FAILS_IP = 8;
 const MAX_FAILS_USER = 12;
@@ -40,7 +47,7 @@ const ROLES = ['software', 'hardware', 'pr', 'peer', 'member', 'prog', 'eng', 'c
 const CURRENCIES = ['RON', 'EUR', 'USD', 'GBP'];
 const SITE_EMAIL = 'team@homosapiens.ro';
 const LANGS = ['ro', 'en', 'fr', 'zh'];
-const LINK_KINDS = ['site', 'instagram', 'tiktok', 'youtube', 'facebook', 'linkedin', 'email', 'sponsor', 'join', 'link'];
+const LINK_KINDS = ['site', 'instagram', 'tiktok', 'youtube', 'facebook', 'linkedin', 'email', 'sponsor', 'join', 'tax', 'link'];
 const MSG_KEEP = 1000;
 const HIT_WINDOW_MS = 24 * 3600 * 1000;
 const MAIL_TO = 'thehomosapiens123@gmail.com';
@@ -116,13 +123,13 @@ export class HsStore extends DurableObject {
     return r.length ? { type: r[0].type, data: r[0].data } : null;
   }
 
-  // Images uploaded more than 3 days ago that no saved version (current or history) uses any more.
+  // Images and documents uploaded more than 3 days ago that no saved version (current or history) uses any more.
   pruneImages() {
     const used = new Set();
     const texts = this.rows('SELECT v FROM history').map((x) => x.v);
     const cur = this.getContent();
     if (cur) texts.push(cur.content);
-    for (const t of texts) for (const m of t.matchAll(/\/api\/img\/([a-f0-9]{32})/g)) used.add(m[1]);
+    for (const t of texts) for (const m of t.matchAll(/\/api\/(?:img|file)\/([a-f0-9]{32})/g)) used.add(m[1]);
     const old = this.rows('SELECT id FROM imgs WHERE ts < ?', Date.now() - 3 * 24 * 3600 * 1000);
     let n = 0;
     for (const { id } of old) if (!used.has(id)) { this.sql.exec('DELETE FROM imgs WHERE id = ?', id); n++; }
@@ -445,8 +452,31 @@ function cleanContent(c) {
       r: num(g && g.r, 0.3, 20)
     }))
   };
+  // The Support page: 3.5% of income tax (Formular 230, filled in with the NGO below) and sponsorship.
+  const spIn = c.support && typeof c.support === 'object' ? c.support : {};
+  const ngIn = spIn.ngo && typeof spIn.ngo === 'object' ? spIn.ngo : {};
+  const support = {
+    on: bool(spIn.on),
+    ngo: {
+      name: str(ngIn.name, 120),
+      cif: str(ngIn.cif, 24).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 14),
+      iban: str(ngIn.iban, 60).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 34),
+      bank: str(ngIn.bank, 60),
+      addr: str(ngIn.addr, 200),
+      rub: bool(ngIn.rub)
+    },
+    where: ml(spIn.where, 400),
+    docs: arr(spIn.docs, 12).map((x) => ({
+      id: idOf(x && x.id),
+      title: ml(x && x.title, 100),
+      url: typeof (x && x.url) === 'string' && /^\/api\/file\/[a-f0-9]{32}\/[^\s/<>"'`\\]{1,240}$/.test(x.url) ? x.url : '',
+      name: str(x && x.name, 120).replace(/[\\/<>"'`]/g, ''),
+      size: Math.round(num(x && x.size, 0, MAX_DOC)),
+      type: Object.values(DOC_TYPES).includes(x && x.type) ? x.type : 'pdf'
+    })).filter((x) => x.url)
+  };
   const mig = arr(c.mig, 20).filter((x) => typeof x === 'string' && /^[\w.-]{1,40}$/.test(x));
-  return { v: 1, seasons, team, sponsors, settings, contacts, bank, robots, links, teamPhoto, mig };
+  return { v: 1, seasons, team, sponsors, settings, contacts, bank, robots, links, teamPhoto, support, mig };
 }
 
 /* A link on /redirect: https address (http is upgraded, a bare "instagram.com/x" gets https://),
@@ -772,6 +802,21 @@ async function api(request, env, url) {
     return new Response(found.data, { headers: { 'content-type': found.type, 'cache-control': 'public, max-age=31536000, immutable', 'x-content-type-options': 'nosniff' } });
   }
 
+  const file = path.match(/^\/api\/file\/([a-f0-9]{32})\/([^/]{1,240})$/);
+  if (file && (method === 'GET' || method === 'HEAD')) {
+    const found = await store.getImage(file[1]);
+    if (!found || !DOC_TYPES[found.type]) return new Response('Not found', { status: 404 });
+    let name = file[2];
+    try { name = decodeURIComponent(name); } catch { /* keep as is */ }
+    name = name.replace(/[\u0000-\u001f\\/"]/g, '') || 'document';
+    const ascii = name.normalize('NFD').replace(/[^\x20-\x7e]/g, '').replace(/[;%]/g, '') || 'document';
+    const how = found.type === 'application/pdf' ? 'inline' : 'attachment';
+    return new Response(method === 'HEAD' ? null : found.data, { headers: {
+      'content-type': found.type, 'content-disposition': `${how}; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(name)}`,
+      'cache-control': 'public, max-age=31536000, immutable', 'x-content-type-options': 'nosniff'
+    } });
+  }
+
   if (method !== 'GET' && method !== 'HEAD' && !sameOrigin(request, url)) return err(403, 'origin', 'Cerere respinsă.');
 
   if (path === '/api/contact' && method === 'POST') {
@@ -891,7 +936,15 @@ async function api(request, env, url) {
 
   if (path === '/api/admin/upload' && method === 'POST') {
     const type = (request.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
-    if (!IMAGE_TYPES.includes(type)) return err(415, 'type', 'Folosește o imagine JPG, PNG sau WebP.');
+    if (DOC_TYPES[type]) {
+      const data = await request.arrayBuffer();
+      if (data.byteLength === 0) return err(400, 'empty', 'Fișier gol.');
+      if (data.byteLength > MAX_DOC) return err(413, 'too_big', 'Fișierul e prea mare (cel mult 1,9 MB).');
+      const name = (url.searchParams.get('name') || '').replace(/[\u0000-\u001f\\/<>"'`]/g, '').trim().slice(0, 120) || 'document.' + DOC_TYPES[type];
+      const id = await store.putImage(type, data, user);
+      return json({ url: '/api/file/' + id + '/' + encodeURIComponent(name), name, size: data.byteLength, type: DOC_TYPES[type] });
+    }
+    if (!IMAGE_TYPES.includes(type)) return err(415, 'type', 'Folosește o imagine JPG, PNG sau WebP, ori un document PDF, Word sau ODT.');
     const data = await request.arrayBuffer();
     if (data.byteLength === 0) return err(400, 'empty', 'Fișier gol.');
     if (data.byteLength > MAX_IMAGE) return err(413, 'too_big', 'Imaginea e prea mare.');
@@ -990,6 +1043,51 @@ async function api(request, env, url) {
   return err(404, 'not_found', 'Adresă necunoscută.');
 }
 
+/* ---------- Support page: Formular 230 filled in with the team's NGO ---------- */
+
+// The page is on and the NGO has a name, a fiscal code and a Romanian IBAN: the form can be made.
+function supportReady(c) {
+  const sp = c && c.support && typeof c.support === 'object' ? c.support : null;
+  const n = sp && sp.ngo && typeof sp.ngo === 'object' ? sp.ngo : null;
+  return !!(sp && sp.on === true && n && typeof n.name === 'string' && n.name.trim()
+    && /^(RO)?\d{2,10}$/i.test(String(n.cif || '')) && /^RO\d{2}[A-Z]{4}[A-Z0-9]{16}$/.test(String(n.iban || '')));
+}
+
+async function liveContent(env, url) {
+  const store = env.STORE.get(env.STORE.idFromName('main'));
+  let c = null;
+  try {
+    const cur = await store.getContent();
+    if (cur) { c = JSON.parse(cur.content); await migrate(c, env, url); }
+  } catch { c = null; }
+  if (!c || typeof c !== 'object') c = (await builtInContent(env, url)) || {};
+  return c;
+}
+
+const F230_NOT_READY = '<!doctype html><html lang="ro"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+  + '<title>Formularul 230</title><body style="margin:0;display:grid;min-height:100vh;place-items:center;font:600 17px/1.5 system-ui,sans-serif;background:#F4F5F7;color:#111317">'
+  + '<main style="max-width:30rem;padding:24px;text-align:center"><p>Formularul 230 al echipei apare aici în curând.</p>'
+  + '<p><a href="/" style="color:#2D4E8A">homosapiens.ro</a></p></main></body></html>';
+
+async function f230Response(request, env, url) {
+  const c = await liveContent(env, url);
+  if (!supportReady(c)) {
+    return new Response(request.method === 'HEAD' ? null : F230_NOT_READY, { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' } });
+  }
+  const n = c.support.ngo;
+  const img = await env.ASSETS.fetch(new Request(new URL('/assets/f230/formular-230-2025.jpg', url).toString()));
+  if (!img.ok) return new Response('Formularul nu e disponibil acum. Încearcă din nou mai târziu.', { status: 503, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  const year = incomeYear();
+  const pdf = formular230({ year, cif: n.cif, name: n.name.trim(), iban: n.iban, pct: '3,5', title: 'Formular 230 · ' + n.name.trim() }, new Uint8Array(await img.arrayBuffer()));
+  return new Response(request.method === 'HEAD' ? null : pdf, {
+    headers: {
+      'content-type': 'application/pdf',
+      'content-disposition': `inline; filename="Formular-230-Homosapiens-${year}.pdf"`,
+      'cache-control': 'no-cache', 'x-content-type-options': 'nosniff'
+    }
+  });
+}
+
 /* ---------- /redirect: every link of the team on one page (the QR codes point here) ---------- */
 
 const LINK_TXT = {
@@ -999,8 +1097,8 @@ const LINK_TXT = {
     tag: 'Echipa de robotică FIRST Tech Challenge a Colegiului Național „B. P. Hasdeu” din Buzău.',
     share: 'Distribuie', copied: 'Link copiat', other: 'English', otherLang: 'en',
     empty: 'Linkurile apar aici în curând.',
-    label: { site: 'Site-ul echipei', instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', facebook: 'Facebook', linkedin: 'LinkedIn', email: 'Scrie-ne un email', sponsor: 'Devino sponsor', join: 'Intră în echipă', link: 'Link' },
-    sub: { sponsor: 'Susține echipa în noul sezon', join: 'Recrutările sunt deschise' }
+    label: { site: 'Site-ul echipei', instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', facebook: 'Facebook', linkedin: 'LinkedIn', email: 'Scrie-ne un email', sponsor: 'Devino sponsor', join: 'Intră în echipă', tax: 'Redirecționează 3,5%', link: 'Link' },
+    sub: { sponsor: 'Susține echipa în noul sezon', join: 'Recrutările sunt deschise', tax: 'Formularul 230, fără niciun cost' }
   },
   en: {
     title: 'Homosapiens #19053 · Links',
@@ -1008,8 +1106,8 @@ const LINK_TXT = {
     tag: 'FIRST Tech Challenge robotics team of Colegiul Național „B. P. Hasdeu”, Buzău, Romania.',
     share: 'Share', copied: 'Link copied', other: 'Română', otherLang: 'ro',
     empty: 'Our links will be here soon.',
-    label: { site: 'Team website', instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', facebook: 'Facebook', linkedin: 'LinkedIn', email: 'Email us', sponsor: 'Become a sponsor', join: 'Join the team', link: 'Link' },
-    sub: { sponsor: 'Support us this season', join: 'Recruitment is open' }
+    label: { site: 'Team website', instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', facebook: 'Facebook', linkedin: 'LinkedIn', email: 'Email us', sponsor: 'Become a sponsor', join: 'Join the team', tax: 'Give us 3.5% of your tax', link: 'Link' },
+    sub: { sponsor: 'Support us this season', join: 'Recruitment is open', tax: 'Form 230, at no cost to you' }
   }
 };
 const SVG_ATTR = 'viewBox="0 0 24 24" aria-hidden="true"';
@@ -1025,6 +1123,7 @@ const LINK_ICONS = {
   email: `<svg ${STROKE}><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>`,
   sponsor: `<svg ${STROKE}><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>`,
   join: `<svg ${STROKE}><circle cx="10" cy="8" r="3.5"/><path d="M3.5 19.5c.8-3.2 3.4-5 6.5-5s5.7 1.8 6.5 5M18.5 8v6M15.5 11h6"/></svg>`,
+  tax: `<svg ${STROKE}><path d="M18 6 6 18"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>`,
   link: `<svg ${STROKE}><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>`
 };
 const GO_ICON = `<svg class="go" ${STROKE}><path d="M7 17 17 7M9 7h8v8"/></svg>`;
@@ -1061,7 +1160,7 @@ function linkItem(l, lang, email) {
     sub = ['instagram', 'tiktok', 'youtube'].includes(kind) && seg[0] && !['channel', 'c', 'user', 'watch', 'playlist', 'p', 'reel', 'video'].includes(seg[0])
       ? '@' + seg[0].replace(/^@/, '') : host + path;
   }
-  if (kind === 'sponsor' || kind === 'join') sub = T.sub[kind];
+  if (kind === 'sponsor' || kind === 'join' || kind === 'tax') sub = T.sub[kind];
   const label = l.label || T.label[kind];
   const live = kind === 'join' ? '<span class="live" aria-hidden="true"></span>' : '';
   return `    <li><a class="lk k-${kind}${kind === 'site' ? ' main' : ''}" href="${escHtml(href)}"><span class="ic">${LINK_ICONS[kind]}</span>`
@@ -1081,7 +1180,7 @@ async function linkPage(request, env, url) {
   const set = c.settings && typeof c.settings === 'object' ? c.settings : {};
   const email = typeof set.email === 'string' && EMAIL_RE.test(set.email) ? set.email : SITE_EMAIL;
   const items = (Array.isArray(c.links) ? c.links : [])
-    .filter((l) => l && typeof l === 'object' && l.active === true && (l.kind !== 'join' || set.recruiting === true))
+    .filter((l) => l && typeof l === 'object' && l.active === true && (l.kind !== 'join' || set.recruiting === true) && (l.kind !== 'tax' || supportReady(c)))
     .map((l) => linkItem({ kind: l.kind, label: typeof l.label === 'string' ? l.label.trim() : '', url: typeof l.url === 'string' ? l.url : '' }, lang, email))
     .filter(Boolean);
   const b = set.linksBadge && typeof set.linksBadge === 'object' ? set.linksBadge : {};
@@ -1111,6 +1210,15 @@ export default {
     }
     if (p === '/links' || p === '/linkuri' || p === '/links/' || p === '/linkuri/') {
       return Response.redirect(new URL('/redirect' + url.search, url).toString(), 301);
+    }
+    if ((p === '/formular-230.pdf' || p === '/230.pdf') && (request.method === 'GET' || request.method === 'HEAD')) {
+      try { return await f230Response(request, env, url); } catch { return new Response('Eroare pe server. Încearcă din nou.', { status: 500 }); }
+    }
+    // short addresses for the Support page, to share or print: homosapiens.ro/sustine, /230, /3-5
+    let dp = p;
+    try { dp = decodeURIComponent(p); } catch { /* keep it encoded */ }
+    if (/^\/(sustine|susține|susţine|230|3-5|35|redirectioneaza)\/?$/i.test(dp)) {
+      return Response.redirect(new URL('/#sustine', url).toString(), 302);
     }
     if (url.pathname.startsWith('/api/')) {
       try {

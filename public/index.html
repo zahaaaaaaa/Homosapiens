@@ -826,6 +826,76 @@ figure{margin:0}
 @media (hover:none){.tp-hint .mouse{display:none}.tp-hint .touch{display:inline}}
 @media (prefers-reduced-motion:reduce){.tp{transition:none}.tp-card,.tp.intro .tp-dot{animation:none}}
 .who-more{display:flex;justify-content:flex-end;margin:10px 0 0}
+/* v10: Support page, 3.5% of income tax and sponsorship */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.sup{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,2vw,22px);align-items:start}
+.sup-card{display:flex;flex-direction:column;gap:18px;min-width:0;padding:clamp(24px,3.4vw,44px);border-radius:28px;background:var(--surface);border:1px solid var(--line)}
+.sup-tax{background:var(--blue-soft);border-color:transparent}
+.sup-who{align-self:flex-start;display:inline-flex;align-items:center;min-height:30px;padding:0 12px;border-radius:999px;background:var(--surface);color:var(--ink-2);font:800 12.5px var(--f-body)}
+.sup-co .sup-who{background:var(--surface-2)}
+.sup-big{display:flex;flex-direction:column;gap:8px}
+.sup-num{font:700 clamp(68px,8.6vw,116px)/.88 var(--f-display);letter-spacing:-.055em;color:var(--blue)}
+.sup-num small{margin-left:.03em;font-size:.5em;letter-spacing:-.02em}
+.sup-h{max-width:20ch;font:700 clamp(22px,2.3vw,30px)/1.15 var(--f-display);letter-spacing:-.025em;text-wrap:balance}
+.sup-p{max-width:56ch;color:var(--ink-2);font-size:clamp(15.5px,1.3vw,17px);line-height:1.6}
+.sup-steps{display:flex;flex-direction:column;gap:14px;margin:2px 0 0;padding:0;list-style:none;counter-reset:st}
+.sup-steps li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:3px 14px;counter-increment:st}
+.sup-steps li::before{content:counter(st);grid-row:span 2;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--surface);color:var(--blue);font:800 15px var(--f-display)}
+.sup-steps b{align-self:center;font:700 16.5px/1.3 var(--f-display);letter-spacing:-.01em}
+.sup-steps li > span{font-size:14.5px;line-height:1.55;color:var(--ink-2)}
+.sup-act{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:4px}
+.sup-act .btn{white-space:normal;text-align:center}
+.sup-act .btn small{font:700 12px var(--f-body);opacity:.72}
+.sup-due{display:flex;align-items:center;gap:10px;font:700 14px/1.45 var(--f-body);color:var(--ink-2)}
+.sup-dot{flex:none;width:9px;height:9px;border-radius:50%;background:var(--blue)}
+.sup-due.open .sup-dot{background:#1E8E4E;animation:supPulse 2s infinite}
+@keyframes supPulse{0%{box-shadow:0 0 0 0 rgba(30,142,78,.5)}70%{box-shadow:0 0 0 9px rgba(30,142,78,0)}100%{box-shadow:0 0 0 0 rgba(30,142,78,0)}}
+.sup-soon{padding:14px 16px;border-radius:16px;background:var(--surface);color:var(--ink-2);font-weight:700}
+.calc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.calc .field{min-width:0}
+.calc-in{position:relative}
+.calc-in .input{padding-right:52px}
+.calc-in i{position:absolute;right:16px;top:50%;transform:translateY(-50%);font:700 14px var(--f-body);font-style:normal;color:var(--muted);pointer-events:none}
+.calc-out{grid-column:1 / -1;display:flex;flex-direction:column;gap:4px;padding:18px 20px;border-radius:18px;background:var(--surface-2)}
+.calc-out > span{font:700 13.5px/1.4 var(--f-body);color:var(--ink-2)}
+.calc-out b{font:700 clamp(28px,3vw,38px)/1.05 var(--f-display);letter-spacing:-.03em;color:var(--blue);overflow-wrap:anywhere}
+.calc-out small{font:700 12.5px var(--f-body);color:var(--muted)}
+.sup-fine{font-size:13px;line-height:1.55;color:var(--muted)}
+.docs{display:flex;flex-direction:column;gap:8px}
+.docs-h{font:800 12px var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.doc{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--surface-2);color:var(--ink);text-decoration:none;transition:transform .4s var(--ease),background-color .2s}
+.doc:hover{transform:translateY(-2px);background:var(--surface-3)}
+.doc-ico{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--surface);color:var(--blue);font:800 10.5px var(--f-body);letter-spacing:.06em}
+.doc b{display:block;font:700 15px/1.3 var(--f-display);letter-spacing:-.005em;overflow-wrap:anywhere}
+.doc small{font:600 12.5px var(--f-body);color:var(--muted)}
+.doc svg{color:var(--muted)}
+.sup-more{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(14px,2vw,22px);align-items:start}
+.sup-more.solo{grid-template-columns:minmax(0,1fr)}
+.ngo{display:flex;flex-direction:column;gap:14px;min-width:0;padding:clamp(22px,3vw,32px);border-radius:24px;background:var(--surface);border:1px solid var(--line)}
+.ngo-dl{display:flex;flex-direction:column;margin:0}
+.ngo-dl > div{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:4px 12px;padding:12px 0;border-top:1px solid var(--line)}
+.ngo-dl dt{grid-column:1 / -1;font:800 11px var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ngo-dl dd{min-width:0;margin:0;font:700 15.5px/1.4 var(--f-display);letter-spacing:-.005em;overflow-wrap:anywhere}
+.ngo-dl dd.ngo-mono{font:600 15px/1.4 var(--f-mono);letter-spacing:.01em}
+.ngo-rub{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:14px;background:var(--surface-2);font:700 13.5px/1.45 var(--f-body);color:var(--ink-2)}
+.ngo-rub svg{flex:none;margin-top:1px;color:#1E8E4E}
+.faq{display:flex;flex-direction:column;gap:8px;min-width:0}
+.faq-h{margin-bottom:6px}
+.faq details{border-radius:18px;background:var(--surface);border:1px solid var(--line);transition:border-color .2s}
+.faq details[open]{border-color:var(--line-2)}
+.faq summary{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:60px;padding:14px 18px;font:700 16px/1.35 var(--f-display);letter-spacing:-.01em;cursor:pointer;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary svg{flex:none;color:var(--muted);transition:transform .35s var(--ease)}
+.faq details[open] summary svg{transform:rotate(45deg)}
+.faq details p{padding:0 18px 18px;color:var(--ink-2);line-height:1.6}
+.sup-cta{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:clamp(16px,3vw,36px);padding:clamp(22px,3.2vw,40px);border-radius:28px;background:var(--blue-soft)}
+.sup-cta .sup-num{font-size:clamp(52px,6vw,80px)}
+.sup-cta-h{font:700 clamp(20px,2.2vw,28px)/1.2 var(--f-display);letter-spacing:-.025em;text-wrap:balance}
+.sup-cta-p{margin-top:8px !important;max-width:60ch;color:var(--ink-2)}
+@media (max-width:900px){.sup,.sup-more{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){.sup-cta{grid-template-columns:minmax(0,1fr)}.sup-cta .btn{justify-self:start}}
+@media (max-width:520px){.calc{grid-template-columns:minmax(0,1fr)}.sup-act .btn{width:100%}.sup-act .btn small{display:none}}
+@media (prefers-reduced-motion:reduce){.sup-due.open .sup-dot{animation:none}}
 /* v5: recruitment */
 .badge-join{margin:0 8px 8px 0;border-color:transparent;background:var(--blue-soft);color:var(--blue)}
 .badge-join:hover{border-color:color-mix(in srgb,var(--blue) 40%,transparent)}
@@ -1583,6 +1653,19 @@ figure{margin:0}
       </div>
     </section>
 
+    <sc-if value="{{supOn}}" hint-placeholder-val="{{true}}">
+    <section class="wrap sec">
+      <div class="sup-cta sr">
+        <p class="sup-num" aria-hidden="true">{{t.support.num35}}<small>{{supPct}}</small></p>
+        <div>
+          <h2 class="sup-cta-h">{{t.support.ctaTitle}}</h2>
+          <p class="sup-cta-p">{{t.support.ctaText}}</p>
+        </div>
+        <button class="btn btn-primary" type="button" onClick="{{goSupport}}">{{t.support.ctaBtn}}<svg class="arr" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+    </section>
+    </sc-if>
+
     <section class="wrap sec">
       <div class="mos">
         <div class="mos-copy sr">
@@ -1644,6 +1727,95 @@ figure{margin:0}
       </div>
     </section>
     </sc-if>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{isSupport}}" hint-placeholder-val="{{false}}">
+  <main class="page">
+    <section class="wrap phead">
+      <p class="eyebrow up d1">{{t.support.k}}</p>
+      <h1 class="h1 up d1">{{t.support.title}}</h1>
+      <p class="lead up d2">{{t.support.lead}}</p>
+    </section>
+    <section class="wrap">
+      <div class="sup">
+        <article class="sup-card sup-tax up d3">
+          <span class="sup-who">{{t.support.taxWho}}</span>
+          <div class="sup-big">
+            <p class="sup-num" aria-hidden="true">{{t.support.num35}}<small>{{supPct}}</small></p>
+            <h2 class="sup-h"><span class="sr-only">{{t.support.num35}}{{supPct}} </span>{{t.support.taxTitle}}</h2>
+          </div>
+          <p class="sup-p">{{t.support.taxText}}</p>
+          <ol class="sup-steps">
+            <li><b>{{t.support.s1t}}</b><span>{{t.support.s1d}}</span></li>
+            <li><b>{{t.support.s2t}}</b><span>{{t.support.s2d}}</span></li>
+            <li><b>{{t.support.s3t}}</b><span>{{supWhere}}</span></li>
+          </ol>
+          <sc-if value="{{supHasPdf}}" hint-placeholder-val="{{true}}">
+            <div class="sup-act">
+              <a class="btn btn-primary" href="/formular-230.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>{{t.support.pdfBtn}}<small>{{t.support.pdfMeta}}</small></a>
+              <button class="btn btn-ghost" type="button" onClick="{{supShare}}">{{supShareLabel}}</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{supNoPdf}}" hint-placeholder-val="{{false}}">
+            <p class="sup-soon">{{t.support.pdfSoon}}</p>
+          </sc-if>
+          <p class="{{supDueCls}}"><span class="sup-dot" aria-hidden="true"></span>{{supDue}}</p>
+        </article>
+
+        <article class="sup-card sup-co up d4">
+          <span class="sup-who">{{t.support.coWho}}</span>
+          <div class="sup-big">
+            <p class="sup-num" aria-hidden="true">{{t.support.num20}}<small>{{supPct}}</small></p>
+            <h2 class="sup-h"><span class="sr-only">{{t.support.num20}}{{supPct}} </span>{{t.support.coTitle}}</h2>
+          </div>
+          <p class="sup-p">{{t.support.coText}}</p>
+          <div class="calc">
+            <div class="field"><label for="hs-cal-tax">{{t.support.cTax}}</label><div class="calc-in"><input id="hs-cal-tax" class="input" type="text" inputmode="decimal" autocomplete="off" placeholder="0" value="{{supTax}}" onChange="{{supTaxIn}}"/><i>{{t.support.cUnit}}</i></div></div>
+            <div class="field"><label for="hs-cal-turn">{{t.support.cTurn}}</label><div class="calc-in"><input id="hs-cal-turn" class="input" type="text" inputmode="decimal" autocomplete="off" placeholder="0" value="{{supTurn}}" onChange="{{supTurnIn}}"/><i>{{t.support.cUnit}}</i></div></div>
+            <div class="calc-out" aria-live="polite"><span>{{t.support.cOut}}</span><b>{{supMax}}</b><small>{{supWhy}}</small></div>
+          </div>
+          <p class="sup-fine">{{t.support.cNote}}</p>
+          <sc-if value="{{supHasDocs}}" hint-placeholder-val="{{false}}">
+            <div class="docs">
+              <p class="docs-h">{{t.support.docsT}}</p>
+              <sc-for list="{{supDocs}}" as="sd" hint-placeholder-count="1">
+                <a class="doc" href="{{sd.url}}" download="{{sd.name}}"><span class="doc-ico" aria-hidden="true">{{sd.ext}}</span><span><b>{{sd.title}}</b><small>{{sd.meta}}</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+              </sc-for>
+            </div>
+          </sc-if>
+          <div class="sup-act">
+            <button class="btn btn-primary" type="button" onClick="{{goSponsorForm}}">{{t.support.coCta}}<svg class="arr" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap sec">
+      <div class="{{supMoreCls}}">
+        <sc-if value="{{supNgo}}" hint-placeholder-val="{{false}}">
+          <div class="ngo sr">
+            <p class="eyebrow">{{t.support.ngoK}}</p>
+            <dl class="ngo-dl">
+              <div><dt>{{t.support.ngoName}}</dt><dd>{{supNgoName}}</dd></div>
+              <div><dt>{{t.support.ngoCif}}</dt><dd class="ngo-mono">{{supNgoCif}}</dd><button class="mini" type="button" onClick="{{supCopyCif}}">{{supCifLabel}}</button></div>
+              <div><dt>{{t.support.ngoIban}}</dt><dd class="ngo-mono">{{supNgoIban}}</dd><button class="mini" type="button" onClick="{{supCopyIban}}">{{supIbanLabel}}</button></div>
+              <sc-if value="{{supHasBank}}" hint-placeholder-val="{{true}}"><div><dt>{{t.support.ngoBank}}</dt><dd>{{supNgoBank}}</dd></div></sc-if>
+              <sc-if value="{{supHasAddr}}" hint-placeholder-val="{{true}}"><div><dt>{{t.support.ngoAddr}}</dt><dd>{{supNgoAddr}}</dd></div></sc-if>
+            </dl>
+            <sc-if value="{{supRub}}" hint-placeholder-val="{{true}}">
+              <p class="ngo-rub"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>{{t.support.rub}}</p>
+            </sc-if>
+          </div>
+        </sc-if>
+        <div class="faq">
+          <h2 class="h3 faq-h sr">{{t.support.faqT}}</h2>
+          <sc-for list="{{supFaq}}" as="fq" hint-placeholder-count="4">
+            <details class="sr"><summary>{{fq.q}}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><p>{{fq.a}}</p></details>
+          </sc-for>
+        </div>
+      </div>
+    </section>
   </main>
   </sc-if>
 
@@ -1921,6 +2093,7 @@ figure{margin:0}
               <sc-for list="{{tabs}}" as="ft" hint-placeholder-count="6">
                 <button class="flink" onClick="{{ft.go}}">{{ft.label}}</button>
               </sc-for>
+              <sc-if value="{{supOn}}" hint-placeholder-val="{{true}}"><button class="flink" onClick="{{goSupport}}">{{t.support.foot}}</button></sc-if>
             </div>
           </div>
           <div>
@@ -1981,7 +2154,7 @@ class Component extends DCLogic {
     /* Set to true only in the copy hosted on homosapiens.ro: enables the YouTube loop and address-bar links. */
     this.hsStandalone = true;
     this.hsYTRef = (el) => this.hsYTMount(el);
-    this.hsSlugs = { home: 'acasa', team: 'echipa', awards: 'premii', about: 'despre', sponsors: 'sponsori', contact: 'contact', join: 'recrutari' };
+    this.hsSlugs = { home: 'acasa', team: 'echipa', awards: 'premii', about: 'despre', sponsors: 'sponsori', contact: 'contact', join: 'recrutari', support: 'sustine' };
     const tab0 = this.hsTabFromHash();
     let joinCode = '';
     try { joinCode = window.localStorage.getItem('hs19053-joincode') || ''; } catch (e) {}
@@ -1994,6 +2167,7 @@ class Component extends DCLogic {
       jMode: '', jLast: '', jFirst: '', jPhone: '', jEmail: '', jSchool: '', jGrade: '', jDept: [], jExp: '', jWhy: '', jHours: '', jSource: '', jOther: '',
       jConsent: false, jHp: '', jTried: false, jStatus: 'idle', jErr: '', jCode: '', codeCopied: false,
       codeIn: joinCode, chkStatus: 'idle', chkRes: null, tpOn: -1, tpG: null, tpUsed: false, tpIntro: false,
+      supTax: '', supTurn: '', supCopied: false, supCp: '',
       cms: null
     };
     this.hsFormT0 = Date.now();
@@ -2130,7 +2304,9 @@ class Component extends DCLogic {
       ],
       /* The photo at the top of the Team page ('' = the built-in one) and who is where in it: x, y = centre
          of the face, r = radius, all in percent of the photo width/height; m = member id ('' = not shown). */
-      teamPhoto: { photo: '', w: 1512, h: 1134, py: 74, tags: [{"id":"f1","m":"","x":2.81,"y":29.41,"r":2.32},{"id":"f2","m":"","x":8.27,"y":34.83,"r":2.66},{"id":"f3","m":"","x":12.73,"y":31.7,"r":2.4},{"id":"f4","m":"","x":16.14,"y":36.07,"r":2.43},{"id":"f5","m":"","x":20.54,"y":64.33,"r":3.16},{"id":"f6","m":"","x":27.94,"y":37.26,"r":2.32},{"id":"f7","m":"","x":31.42,"y":32.45,"r":2.28},{"id":"f8","m":"","x":33.23,"y":37.08,"r":2.62},{"id":"f9","m":"","x":36.67,"y":37.52,"r":2.09},{"id":"f10","m":"","x":37.67,"y":33.2,"r":1.94},{"id":"f11","m":"","x":40.64,"y":36.02,"r":2.24},{"id":"f12","m":"","x":45.14,"y":33.29,"r":1.9},{"id":"f13","m":"","x":48.15,"y":32.8,"r":2.43},{"id":"f14","m":"","x":55.49,"y":32.54,"r":2.21},{"id":"f15","m":"","x":57.34,"y":41.18,"r":2.13},{"id":"f16","m":"","x":59.46,"y":36.51,"r":2.28},{"id":"f17","m":"","x":65.15,"y":33.42,"r":2.36},{"id":"f18","m":"","x":69.15,"y":35.14,"r":1.9},{"id":"f19","m":"","x":71.49,"y":65.96,"r":2.81},{"id":"f20","m":"","x":74.27,"y":34.57,"r":2.59},{"id":"f21","m":"","x":78.24,"y":32.28,"r":2.81},{"id":"f22","m":"","x":87.83,"y":30.07,"r":3.42},{"id":"f23","m":"","x":95.57,"y":29.89,"r":2.89}] }
+      teamPhoto: { photo: '', w: 1512, h: 1134, py: 74, tags: [{"id":"f1","m":"","x":2.81,"y":29.41,"r":2.32},{"id":"f2","m":"","x":8.27,"y":34.83,"r":2.66},{"id":"f3","m":"","x":12.73,"y":31.7,"r":2.4},{"id":"f4","m":"","x":16.14,"y":36.07,"r":2.43},{"id":"f5","m":"","x":20.54,"y":64.33,"r":3.16},{"id":"f6","m":"","x":27.94,"y":37.26,"r":2.32},{"id":"f7","m":"","x":31.42,"y":32.45,"r":2.28},{"id":"f8","m":"","x":33.23,"y":37.08,"r":2.62},{"id":"f9","m":"","x":36.67,"y":37.52,"r":2.09},{"id":"f10","m":"","x":37.67,"y":33.2,"r":1.94},{"id":"f11","m":"","x":40.64,"y":36.02,"r":2.24},{"id":"f12","m":"","x":45.14,"y":33.29,"r":1.9},{"id":"f13","m":"","x":48.15,"y":32.8,"r":2.43},{"id":"f14","m":"","x":55.49,"y":32.54,"r":2.21},{"id":"f15","m":"","x":57.34,"y":41.18,"r":2.13},{"id":"f16","m":"","x":59.46,"y":36.51,"r":2.28},{"id":"f17","m":"","x":65.15,"y":33.42,"r":2.36},{"id":"f18","m":"","x":69.15,"y":35.14,"r":1.9},{"id":"f19","m":"","x":71.49,"y":65.96,"r":2.81},{"id":"f20","m":"","x":74.27,"y":34.57,"r":2.59},{"id":"f21","m":"","x":78.24,"y":32.28,"r":2.81},{"id":"f22","m":"","x":87.83,"y":30.07,"r":3.42},{"id":"f23","m":"","x":95.57,"y":29.89,"r":2.89}] },
+      /* Support page (/update, tab "Susține"): off until turned on; the NGO's data fills in Formular 230. */
+      support: { on: false, ngo: { name: '', cif: '', iban: '', bank: '', addr: '', rub: false }, where: {}, docs: [] }
     };
   }
   componentDidUpdate() {
@@ -2677,6 +2853,7 @@ class Component extends DCLogic {
           countries: { ro: 'România', us: 'SUA', it: 'Italia', de: 'Germania', fr: 'Franța', es: 'Spania', gb: 'Marea Britanie', gr: 'Grecia', hu: 'Ungaria', pl: 'Polonia', tr: 'Turcia', md: 'Republica Moldova', bg: 'Bulgaria', nl: 'Țările de Jos' },
           emptySeason: 'Sezonul abia a început. Premiile din acest sezon vor apărea aici.', source: 'Surse: FIRST (ftc-events.firstinspires.org), propunerea de parteneriat Homosapiens 2026-2027 și Agerpres.'
         },
+        support: { k: "Susține echipa", title: "Ajută-ne fără să te coste.", lead: "O parte din impozitul pe care îl plătești oricum poate ajunge la robotică, aici, în Buzău. Se poate în două feluri.", num35: "3,5", num20: "20", taxWho: "Pentru oricine are salariu", taxTitle: "din impozitul pe salariu poate merge la echipă", taxText: "Până la 3,5% din impozitul tău pe salariu poate merge la asociația echipei, în loc să rămână la stat. Nu plătești nimic în plus: banii vin din impozitul reținut deja.", s1t: "Descarcă formularul 230", s1d: "Datele asociației sunt deja trecute: numele, codul fiscal și contul.", s2t: "Completează-l și semnează", s2d: "Scrie-ți numele, CNP-ul și adresa. Bifează „2 ani” ca să nu-l mai completezi și la anul, iar dacă vrei să aflăm că ne-ai ajutat, bifează și acordul de la final.", s3t: "Dă-ni-l nouă sau depune-l tu", s3d: "Dă-l unui membru al echipei sau trimite-ni-l scanat la {email}. Îl poți depune și singur: online, în Spațiul Privat Virtual (SPV) al ANAF, ori la ghișeul ANAF sau prin poștă.", pdfBtn: "Descarcă formularul 230", pdfMeta: "PDF, A4", pdfSoon: "Formularul precompletat apare aici în curând.", share: "Trimite-l mai departe", shared: "Link copiat", shareText: "Poți redirecționa 3,5% din impozit către echipa de robotică Homosapiens din Buzău. Te costă doar un formular:", dueOpen: "Termen: 25 mai {y}. Mai sunt {n}.", dueLast: "Termen: azi, 25 mai {y}.", dueLater: "Pentru veniturile din {p}, formularul se depune până pe 25 mai {y}.", coWho: "Pentru firme", coTitle: "din impozitul pe profit poate deveni sponsorizare", coText: "O firmă care plătește impozit pe profit poate sponsoriza echipa și scade apoi suma din impozit: până la 20% din impozitul pe profit, dar nu mai mult de 0,75% din cifra de afaceri. Banii ar fi mers oricum la stat.", cTax: "Impozitul pe profit pe un an", cTurn: "Cifra de afaceri pe un an", cUnit: "lei", cOut: "Puteți sponsoriza, fără niciun cost în plus, până la", cEmpty: "Scrieți cele două sume ca să vedeți cât.", cByTax: "limita de 20% din impozitul pe profit", cByTurn: "limita de 0,75% din cifra de afaceri", cNote: "Calculul e orientativ: suma exactă o stabilește contabilul firmei. Din 2024, microîntreprinderile nu mai pot scădea sponsorizarea din impozit.", docsT: "Documente", docDefault: "Document", coCta: "Vorbește cu noi", ngoK: "Datele asociației", ngoName: "Denumire", ngoCif: "Cod fiscal (CIF)", ngoIban: "Cont (IBAN)", ngoBank: "Banca", ngoAddr: "Sediul", rub: "Înscrisă în Registrul entităților/unităților de cult pentru care se acordă deduceri fiscale (ANAF)", faqT: "Întrebări", faq: [{ q: "Mă costă ceva?", a: "Nu. Cei 3,5% sunt o parte din impozitul pe care l-ai plătit deja. Dacă nu completezi formularul, suma rămâne la stat." }, { q: "Cine îl poate completa?", a: "Oricine are venituri din salarii: părinți, bunici, prieteni, profesori. Fiecare persoană completează propriul formular." }, { q: "Trebuie să-l completez în fiecare an?", a: "Nu neapărat. Dacă bifezi „Opțiune privind distribuirea sumei pentru o perioadă de 2 ani”, formularul e valabil doi ani la rând." }, { q: "Ce se întâmplă cu datele mele?", a: "Formularul ajunge la ANAF, care virează suma în contul asociației. Dacă ni-l dai nouă, îl depunem la ANAF și păstrăm originalul, așa cum cere procedura." }], foot: "Susține echipa", ctaTitle: "Ajută-ne fără să te coste", ctaText: "Redirecționează 3,5% din impozitul pe salariu sau, dacă ai o firmă, sponsorizează-ne din impozitul pe profit.", ctaBtn: "Vezi cum" },
         about: {
           whoK: 'Cine e cine', whoTitle: 'Fă cunoștință cu echipa.', whoGo: 'Vezi toți membrii', title: 'De la Buzău, spre lume.', lead: 'Prima echipă de robotică din județul Buzău, pornită în 2018 la Colegiul Național „B. P. Hasdeu”.',
           p0: 'Fondată în 2018, Homosapiens este prima echipă FTC din Buzău. După o schimbare importantă de generație, ne-am reconstruit prin perseverență, încredere și pasiune pentru robotică.',
@@ -2785,6 +2962,7 @@ class Component extends DCLogic {
           countries: { ro: 'Romania', us: 'USA', it: 'Italy', de: 'Germany', fr: 'France', es: 'Spain', gb: 'United Kingdom', gr: 'Greece', hu: 'Hungary', pl: 'Poland', tr: 'Türkiye', md: 'Moldova', bg: 'Bulgaria', nl: 'Netherlands' },
           emptySeason: 'The season has just started. This season’s awards will appear here.', source: 'Sources: FIRST (ftc-events.firstinspires.org), the Homosapiens 2026-2027 partnership proposal and Agerpres.'
         },
+        support: { k: "Support the team", title: "Help us at no cost to you.", lead: "Part of the tax you pay anyway can go to robotics, here in Buzău. There are two ways.", num35: "3.5", num20: "20", taxWho: "For anyone with a salary in Romania", taxTitle: "of the income tax on your salary can go to the team", taxText: "Up to 3.5% of the income tax on your salary can go to the team’s association instead of the state. You pay nothing extra: the money comes from tax already withheld.", s1t: "Download Form 230", s1d: "The association’s details are already filled in: its name, fiscal code and bank account.", s2t: "Fill it in and sign it", s2d: "Write your name, personal numeric code (CNP) and address. Tick “2 years” so you don’t have to fill it in again next year, and tick the consent at the end if you’d like us to know you helped.", s3t: "Give it to us or file it yourself", s3d: "Give it to a team member or email us a scan at {email}. You can also file it yourself: online in ANAF’s Virtual Private Space (SPV), or at an ANAF office or by post.", pdfBtn: "Download Form 230", pdfMeta: "PDF, A4", pdfSoon: "The pre-filled form will be here soon.", share: "Pass it on", shared: "Link copied", shareText: "You can give 3.5% of your income tax to the Homosapiens robotics team in Buzău. All it takes is one form:", dueOpen: "Deadline: 25 May {y}. {n} left.", dueLast: "Deadline: today, 25 May {y}.", dueLater: "For income earned in {p}, the form is filed by 25 May {y}.", coWho: "For companies", coTitle: "of your profit tax can become sponsorship", coText: "A company that pays profit tax can sponsor the team and then deduct the amount from its tax: up to 20% of the profit tax, but no more than 0.75% of turnover. That money would have gone to the state anyway.", cTax: "Profit tax for one year", cTurn: "Turnover for one year", cUnit: "RON", cOut: "You can sponsor, at no extra cost, up to", cEmpty: "Enter both amounts to see how much.", cByTax: "the limit of 20% of profit tax", cByTurn: "the limit of 0.75% of turnover", cNote: "An estimate: the exact amount is set by the company’s accountant. Since 2024, micro-enterprises can no longer deduct sponsorship from their tax.", docsT: "Documents", docDefault: "Document", coCta: "Talk to us", ngoK: "Association details", ngoName: "Name", ngoCif: "Fiscal code (CIF)", ngoIban: "Account (IBAN)", ngoBank: "Bank", ngoAddr: "Registered office", rub: "Listed in ANAF’s Registry of entities eligible for tax deductions", faqT: "Questions", faq: [{ q: "Does it cost me anything?", a: "No. The 3.5% is part of the tax you have already paid. If you don’t fill in the form, the amount stays with the state." }, { q: "Who can fill it in?", a: "Anyone with income from salaries in Romania: parents, grandparents, friends, teachers. Each person fills in their own form." }, { q: "Do I have to do it every year?", a: "Not necessarily. If you tick the option to distribute the amount over 2 years, the form stays valid for two years in a row." }, { q: "What happens to my data?", a: "The form goes to ANAF, which transfers the amount to the association’s account. If you give it to us, we file it with ANAF and keep the original, as the procedure requires." }], foot: "Support the team", ctaTitle: "Help us at no cost to you", ctaText: "Give 3.5% of your income tax or, if you run a company, sponsor us out of your profit tax.", ctaBtn: "See how" },
         about: {
           whoK: 'Who is who', whoTitle: 'Meet the team.', whoGo: 'See all members', title: 'From Buzău, to the world.', lead: 'The first robotics team in Buzău County, started in 2018 at Bogdan Petriceicu Hasdeu National College.',
           p0: 'Founded in 2018, Homosapiens is the first FTC team from Buzău. After a major generational change, we rebuilt ourselves through perseverance, trust and a passion for robotics.',
@@ -2893,6 +3071,7 @@ class Component extends DCLogic {
           countries: { ro: 'Roumanie', us: 'États-Unis', it: 'Italie', de: 'Allemagne', fr: 'France', es: 'Espagne', gb: 'Royaume-Uni', gr: 'Grèce', hu: 'Hongrie', pl: 'Pologne', tr: 'Turquie', md: 'Moldavie', bg: 'Bulgarie', nl: 'Pays-Bas' },
           emptySeason: 'La saison vient de commencer. Les prix de cette saison apparaîtront ici.', source: 'Sources : FIRST (ftc-events.firstinspires.org), la proposition de partenariat Homosapiens 2026-2027 et Agerpres.'
         },
+        support: { k: "Soutenir l’équipe", title: "Aidez-nous sans que cela vous coûte.", lead: "Une partie de l’impôt que vous payez de toute façon peut aller à la robotique, ici, à Buzău. Il y a deux façons de le faire.", num35: "3,5", num20: "20", taxWho: "Pour toute personne salariée en Roumanie", taxTitle: "de l’impôt sur votre salaire peut aller à l’équipe", taxText: "Jusqu’à 3,5 % de l’impôt sur votre salaire peut aller à l’association de l’équipe au lieu de rester à l’État. Vous ne payez rien de plus : l’argent vient de l’impôt déjà retenu.", s1t: "Téléchargez le formulaire 230", s1d: "Les données de l’association sont déjà remplies : nom, code fiscal et compte bancaire.", s2t: "Remplissez-le et signez-le", s2d: "Indiquez votre nom, votre code numérique personnel (CNP) et votre adresse. Cochez « 2 ans » pour ne pas avoir à le refaire l’an prochain, et cochez le consentement final si vous voulez que nous sachions que vous nous avez aidés.", s3t: "Donnez-le-nous ou déposez-le vous-même", s3d: "Remettez-le à un membre de l’équipe ou envoyez-nous un scan à {email}. Vous pouvez aussi le déposer vous-même : en ligne dans l’Espace privé virtuel (SPV) de l’ANAF, ou à un guichet de l’ANAF ou par la poste.", pdfBtn: "Télécharger le formulaire 230", pdfMeta: "PDF, A4", pdfSoon: "Le formulaire prérempli sera bientôt disponible ici.", share: "Partager", shared: "Lien copié", shareText: "Vous pouvez donner 3,5 % de votre impôt sur le revenu à l’équipe de robotique Homosapiens de Buzău. Il suffit d’un formulaire :", dueOpen: "Date limite : 25 mai {y}. Encore {n}.", dueLast: "Date limite : aujourd’hui, 25 mai {y}.", dueLater: "Pour les revenus de {p}, le formulaire se dépose avant le 25 mai {y}.", coWho: "Pour les entreprises", coTitle: "de votre impôt sur les bénéfices peut devenir un parrainage", coText: "Une entreprise soumise à l’impôt sur les bénéfices peut parrainer l’équipe puis déduire la somme de son impôt : jusqu’à 20 % de l’impôt sur les bénéfices, sans dépasser 0,75 % du chiffre d’affaires. Cet argent serait allé à l’État de toute façon.", cTax: "Impôt sur les bénéfices sur un an", cTurn: "Chiffre d’affaires sur un an", cUnit: "lei", cOut: "Vous pouvez parrainer, sans coût supplémentaire, jusqu’à", cEmpty: "Saisissez les deux montants pour voir combien.", cByTax: "la limite de 20 % de l’impôt sur les bénéfices", cByTurn: "la limite de 0,75 % du chiffre d’affaires", cNote: "Une estimation : le montant exact est fixé par le comptable de l’entreprise. Depuis 2024, les micro-entreprises ne peuvent plus déduire le parrainage de leur impôt.", docsT: "Documents", docDefault: "Document", coCta: "Parlons-en", ngoK: "Données de l’association", ngoName: "Dénomination", ngoCif: "Code fiscal (CIF)", ngoIban: "Compte (IBAN)", ngoBank: "Banque", ngoAddr: "Siège", rub: "Inscrite au Registre des entités ouvrant droit à déduction fiscale (ANAF)", faqT: "Questions", faq: [{ q: "Est-ce que cela me coûte quelque chose ?", a: "Non. Les 3,5 % font partie de l’impôt que vous avez déjà payé. Si vous ne remplissez pas le formulaire, la somme reste à l’État." }, { q: "Qui peut le remplir ?", a: "Toute personne ayant des revenus salariaux en Roumanie : parents, grands-parents, amis, professeurs. Chacun remplit son propre formulaire." }, { q: "Faut-il le refaire chaque année ?", a: "Pas forcément. Si vous cochez l’option de répartition sur 2 ans, le formulaire reste valable deux années de suite." }, { q: "Que deviennent mes données ?", a: "Le formulaire est transmis à l’ANAF, qui vire la somme sur le compte de l’association. Si vous nous le remettez, nous le déposons à l’ANAF et gardons l’original, comme le prévoit la procédure." }], foot: "Soutenir l’équipe", ctaTitle: "Aidez-nous sans que cela vous coûte", ctaText: "Donnez 3,5 % de votre impôt sur le revenu ou, si vous dirigez une entreprise, parrainez-nous avec votre impôt sur les bénéfices.", ctaBtn: "Voir comment" },
         about: {
           whoK: 'Qui est qui', whoTitle: 'Faites connaissance avec l’équipe.', whoGo: 'Voir tous les membres', title: 'De Buzău, vers le monde.', lead: 'La première équipe de robotique du département de Buzău, créée en 2018 au Collège national Bogdan Petriceicu Hasdeu.',
           p0: 'Fondée en 2018, Homosapiens est la première équipe FTC de Buzău. Après un important changement de génération, nous nous sommes reconstruits grâce à la persévérance, à la confiance et à la passion de la robotique.',
@@ -3001,6 +3180,7 @@ class Component extends DCLogic {
           countries: { ro: '罗马尼亚', us: '美国', it: '意大利', de: '德国', fr: '法国', es: '西班牙', gb: '英国', gr: '希腊', hu: '匈牙利', pl: '波兰', tr: '土耳其', md: '摩尔多瓦', bg: '保加利亚', nl: '荷兰' },
           emptySeason: '赛季刚刚开始，本赛季的奖项将显示在这里。', source: '来源：FIRST（ftc-events.firstinspires.org）、Homosapiens 2026-2027 合作方案与 Agerpres。'
         },
+        support: { k: "支持战队", title: "不花你一分钱，也能帮助我们。", lead: "你本来就要缴的税，其中一部分可以用在布泽乌的机器人教育上。方式有两种。", num35: "3.5", num20: "20", taxWho: "适用于在罗马尼亚领工资的人", taxTitle: "的工资所得税可以转给战队", taxText: "工资所得税中最多 3.5% 可以转给战队所在的协会，而不是留给国家。你不用多付任何钱：这笔钱来自已经代扣的税款。", s1t: "下载 230 表格", s1d: "协会的信息已经填好：名称、税号和银行账户。", s2t: "填写并签名", s2d: "填写你的姓名、个人身份号码（CNP）和地址。勾选“2 年”，明年就不用再填；如果想让我们知道你帮助了我们，请勾选最后的同意项。", s3t: "交给我们，或自己提交", s3d: "交给任何一位队员，或扫描后发到 {email}。你也可以自己提交：在 ANAF 的虚拟个人空间（SPV）在线提交，或到 ANAF 窗口提交、邮寄。", pdfBtn: "下载 230 表格", pdfMeta: "PDF，A4", pdfSoon: "预填好的表格很快会放在这里。", share: "转发给朋友", shared: "链接已复制", shareText: "你可以把 3.5% 的个人所得税转给布泽乌的 Homosapiens 机器人战队，只需填一张表格：", dueOpen: "截止日期：{y} 年 5 月 25 日，还剩 {n}。", dueLast: "截止日期：今天，{y} 年 5 月 25 日。", dueLater: "{p} 年的收入，表格须在 {y} 年 5 月 25 日前提交。", coWho: "适用于企业", coTitle: "的企业所得税可以变成赞助", coText: "缴纳企业所得税的公司可以赞助战队，然后从税款中扣除这笔钱：最多为企业所得税的 20%，且不超过营业额的 0.75%。这笔钱本来也要交给国家。", cTax: "一年的企业所得税", cTurn: "一年的营业额", cUnit: "列伊", cOut: "你们可以在不增加成本的情况下赞助最多", cEmpty: "填写两个金额即可看到结果。", cByTax: "受企业所得税 20% 的上限限制", cByTurn: "受营业额 0.75% 的上限限制", cNote: "这只是估算，确切金额以公司会计的计算为准。自 2024 年起，微型企业不能再从税款中扣除赞助。", docsT: "文件", docDefault: "文件", coCta: "联系我们", ngoK: "协会信息", ngoName: "名称", ngoCif: "税号（CIF）", ngoIban: "账户（IBAN）", ngoBank: "银行", ngoAddr: "地址", rub: "已列入 ANAF 可享受税收抵扣的机构名录", faqT: "常见问题", faq: [{ q: "我需要花钱吗？", a: "不需要。这 3.5% 是你已经缴纳的税款的一部分。如果不填表，这笔钱就留给国家。" }, { q: "谁可以填写？", a: "所有在罗马尼亚有工资收入的人：父母、祖父母、朋友、老师。每人填写自己的表格。" }, { q: "每年都要填吗？", a: "不一定。如果勾选“2 年”选项，表格连续两年有效。" }, { q: "我的信息会怎样处理？", a: "表格会交给 ANAF，由 ANAF 把钱转到协会账户。如果你把表格交给我们，我们会提交给 ANAF，并按规定保存原件。" }], foot: "支持战队", ctaTitle: "不花你一分钱，也能帮助我们", ctaText: "把 3.5% 的个人所得税转给我们；如果你有公司，也可以用企业所得税赞助我们。", ctaBtn: "了解方法" },
         about: {
           whoK: '谁是谁', whoTitle: '认识我们的团队。', whoGo: '查看全部成员', title: '从布泽乌，走向世界。', lead: '布泽乌县第一支机器人战队，2018 年在 Bogdan Petriceicu Hasdeu 国家学院成立。',
           p0: 'Homosapiens 成立于 2018 年，是布泽乌的第一支 FTC 战队。在经历了一次重要的新老交替之后，我们凭借坚持、信任和对机器人的热爱重新成长起来。',
@@ -3077,7 +3257,9 @@ class Component extends DCLogic {
     const ST0 = Object.assign({}, this.hsDefault.settings, (C0.settings && typeof C0.settings === 'object') ? C0.settings : {});
     const recruitOpen = this.hsStandalone ? ST0.recruiting === true : true;
     const joinOpen = recruitOpen || (this.hsStandalone && ST0.recruitResults === true);
-    const curTab = (s.tab === 'join' && !joinOpen) ? 'home' : s.tab;
+    const SP0 = (C0.support && typeof C0.support === 'object') ? C0.support : {};
+    const supOn = this.hsStandalone ? SP0.on === true : true;
+    const curTab = ((s.tab === 'join' && !joinOpen) || (s.tab === 'support' && !supOn)) ? 'home' : s.tab;
     const ids = ['home', 'team', 'awards', 'about', 'sponsors', 'contact'].concat(joinOpen ? ['join'] : []);
     const tabs = ids.map((id) => ({ label: t.nav[id], go: go(id), cls: curTab === id ? 'tab on' : 'tab', current: curTab === id ? 'page' : undefined, dot: id === 'join' && recruitOpen }));
 
@@ -3216,6 +3398,64 @@ class Component extends DCLogic {
         }, () => {})
       };
     });
+    /* Support page: 3.5% of income tax (Formular 230 with the NGO filled in) and sponsorship out of profit tax. */
+    const SU = t.support;
+    const SPc = (C.support && typeof C.support === 'object') ? C.support : (D0.support || {});
+    const NGO = (SPc.ngo && typeof SPc.ngo === 'object') ? SPc.ngo : {};
+    const ngoIban = String(NGO.iban || '').replace(/\s+/g, '').toUpperCase();
+    const ngoCif = String(NGO.cif || '').replace(/\s+/g, '').toUpperCase();
+    const ngoReady = !!(String(NGO.name || '').trim() && /^(RO)?\d{2,10}$/.test(ngoCif) && /^RO\d{2}[A-Z]{4}[A-Z0-9]{16}$/.test(ngoIban));
+    const supHasPdf = this.hsStandalone ? ngoReady : true;
+    const now = new Date();
+    const incY = (now.getMonth() > 4 || (now.getMonth() === 4 && now.getDate() > 25)) ? now.getFullYear() : now.getFullYear() - 1;
+    const dueY = incY + 1;
+    const dueDays = Math.ceil((new Date(dueY, 4, 25, 23, 59, 59) - now) / 86400000);
+    const inWindow = now.getFullYear() === dueY;
+    const daysTxt = (n) => (L === 'ro' ? (n % 100 >= 20 || (n >= 100 && n % 100 === 0) ? n + ' de zile' : n + ' zile')
+      : L === 'fr' ? n + (n > 1 ? ' jours' : ' jour') : L === 'zh' ? n + ' 天' : n + (n === 1 ? ' day' : ' days'));
+    const supDue = inWindow
+      ? (dueDays <= 1 ? SU.dueLast.replace('{y}', dueY) : SU.dueOpen.replace('{y}', dueY).replace('{n}', daysTxt(dueDays)))
+      : SU.dueLater.replace('{p}', incY).replace('{y}', dueY);
+    const lei = (v) => { const x = String(v || '').trim().replace(/[.,]\d{1,2}$/, '').replace(/\D/g, '').slice(0, 15); return x ? Number(x) : 0; };
+    const calTax = lei(s.supTax), calTurn = lei(s.supTurn);
+    const capTax = calTax * 0.2, capTurn = calTurn * 0.0075;
+    const calOk = calTax > 0 && calTurn > 0;
+    const DOC_EXT = { pdf: 'PDF', doc: 'DOC', docx: 'DOCX', odt: 'ODT' };
+    const kb = (n) => (n >= 1048576 ? (n / 1048576).toFixed(1).replace('.', dec) + ' MB' : Math.max(1, Math.round((n || 0) / 1024)) + ' KB');
+    const supDocs = (Array.isArray(SPc.docs) ? SPc.docs : []).filter((x) => x && typeof x.url === 'string' && /^\/api\/file\//.test(x.url)).map((x) => {
+      const ext = DOC_EXT[x.type] || 'PDF';
+      return { title: tx(x.title) || x.name || SU.docDefault, url: x.url, name: x.name || 'document', ext: ext, meta: ext + ' · ' + kb(x.size) };
+    });
+    const supCopy = (what, val) => () => this.hsCopy(val, () => {
+      this.setState({ supCp: what });
+      if (this.hsSupT) clearTimeout(this.hsSupT);
+      this.hsSupT = setTimeout(() => this.setState({ supCp: '' }), 1800);
+    }, () => {});
+    const ngoBank = NGO.bank || BANKS[ngoIban.slice(4, 8)] || '';
+    const SUP = {
+      supPct: '%',
+      supWhere: tx(SPc.where) || withMail(SU.s3d),
+      supHasPdf: supHasPdf, supNoPdf: !supHasPdf,
+      supDue: supDue, supDueCls: 'sup-due' + (inWindow ? ' open' : ''),
+      supShareLabel: s.supCopied ? SU.shared : SU.share,
+      supShare: () => {
+        const url = 'https://homosapiens.ro/sustine';
+        try { if (navigator.share) { navigator.share({ title: SU.title, text: SU.shareText, url: url }).catch(() => {}); return; } } catch (x) {}
+        this.hsCopy(url, () => { this.setState({ supCopied: true }); setTimeout(() => this.setState({ supCopied: false }), 1800); }, () => {});
+      },
+      supTax: s.supTax, supTurn: s.supTurn,
+      supTaxIn: (ev) => this.setState({ supTax: ev.target.value.slice(0, 24) }),
+      supTurnIn: (ev) => this.setState({ supTurn: ev.target.value.slice(0, 24) }),
+      supMax: calOk ? nf(Math.floor(Math.min(capTax, capTurn))) + ' ' + SU.cUnit : '—',
+      supWhy: calOk ? (capTax <= capTurn ? SU.cByTax : SU.cByTurn) : SU.cEmpty,
+      supDocs: supDocs, supHasDocs: supDocs.length > 0,
+      supNgo: ngoReady, supMoreCls: 'sup-more' + (ngoReady ? '' : ' solo'),
+      supNgoName: String(NGO.name || '').trim(), supNgoCif: ngoCif, supNgoIban: ngoIban.replace(/(.{4})(?=.)/g, '$1 '),
+      supNgoBank: ngoBank, supHasBank: !!ngoBank, supNgoAddr: NGO.addr || '', supHasAddr: !!NGO.addr, supRub: NGO.rub === true,
+      supCopyCif: supCopy('cif', ngoCif), supCopyIban: supCopy('iban', ngoIban),
+      supCifLabel: s.supCp === 'cif' ? t.ui.copied : t.ui.copy, supIbanLabel: s.supCp === 'iban' ? t.ui.copied : t.ui.copy,
+      supFaq: SU.faq
+    };
     const seasonOf = {};
     (C.seasons || []).forEach((se) => { if (se && se.id) seasonOf[se.id] = se; });
     const robots = (ST.showRobots === false ? [] : LIST('robots')).filter((r) => r && r.active !== false && r.photo && tx(r.name)).map((r, i) => {
@@ -3389,9 +3629,9 @@ class Component extends DCLogic {
       t: t, lang: L, theme: s.theme, isDark: s.theme === 'dark', isLight: s.theme !== 'dark',
       bL: tone.bl, bD: tone.bd, bSL: tone.bsl, bSD: tone.bsd,
 
-      isHome: curTab === 'home', isTeam: curTab === 'team', isAwards: curTab === 'awards', isAbout: curTab === 'about', isSponsors: curTab === 'sponsors', isContact: curTab === 'contact', isJoin: curTab === 'join',
+      isHome: curTab === 'home', isTeam: curTab === 'team', isAwards: curTab === 'awards', isAbout: curTab === 'about', isSponsors: curTab === 'sponsors', isContact: curTab === 'contact', isJoin: curTab === 'join', isSupport: curTab === 'support', supOn: supOn,
       tabs: tabs,
-      goHome: go('home'), goAwards: go('awards'), goSponsors: go('sponsors'), goContact: go('contact'), goTeam: go('team'), goJoin: go('join'),
+      goHome: go('home'), goAwards: go('awards'), goSponsors: go('sponsors'), goContact: go('contact'), goTeam: go('team'), goJoin: go('join'), goSupport: go('support'),
       goSponsorForm: () => this.hsGo('contact', { topic: 'sponsor', cTried: false }),
       toTop: () => this.hsTop(),
 
@@ -3437,7 +3677,7 @@ class Component extends DCLogic {
 
       teamFilters: teamFilters, people: people, teamCount: teamCount, teamDesc: teamDesc, teamIsAll: curF === 'all',
       showJoin: curF === 'all' && recruitOpen,
-      contacts: contacts, bank: bank, hasBank: bank.length > 0, robots: robots, hasRobots: robots.length > 0,
+      contacts: contacts, bank: bank, hasBank: bank.length > 0, robots: robots, hasRobots: robots.length > 0, ...SUP,
       siteEmail: siteEmail, mailHref: 'mailto:' + siteEmail, cOkText: withMail(t.contact.ok), cCopiedText: withMail(t.contact.copied),
       goCollab: () => this.hsGo('contact', { topic: 'collab', cTried: false }),
       seasons: seasons,
