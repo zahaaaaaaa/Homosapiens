@@ -13,6 +13,7 @@
 /* Shape system: pills for buttons and chips, 22px for cards and photos, 14px for inputs and small tiles. */
 *{box-sizing:border-box}
 body{margin:0;background:#F4F5F7}
+html[data-hs-theme="dark"],html[data-hs-theme="dark"] body{background:#0E0F12;color-scheme:dark}
 .root{
   --bg:#F4F5F7;--surface:#FFFFFF;--surface-2:#EAECF0;--surface-3:#E1E4EA;--ink:#111317;--ink-2:#353943;--muted:#5D626E;--line:#DCDFE5;--line-2:#C9CDD5;--danger:#B42318;
   --blue:var(--b-l,#2D4E8A);--blue-soft:var(--b-soft-l,#DCE2EE);--blue-ink:#FFFFFF;
@@ -2158,6 +2159,7 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
+    this.hsPainted = this.state.theme; this.hsPaint(this.state.theme);
     this.hsCount(); this.hsPrimeAll();
     /* Cards with the .spot class light up under the pointer. */
     this.hsSpot = (e) => {
@@ -2290,6 +2292,8 @@ class Component extends DCLogic {
     };
   }
   componentDidUpdate() {
+    const theme = this.state && this.state.theme;
+    if (this.hsPainted !== theme) { this.hsPainted = theme; this.hsPaint(theme); }
     const tab = this.state && this.state.tab;
     if (this.hsLastTab !== tab) { this.hsLastTab = tab; this.hsPrimeAll(); }
   }
@@ -2334,6 +2338,26 @@ class Component extends DCLogic {
       this.setState({ numP: k });
       if (k >= 1) { clearInterval(this.hsNumIv); this.hsNumIv = null; }
     }, 33);
+  }
+
+  /* The page around the site (behind the phone's status bar and the browser's bars) takes the colour of
+     the theme chosen here, not the phone's setting. Only on homosapiens.ro, not in the design canvas. */
+  hsPaint(theme) {
+    if (!this.hsStandalone) return;
+    const bg = theme === 'dark' ? '#0E0F12' : '#F4F5F7';
+    try {
+      const de = document.documentElement;
+      de.setAttribute('data-hs-theme', theme);
+      de.style.backgroundColor = bg;
+      de.style.colorScheme = theme;
+      if (document.body) document.body.style.backgroundColor = bg;
+      let metas = Array.from(document.querySelectorAll('meta[name="theme-color"]'));
+      if (!metas.length) {
+        const m = document.createElement('meta'); m.setAttribute('name', 'theme-color');
+        document.head.appendChild(m); metas = [m];
+      }
+      metas.forEach((m) => { m.setAttribute('content', bg); m.removeAttribute('media'); });
+    } catch (e) {}
   }
 
   /* Theme switch: a circle grows from the button where the browser supports view transitions. */
