@@ -483,6 +483,38 @@ figure{margin:0}
 @media(max-width:900px){.j-head{grid-template-columns:1fr}.jstops{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.jstops{grid-template-columns:1fr}.j-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.j-stat:first-child{grid-column:span 2}.j-stat{padding:12px 14px}.jmap{border-radius:16px}.jpin{width:16px;height:16px;margin:-8px 0 0 -8px;font-size:9.5px;box-shadow:0 0 0 2px var(--surface)}.jpin.home::before{inset:-5px}.jroute{stroke-width:6}}
 
+/* v12: travel map, the card of a point */
+.journey{position:relative}
+.jpin{border:0;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.jpin::after{content:"";position:absolute;inset:-10px;border-radius:50%}
+.jpin:hover,.jpin.on{transform:scale(1.3)}
+.jpin:focus-visible{outline:none;box-shadow:0 0 0 3px var(--surface),0 0 0 6px var(--blue)}
+.jstop.on{border-color:var(--blue)}
+.jhint{position:absolute;top:14px;right:14px;z-index:2;display:inline-flex;align-items:center;gap:8px;max-width:calc(100% - 28px);padding:7px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line);color:var(--ink-2);font:700 13px/1.35 var(--f-body);box-shadow:var(--shadow);pointer-events:none}
+.jhint .touch{display:none}
+@media (hover:none){.jhint .mouse{display:none}.jhint .touch{display:inline}}
+.jpop{position:absolute;z-index:6;width:min(340px,calc(100% - 24px));padding:16px 16px 14px;border-radius:20px;background:var(--surface);border:1px solid var(--line-2);box-shadow:0 30px 60px -26px rgba(10,14,24,.5);pointer-events:none;animation:jpIn .35s var(--ease)}
+.jpop::before{content:"";position:absolute;top:-7px;left:var(--ax);width:12px;height:12px;margin-left:-6px;background:var(--surface);border-left:1px solid var(--line-2);border-top:1px solid var(--line-2);transform:rotate(45deg)}
+@keyframes jpIn{from{opacity:0;translate:0 6px}}
+.jpop .jpop-top{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:center}
+.jpop .jpop-n{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--blue);color:var(--blue-ink);font:800 13px/1 var(--f-body)}
+.jpop .jpop-loc{font:700 16px/1.25 var(--f-display);letter-spacing:-.01em}
+.jpop .jpop-geo{display:flex;flex-wrap:wrap;align-items:baseline;gap:1px 10px;margin-top:3px}
+.jpop .jpop-coord{font:600 11.5px/1.45 var(--f-mono);color:var(--muted)}
+.jpop .jpop-km{font:700 12px/1.45 var(--f-body);color:var(--ink-2)}
+.jpop .jpop-ev{margin-top:12px;font-size:13.5px;line-height:1.45;color:var(--ink-2)}
+.jpop .jpop-h{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font:800 11px var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.jpop .jpop-aw{display:flex;flex-direction:column;gap:10px;margin:10px 0 0;padding:0;list-style:none}
+.jpop .jpop-aw li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start}
+.jpop .jpop-aw svg{margin-top:2px;color:var(--blue)}
+.jpop .jpop-name{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.jpop .jpop-name b{font:700 15px/1.3 var(--f-display);letter-spacing:-.01em}
+.jpop .jp-place{display:inline-flex;align-items:center;min-height:22px;padding:0 8px;border-radius:999px;background:var(--surface-2);color:var(--ink);font:800 11.5px var(--f-body);white-space:nowrap}
+.jpop .jp-place.gold{background:var(--ink);color:var(--bg)}
+.jpop .jpop-meta{margin-top:2px;font-size:12.5px;line-height:1.4;color:var(--muted)}
+.jpop .jpop-note{margin-top:2px;font-size:12.5px;line-height:1.4;color:var(--ink-2)}
+@media (prefers-reduced-motion:reduce){.jpop{animation:none}}
+
 /* home: press */
 .press{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .pq{display:flex;flex-direction:column;gap:14px;padding:clamp(20px,2.4vw,28px);border-radius:22px;background:var(--surface);border:1px solid var(--line)}
@@ -1131,7 +1163,7 @@ figure{margin:0}
     </section>
 
     <section class="wrap sec">
-      <div class="journey">
+      <div class="journey" ref="{{jRef}}" onKeyDown="{{jKey}}">
         <div class="j-head sr">
           <div class="sec-head">
             <p class="eyebrow">{{t.home.mapEyebrow}}</p>
@@ -1144,7 +1176,7 @@ figure{margin:0}
             <div class="j-stat"><b>2</b><span>{{t.home.mapCont}}</span></div>
           </div>
         </div>
-        <div class="jmap sr" role="img" aria-label="{{t.home.mapAria}}">
+        <div class="jmap sr" role="group" aria-label="{{t.home.mapAria}}">
           <div class="jdots"></div>
           <svg class="jsvg" viewBox="0 0 1720 600" aria-hidden="true">
             <g class="jro"><circle cx="1397.5" cy="186" r="3.7"/><circle cx="1406.5" cy="186" r="3.7"/><circle cx="1415.5" cy="186" r="3.7"/><circle cx="1424" cy="186" r="3.7"/><circle cx="1433" cy="186" r="3.7"/><circle cx="1442" cy="186" r="3.7"/><circle cx="1450.5" cy="186" r="3.7"/><circle cx="1459.5" cy="186" r="3.7"/><circle cx="1468" cy="186" r="3.7"/><circle cx="1477" cy="186" r="3.7"/><circle cx="1397.5" cy="194.5" r="3.7"/><circle cx="1406.5" cy="194.5" r="3.7"/><circle cx="1415.5" cy="194.5" r="3.7"/><circle cx="1424" cy="194.5" r="3.7"/><circle cx="1433" cy="194.5" r="3.7"/><circle cx="1442" cy="194.5" r="3.7"/><circle cx="1450.5" cy="194.5" r="3.7"/><circle cx="1459.5" cy="194.5" r="3.7"/><circle cx="1468" cy="194.5" r="3.7"/><circle cx="1477" cy="194.5" r="3.7"/><circle cx="1397.5" cy="203.5" r="3.7"/><circle cx="1406.5" cy="203.5" r="3.7"/><circle cx="1415.5" cy="203.5" r="3.7"/><circle cx="1424" cy="203.5" r="3.7"/><circle cx="1433" cy="203.5" r="3.7"/><circle cx="1442" cy="203.5" r="3.7"/><circle cx="1450.5" cy="203.5" r="3.7"/><circle cx="1459.5" cy="203.5" r="3.7"/><circle cx="1468" cy="203.5" r="3.7"/><circle cx="1477" cy="203.5" r="3.7"/><circle cx="1397.5" cy="212" r="3.7"/><circle cx="1406.5" cy="212" r="3.7"/><circle cx="1415.5" cy="212" r="3.7"/><circle cx="1424" cy="212" r="3.7"/><circle cx="1433" cy="212" r="3.7"/><circle cx="1442" cy="212" r="3.7"/><circle cx="1450.5" cy="212" r="3.7"/><circle cx="1459.5" cy="212" r="3.7"/><circle cx="1468" cy="212" r="3.7"/><circle cx="1397.5" cy="221" r="3.7"/><circle cx="1406.5" cy="221" r="3.7"/><circle cx="1415.5" cy="221" r="3.7"/><circle cx="1424" cy="221" r="3.7"/><circle cx="1433" cy="221" r="3.7"/><circle cx="1442" cy="221" r="3.7"/><circle cx="1450.5" cy="221" r="3.7"/><circle cx="1459.5" cy="221" r="3.7"/><circle cx="1468" cy="221" r="3.7"/></g>
@@ -1153,12 +1185,29 @@ figure{margin:0}
             <path class="jroute r3" pathLength="1" d="M1452 209 Q786 -110 121 314"/>
           </svg>
           <sc-for list="{{journey}}" as="st" hint-placeholder-count="4">
-            <span class="{{st.pin}}" style="left: {{st.l}}; top: {{st.t}}">{{st.n}}</span>
+            <button class="{{st.pin}}" type="button" style="left: {{st.l}}; top: {{st.t}}" aria-label="{{st.aria}}" aria-expanded="{{st.exp}}" onPointerEnter="{{st.enter}}" onPointerLeave="{{st.leave}}" onFocus="{{st.focus}}" onBlur="{{st.blur}}" onClick="{{st.tap}}">{{st.n}}</button>
           </sc-for>
+          <sc-if value="{{jHintOn}}" hint-placeholder-val="{{false}}">
+            <span class="jhint" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="mouse">{{t.home.jpHintMouse}}</span><span class="touch">{{t.home.jpHintTouch}}</span></span>
+          </sc-if>
         </div>
+        <sc-if value="{{jHasPop}}" hint-placeholder-val="{{false}}">
+          <div class="jpop" style="left: {{jPopX}}px; top: {{jPopY}}px; --ax: {{jPopAx}}px" role="status" aria-live="polite">
+            <div class="jpop-top"><span class="jpop-n" aria-hidden="true">{{jPopN}}</span><div><p class="jpop-loc">{{jPopLoc}}</p><p class="jpop-geo"><span class="jpop-coord">{{jPopCoord}}</span><sc-if value="{{jPopHasKm}}" hint-placeholder-val="{{true}}"><span class="jpop-km">{{jPopKm}}</span></sc-if></p></div></div>
+            <sc-if value="{{jPopHasEv}}" hint-placeholder-val="{{false}}"><p class="jpop-ev">{{jPopEv}}</p></sc-if>
+            <sc-if value="{{jPopHasAw}}" hint-placeholder-val="{{true}}">
+              <p class="jpop-h">{{jPopHead}}</p>
+              <ul class="jpop-aw">
+                <sc-for list="{{jPopAwards}}" as="pa" hint-placeholder-count="1">
+                  <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v4a4 4 0 0 1-8 0zM8 5.5H5v1a3 3 0 0 0 3 3M16 5.5h3v1a3 3 0 0 1-3 3M12 12v4M8.5 20h7M10 16h4v4h-4z"/></svg><div><p class="jpop-name"><b>{{pa.name}}</b><sc-if value="{{pa.hasPlace}}" hint-placeholder-val="{{true}}"><span class="{{pa.placeCls}}">{{pa.place}}</span></sc-if></p><p class="jpop-meta">{{pa.meta}}</p><sc-if value="{{pa.hasNote}}" hint-placeholder-val="{{false}}"><p class="jpop-note">{{pa.note}}</p></sc-if></div></li>
+                </sc-for>
+              </ul>
+            </sc-if>
+          </div>
+        </sc-if>
         <ol class="jstops">
           <sc-for list="{{journey}}" as="st" hint-placeholder-count="4">
-            <li class="jstop sr"><span class="jn">{{st.n}}</span><div><p class="jcity">{{st.city}}</p><p class="jev">{{st.ev}}</p><p class="jaw">{{st.aw}}</p></div></li>
+            <li class="{{st.cardCls}}"><span class="jn">{{st.n}}</span><div><p class="jcity">{{st.city}}</p><p class="jev">{{st.ev}}</p><p class="jaw">{{st.aw}}</p></div></li>
           </sc-for>
         </ol>
         <p class="jquote sr">{{t.home.mapQuote}}</p>
@@ -2148,7 +2197,7 @@ class Component extends DCLogic {
       jMode: '', jLast: '', jFirst: '', jPhone: '', jEmail: '', jSchool: '', jGrade: '', jDept: [], jExp: '', jWhy: '', jHours: '', jSource: '', jOther: '',
       jConsent: false, jHp: '', jTried: false, jStatus: 'idle', jErr: '', jCode: '', codeCopied: false,
       codeIn: joinCode, chkStatus: 'idle', chkRes: null, tpOn: -1, tpG: null, tpUsed: false, tpIntro: false,
-      supTax: '', supTurn: '', supCopied: false, supCp: '',
+      supTax: '', supTurn: '', supCopied: false, supCp: '', jOn: -1, jG: null, jUsed: false,
       cms: null
     };
     this.hsFormT0 = Date.now();
@@ -2156,10 +2205,15 @@ class Component extends DCLogic {
     this.hsNumsRef = (el) => this.hsNumsObs(el);
     this.hsBrainRef = (el) => this.hsBrainMount(el);
     this.hsTpRef = (el) => this.hsTpMount(el);
+    this.hsJRef = (el) => { this.hsJBox = el || null; };
   }
 
   componentDidMount() {
     this.hsPainted = this.state.theme; this.hsPaint(this.state.theme);
+    /* Travel map: a tap or click outside a point, or a new window size, closes its card. */
+    this.hsJDoc = (e) => { if (this.state.jOn >= 0 && !(e.target && e.target.closest && e.target.closest('.jpin'))) this.setState({ jOn: -1 }); };
+    this.hsJResize = () => { if (this.state.jOn >= 0) this.setState({ jOn: -1 }); };
+    try { document.addEventListener('pointerdown', this.hsJDoc, true); window.addEventListener('resize', this.hsJResize); } catch (e) {}
     this.hsCount(); this.hsPrimeAll();
     /* Cards with the .spot class light up under the pointer. */
     this.hsSpot = (e) => {
@@ -2300,6 +2354,7 @@ class Component extends DCLogic {
   componentWillUnmount() {
     if (this.hsBrainKill) { this.hsBrainKill(); this.hsBrainKill = null; }
     if (this.hsTpKill) { this.hsTpKill(); this.hsTpKill = null; }
+    try { document.removeEventListener('pointerdown', this.hsJDoc, true); window.removeEventListener('resize', this.hsJResize); } catch (e) {}
     if (this.hsIv) clearInterval(this.hsIv);
     if (this.hsYTIv) clearInterval(this.hsYTIv);
     if (this.hsPop) { try { window.removeEventListener('popstate', this.hsPop); } catch (e) {} }
@@ -2463,6 +2518,17 @@ class Component extends DCLogic {
   hsPrimeAll() { try { document.querySelectorAll('video.clip').forEach((v) => this.hsPrime(v)); } catch (e) {} }
 
   hsSave(k, v) { try { window.localStorage.setItem(k, v); } catch (e) {} }
+
+  /* ---------- travel map: the card of point i, placed under it ---------- */
+  hsJOn(i) {
+    const box = this.hsJBox;
+    const pin = box ? box.querySelectorAll('.jpin')[i] : null;
+    if (!pin) return;
+    const br = box.getBoundingClientRect(), pr = pin.getBoundingClientRect();
+    const k = br.width && box.offsetWidth ? box.offsetWidth / br.width : 1;
+    this.hsJT = Date.now();
+    this.setState({ jOn: i, jUsed: true, jG: { x: (pr.left + pr.width / 2 - br.left) * k, y: (pr.top + pr.height / 2 - br.top) * k, r: Math.max(pr.height / 2 * k, 8), w: box.offsetWidth } });
+  }
 
   /* ---------- who is who in the team photo ---------- */
   hsTpMount(el) {
@@ -2815,7 +2881,7 @@ class Component extends DCLogic {
           numsEyebrow: 'Homosapiens în cifre', numsTitle: 'Cifrele din spatele ambiției.', numsSeason: 'Sezonul 2025-2026', numsSince: 'De la înființare',
           n: { twin: 'victorii în calificări la Bucharest Twin Cup', wins: 'victorii în 7 competiții oficiale FIRST', div: 'clasare în divizie la Western Edge, SUA, și căpitan de alianță', events: 'competiții oficiale FIRST Tech Challenge din 2020', views: 'vizualizări online ale poveștii noastre', people: 'participanți la evenimentele noastre', intl: 'participări și colaborări internaționale', org: 'evenimente și proiecte organizate', hubs: 'huburi de robotică create în mediul rural' },
           numsNote: 'Rezultatele competiționale provin din baza de date oficială FIRST. Indicatorii de impact acoperă activitatea echipei de la înființare.', numsCta: 'Cifrele spun ce am realizat. Oamenii din spatele lor spun cine suntem.', numsLink: 'Cunoaște echipa',
-          mapEyebrow: 'Buzău, pe harta lumii', mapTitle: 'Buzău, pus pe harta mondială a roboticii.', mapText: 'Dintr-un oraș fără tradiție în robotică, am dus numele Buzăului pe trei scene internaționale și ne-am întors de fiecare dată cu un premiu.', mapKm: 'km dus-întors, aproape un ocol al Pământului', mapAw: 'premii internaționale, în 2 țări', mapCont: 'continente, Europa și America de Nord', mapAria: 'Harta drumurilor echipei, din Buzău până la Lignano Sabbiadoro, South Bend și Long Beach', mapQuote: 'Nu am avut cel mai mare buget și nici cea mai lungă tradiție. Am avut ceva mai rar: dorința de a evolua.',
+          jpHintMouse: "Treci cu mouse-ul peste un punct", jpHintTouch: "Atinge un punct ca să vezi premiile", jpAw: "Premii câștigate aici", jpAwRo: "Premii câștigate în România", jpKm: "{d} km de Buzău", jpPin: "{c}: vezi locul și premiile", jpWhere: ["Buzău, județul Buzău, România", "Lignano Sabbiadoro, Friuli-Veneția Giulia, Italia", "South Bend, Indiana, SUA", "Long Beach, California, SUA"], jpNS: ["N", "S"], jpEW: ["E", "V"], mapEyebrow: 'Buzău, pe harta lumii', mapTitle: 'Buzău, pus pe harta mondială a roboticii.', mapText: 'Dintr-un oraș fără tradiție în robotică, am dus numele Buzăului pe trei scene internaționale și ne-am întors de fiecare dată cu un premiu.', mapKm: 'km dus-întors, aproape un ocol al Pământului', mapAw: 'premii internaționale, în 2 țări', mapCont: 'continente, Europa și America de Nord', mapAria: 'Harta drumurilor echipei, din Buzău până la Lignano Sabbiadoro, South Bend și Long Beach', mapQuote: 'Nu am avut cel mai mare buget și nici cea mai lungă tradiție. Am avut ceva mai rar: dorința de a evolua.',
           stops: [
             { city: 'Buzău, România', ev: 'Casa noastră, din 2018', aw: 'Punctul de plecare' },
             { city: 'Lignano Sabbiadoro, Italia', ev: 'FTC Italy Championship, 2025', aw: 'Control Award, top 6 din 43' },
@@ -2924,7 +2990,7 @@ class Component extends DCLogic {
           numsEyebrow: 'Homosapiens in numbers', numsTitle: 'The numbers behind the ambition.', numsSeason: '2025-2026 season', numsSince: 'Since we started',
           n: { twin: 'qualification wins at the Bucharest Twin Cup', wins: 'wins across 7 official FIRST events', div: 'division rank at Western Edge, USA, as alliance captain', events: 'official FIRST Tech Challenge events since 2020', views: 'online views of our story', people: 'people at our events', intl: 'international events and collaborations', org: 'events and projects we organised', hubs: 'robotics hubs set up in rural communities' },
           numsNote: 'Competition results come from the official FIRST database. Impact figures cover the team’s work since it started.', numsCta: 'The numbers show what we have achieved. The people behind them show who we are.', numsLink: 'Meet the team',
-          mapEyebrow: 'Buzău on the world map', mapTitle: 'Putting Buzău on the world robotics map.', mapText: 'From a city with no robotics tradition, we took the name of Buzău to three international stages and came home with an award every time.', mapKm: 'km of round trips, almost once around the Earth', mapAw: 'international awards, in 2 countries', mapCont: 'continents, Europe and North America', mapAria: 'Map of the team’s trips from Buzău to Lignano Sabbiadoro, South Bend and Long Beach', mapQuote: 'We did not have the biggest budget or the longest tradition. We had something rarer: the will to evolve.',
+          jpHintMouse: "Hover over a point", jpHintTouch: "Tap a point to see the awards", jpAw: "Awards won here", jpAwRo: "Awards won in Romania", jpKm: "{d} km from Buzău", jpPin: "{c}: see the place and the awards", jpWhere: ["Buzău, Buzău County, Romania", "Lignano Sabbiadoro, Friuli Venezia Giulia, Italy", "South Bend, Indiana, USA", "Long Beach, California, USA"], jpNS: ["N", "S"], jpEW: ["E", "W"], mapEyebrow: 'Buzău on the world map', mapTitle: 'Putting Buzău on the world robotics map.', mapText: 'From a city with no robotics tradition, we took the name of Buzău to three international stages and came home with an award every time.', mapKm: 'km of round trips, almost once around the Earth', mapAw: 'international awards, in 2 countries', mapCont: 'continents, Europe and North America', mapAria: 'Map of the team’s trips from Buzău to Lignano Sabbiadoro, South Bend and Long Beach', mapQuote: 'We did not have the biggest budget or the longest tradition. We had something rarer: the will to evolve.',
           stops: [
             { city: 'Buzău, Romania', ev: 'Our home, since 2018', aw: 'Where it all starts' },
             { city: 'Lignano Sabbiadoro, Italy', ev: 'FTC Italy Championship, 2025', aw: 'Control Award, top 6 out of 43' },
@@ -3033,7 +3099,7 @@ class Component extends DCLogic {
           numsEyebrow: 'Homosapiens en chiffres', numsTitle: 'Les chiffres derrière l’ambition.', numsSeason: 'Saison 2025-2026', numsSince: 'Depuis nos débuts',
           n: { twin: 'victoires en qualifications à la Bucharest Twin Cup', wins: 'victoires en 7 compétitions officielles FIRST', div: 'classement dans la division à Western Edge, États-Unis, et capitaine d’alliance', events: 'compétitions officielles FIRST Tech Challenge depuis 2020', views: 'vues en ligne de notre histoire', people: 'participants à nos événements', intl: 'participations et collaborations internationales', org: 'événements et projets organisés', hubs: 'pôles de robotique créés en milieu rural' },
           numsNote: 'Les résultats sportifs proviennent de la base de données officielle FIRST. Les indicateurs d’impact couvrent l’activité de l’équipe depuis sa création.', numsCta: 'Les chiffres disent ce que nous avons accompli. Les personnes derrière eux disent qui nous sommes.', numsLink: 'Rencontrer l’équipe',
-          mapEyebrow: 'Buzău sur la carte du monde', mapTitle: 'Buzău, placée sur la carte mondiale de la robotique.', mapText: 'Depuis une ville sans tradition en robotique, nous avons porté le nom de Buzău sur trois scènes internationales et nous sommes revenus chaque fois avec un prix.', mapKm: 'km aller-retour, presque le tour de la Terre', mapAw: 'prix internationaux, dans 2 pays', mapCont: 'continents, l’Europe et l’Amérique du Nord', mapAria: 'Carte des voyages de l’équipe, de Buzău à Lignano Sabbiadoro, South Bend et Long Beach', mapQuote: 'Nous n’avions ni le plus gros budget, ni la plus longue tradition. Nous avions quelque chose de plus rare : l’envie d’évoluer.',
+          jpHintMouse: "Survolez un point", jpHintTouch: "Touchez un point pour voir les prix", jpAw: "Prix remportés ici", jpAwRo: "Prix remportés en Roumanie", jpKm: "à {d} km de Buzău", jpPin: "{c} : voir le lieu et les prix", jpWhere: ["Buzău, județ de Buzău, Roumanie", "Lignano Sabbiadoro, Frioul-Vénétie Julienne, Italie", "South Bend, Indiana, États-Unis", "Long Beach, Californie, États-Unis"], jpNS: ["N", "S"], jpEW: ["E", "O"], mapEyebrow: 'Buzău sur la carte du monde', mapTitle: 'Buzău, placée sur la carte mondiale de la robotique.', mapText: 'Depuis une ville sans tradition en robotique, nous avons porté le nom de Buzău sur trois scènes internationales et nous sommes revenus chaque fois avec un prix.', mapKm: 'km aller-retour, presque le tour de la Terre', mapAw: 'prix internationaux, dans 2 pays', mapCont: 'continents, l’Europe et l’Amérique du Nord', mapAria: 'Carte des voyages de l’équipe, de Buzău à Lignano Sabbiadoro, South Bend et Long Beach', mapQuote: 'Nous n’avions ni le plus gros budget, ni la plus longue tradition. Nous avions quelque chose de plus rare : l’envie d’évoluer.',
           stops: [
             { city: 'Buzău, Roumanie', ev: 'Chez nous, depuis 2018', aw: 'Le point de départ' },
             { city: 'Lignano Sabbiadoro, Italie', ev: 'FTC Italy Championship, 2025', aw: 'Control Award, top 6 sur 43' },
@@ -3142,7 +3208,7 @@ class Component extends DCLogic {
           numsEyebrow: 'Homosapiens 数据', numsTitle: '雄心背后的数字。', numsSeason: '2025-2026 赛季', numsSince: '自成立以来',
           n: { twin: 'Bucharest Twin Cup 资格赛胜场', wins: '7 场 FIRST 正式比赛中的胜场', div: '美国 Western Edge 分区排名，并担任联盟队长', events: '2020 年以来参加的 FIRST Tech Challenge 正式比赛', views: '我们故事的网络浏览量', people: '我们活动的参与人数', intl: '国际参赛与合作', org: '组织的活动和项目', hubs: '在乡村建立的机器人中心' },
           numsNote: '比赛成绩来自 FIRST 官方数据库。影响力数据涵盖战队成立以来的全部活动。', numsCta: '数字说明我们取得了什么，数字背后的人说明我们是谁。', numsLink: '认识团队',
-          mapEyebrow: '世界地图上的布泽乌', mapTitle: '把布泽乌放上世界机器人地图。', mapText: '我们来自一座没有机器人传统的城市，却把布泽乌的名字带上了三个国际舞台，每次都捧着奖项回家。', mapKm: '公里往返，几乎绕地球一圈', mapAw: '项国际奖项，来自 2 个国家', mapCont: '个大洲：欧洲和北美洲', mapAria: '战队行程地图：从布泽乌到利尼亚诺萨比亚多罗、南本德和长滩', mapQuote: '我们没有最多的预算，也没有最悠久的传统。我们拥有的是更难得的东西：不断进化的决心。',
+          jpHintMouse: "把鼠标移到一个点上", jpHintTouch: "点一下地图上的点，查看奖项", jpAw: "在这里获得的奖项", jpAwRo: "在罗马尼亚获得的奖项", jpKm: "距布泽乌 {d} 公里", jpPin: "{c}：查看地点和奖项", jpWhere: ["罗马尼亚 布泽乌县 布泽乌", "意大利 弗留利-威尼斯朱利亚 利尼亚诺萨比亚多罗", "美国 印第安纳州 南本德", "美国 加利福尼亚州 长滩"], jpNS: ["北纬", "南纬"], jpEW: ["东经", "西经"], mapEyebrow: '世界地图上的布泽乌', mapTitle: '把布泽乌放上世界机器人地图。', mapText: '我们来自一座没有机器人传统的城市，却把布泽乌的名字带上了三个国际舞台，每次都捧着奖项回家。', mapKm: '公里往返，几乎绕地球一圈', mapAw: '项国际奖项，来自 2 个国家', mapCont: '个大洲：欧洲和北美洲', mapAria: '战队行程地图：从布泽乌到利尼亚诺萨比亚多罗、南本德和长滩', mapQuote: '我们没有最多的预算，也没有最悠久的传统。我们拥有的是更难得的东西：不断进化的决心。',
           stops: [
             { city: '罗马尼亚 布泽乌', ev: '2018 年以来的家', aw: '出发点' },
             { city: '意大利 利尼亚诺萨比亚多罗', ev: 'FTC 意大利锦标赛，2025', aw: 'Control Award，43 支战队中前 6' },
@@ -3490,6 +3556,71 @@ class Component extends DCLogic {
     const teamDesc = t.team.fd[curF];
 
     const placeLabel = (p) => (p === 1 ? t.awards.place1 : (p === 2 ? t.awards.place2 : (p === 3 ? t.awards.place3 : '')));
+    /* Travel map: each point's card shows where it is and what the team won there, from the awards on /update. */
+    const J_GEO = [[45.15, 26.82], [45.68, 13.13], [41.68, -86.25], [33.77, -118.19]];
+    const evAll = (a) => (a && a.event && typeof a.event === 'object' ? Object.values(a.event).join(' ') : String((a && a.event) || ''));
+    const J_MATCH = [
+      (a) => a.country === 'ro',
+      (a) => a.country === 'it' || /italy|italia|lignano/i.test(evAll(a)),
+      (a) => /michiana|south bend/i.test(evAll(a)),
+      (a) => /western edge|long beach/i.test(evAll(a))
+    ];
+    const jAwards = J_MATCH.map((match) => {
+      const out = [];
+      (C.seasons || []).forEach((se) => {
+        if (!se || se.active === false) return;
+        (se.awards || []).forEach((a) => {
+          if (!a || a.active === false || !tx(a.name) || !match(a)) return;
+          out.push({ name: tx(a.name), hasPlace: a.place > 0, place: placeLabel(a.place), placeCls: a.place === 1 ? 'jp-place gold' : 'jp-place',
+            meta: [tx(a.event), se.season].filter(Boolean).join(' · '), note: tx(a.note), hasNote: !!tx(a.note) });
+        });
+      });
+      return out;
+    });
+    const jKm = (a, b) => {
+      const r = Math.PI / 180, dLa = (b[0] - a[0]) * r, dLo = (b[1] - a[1]) * r;
+      const h = Math.sin(dLa / 2) ** 2 + Math.cos(a[0] * r) * Math.cos(b[0] * r) * Math.sin(dLo / 2) ** 2;
+      return Math.round(2 * 6371 * Math.asin(Math.sqrt(h)) / 10) * 10;
+    };
+    const HM = t.home;
+    const jDeg = (v) => Math.abs(v).toFixed(2).replace('.', dec) + '°';
+    const jGeoTxt = (g) => (L === 'zh'
+      ? HM.jpNS[g[0] >= 0 ? 0 : 1] + ' ' + jDeg(g[0]) + ' · ' + HM.jpEW[g[1] >= 0 ? 0 : 1] + ' ' + jDeg(g[1])
+      : jDeg(g[0]) + ' ' + HM.jpNS[g[0] >= 0 ? 0 : 1] + ' · ' + jDeg(g[1]) + ' ' + HM.jpEW[g[1] >= 0 ? 0 : 1]);
+    const jOn = s.jOn >= 0 && s.jOn < journey.length ? s.jOn : -1;
+    const ptOf = (e) => e && (e.pointerType || (e.nativeEvent && e.nativeEvent.pointerType));
+    journey.forEach((st, i) => {
+      st.pin = (i === 0 ? 'jpin home' : 'jpin') + (i === jOn ? ' on' : '');
+      st.cardCls = 'jstop sr' + (i === jOn ? ' on' : '');
+      st.aria = HM.jpPin.replace('{c}', st.city);
+      st.exp = i === jOn ? 'true' : 'false';
+      st.enter = (e) => { const pt = ptOf(e); if (!pt || pt === 'mouse') this.hsJOn(i); };
+      st.leave = (e) => { if (ptOf(e) === 'mouse' && this.state.jOn === i) this.setState({ jOn: -1 }); };
+      st.focus = () => this.hsJOn(i);
+      st.blur = () => { if (this.state.jOn === i) this.setState({ jOn: -1 }); };
+      // a tap on the point that is already open closes it (not the tap that has just opened it through focus)
+      st.tap = (e) => {
+        if (ptOf(e) === 'mouse') { this.hsJOn(i); return; }
+        if (this.state.jOn === i && Date.now() - (this.hsJT || 0) > 450) this.setState({ jOn: -1 }); else this.hsJOn(i);
+      };
+    });
+    const jG = s.jG || { x: 0, y: 0, r: 12, w: 0 };
+    const jCW = Math.min(340, Math.max(0, jG.w - 24));
+    const jX = Math.round(Math.max(12, Math.min(jG.x - jCW / 2, jG.w - jCW - 12)));
+    const jCur = jOn >= 0 ? journey[jOn] : null;
+    const jAw = jOn >= 0 ? jAwards[jOn] : [];
+    const JV = {
+      jRef: this.hsJRef,
+      jKey: (e) => { if (e && e.key === 'Escape' && this.state.jOn >= 0) this.setState({ jOn: -1 }); },
+      jHintOn: !s.jUsed, jHasPop: !!jCur,
+      jPopX: jX, jPopY: Math.round(jG.y + jG.r + 12), jPopAx: Math.round(Math.max(20, Math.min(jCW - 20, jG.x - jX))),
+      jPopN: jCur ? jCur.n : '',
+      jPopLoc: jCur ? (HM.jpWhere[jOn] || jCur.city) : '',
+      jPopCoord: jCur ? jGeoTxt(J_GEO[jOn]) : '', jPopHasKm: jOn > 0,
+      jPopKm: jOn > 0 ? HM.jpKm.replace('{d}', nf(jKm(J_GEO[0], J_GEO[jOn]))) : '',
+      jPopHasEv: !!jCur && (jOn === 0 || jAw.length === 0), jPopEv: jCur ? (jOn === 0 ? jCur.ev : jCur.ev + ' · ' + jCur.aw) : '',
+      jPopHasAw: jAw.length > 0, jPopHead: jOn === 0 ? HM.jpAwRo : HM.jpAw, jPopAwards: jAw
+    };
     const seasons = (C.seasons || []).filter((se) => se && se.active !== false && se.season).map((se) => {
       const aws = (se.awards || []).filter((a) => a && a.active !== false && tx(a.name)).map((a) => {
         const where = [tx(a.event), a.country ? (t.awards.countries[a.country] || a.country) : ''].filter(Boolean).join(', ');
@@ -3675,7 +3806,7 @@ class Component extends DCLogic {
           else if (pt && pt !== 'mouse' && Date.now() - (this.hsTpT || 0) > 450) this.setState({ tpOn: -1 });
         } else if (this.state.tpOn >= 0) this.setState({ tpOn: -1 });
       },
-      mapKm: nf(39800), journey: journey, press: press, hasPressNote: !!t.home.pressNote,
+      mapKm: nf(39800), journey: journey, ...JV, press: press, hasPressNote: !!t.home.pressNote,
       progs: progs, amb: amb, pillars: pillars, budget: budget,
       momHref: 'https://www.youtube.com/watch?v=BHP8XKtndJU&t=19000s',
 
